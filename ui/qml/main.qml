@@ -1,68 +1,125 @@
-import QtQuick
-import QtLocation
-import QtPositioning
-import QtQuick.Controls
 
+import QtQuick
+import QtQuick.Dialogs
+import QtQuick.Controls
+import QtPositioning
+import QtLocation
+import QtCore
 
 Rectangle {
-    id: rootrect
-    color: "purple"
-
-    Plugin {
-        id: mapPlugin
-        name: "osm"
+    id: win
+    //! [GeoJsonData Creation]
+    GeoJsonData {
+        id: geoDatabase
+        sourceUrl: dataPath
     }
+    //! [GeoJsonData Creation]
 
-    Map {
-        id: map
-
+    //! [MapView Creation]
+    MapView {
+        id: view
         anchors.fill: parent
-        plugin: mapPlugin
-        center: QtPositioning.coordinate(49.970102, 10.418593)
-        zoomLevel: 14
-        
-        //from https://doc.qt.io/qt-6/qml-qtlocation-map.html#example-usage
-        PinchHandler {
-            id: pinch
-            target: null
-            onActiveChanged: if (active) {
-                map.startCentroid = map.toCoordinate(pinch.centroid.position, false)
+        map.plugin: Plugin { name: "osm" }
+        map.zoomLevel: 12
+        map.center: QtPositioning.coordinate(49.970102, 10.418593)
+    //! [MapView Creation]
+
+        property bool autoFadeIn: false
+        property variant referenceSurface: QtLocation.ReferenceSurface.Map
+
+        //! [clearAllItems]
+        function clearAllItems()
+        {
+            geoDatabase.clear();
+        }
+        //! [clearAllItems]
+
+        //! [MapItemView]
+        MapItemView {
+            id: miv
+            parent: view.map
+            //! [MapItemView]
+            //! [MapItemView Model]
+            model: geoDatabase.model
+            //! [MapItemView Model]
+            //! [MapItemView Delegate]
+            delegate: GeoJsonDelegate {}
+            //! [MapItemView Delegate]
+            //! [MapItemView1]
+        }
+        //! [MapItemView1]
+        // Menu {
+        //     id: mapPopupMenu
+
+        //     property variant coordinate
+
+        //     MenuItem {
+        //         text: qsTr("Rectangle")
+        //         onTriggered: view.addGeoItem("RectangleItem")
+        //     }
+        //     MenuItem {
+        //         text: qsTr("Circle")
+        //         onTriggered: view.addGeoItem("CircleItem")
+        //     }
+        //     MenuItem {
+        //         text: qsTr("Polyline")
+        //         onTriggered: view.addGeoItem("PolylineItem")
+        //     }
+        //     MenuItem {
+        //         text: qsTr("Polygon")
+        //         onTriggered: view.addGeoItem("PolygonItem")
+        //     }
+        //     MenuItem {
+        //         text: qsTr("Clear all")
+        //         onTriggered: view.clearAllItems()
+        //     }
+
+        //     function show(coordinate) {
+        //         mapPopupMenu.coordinate = coordinate
+        //         mapPopupMenu.popup()
+        //     }
+        // }
+
+        //! [Hoverhandler Map]
+        HoverHandler {
+            id: hoverHandler
+            property variant currentCoordinate
+            grabPermissions: PointerHandler.CanTakeOverFromItems | PointerHandler.CanTakeOverFromHandlersOfDifferentType
+
+            onPointChanged: {
+                currentCoordinate = view.map.toCoordinate(hoverHandler.point.position);
             }
-            onScaleChanged: (delta) => {
-                map.zoomLevel += Math.log2(delta)
-                map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+        }
+        //! [Hoverhandler Map]
+
+        TapHandler {
+            id: tapHandler
+            property variant lastCoordinate
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+
+            //! [Taphandler Map]
+            onSingleTapped: (eventPoint, button) => {
+                lastCoordinate = view.map.toCoordinate(tapHandler.point.position);
             }
-            onRotationChanged: (delta) => {
-                map.bearing -= delta
-                map.alignCoordinateToPoint(map.startCentroid, pinch.centroid.position)
+            //! [Taphandler Map]
+        }
+
+        TapHandler {
+            acceptedButtons: Qt.LeftButton | Qt.RightButton
+            onDoubleTapped: (eventPoint, button) => {
+                var preZoomPoint = view.map.toCoordinate(eventPoint.position);
+                if (button === Qt.LeftButton)
+                    view.map.zoomLevel = Math.floor(view.map.zoomLevel + 1)
+                else
+                    view.map.zoomLevel = Math.floor(view.map.zoomLevel - 1)
+                var postZoomPoint = view.map.toCoordinate(eventPoint.position);
+                var dx = postZoomPoint.latitude - preZoomPoint.latitude;
+                var dy = postZoomPoint.longitude - preZoomPoint.longitude;
+                view.map.center = QtPositioning.coordinate(view.map.center.latitude - dx,
+                                                           view.map.center.longitude - dy);
             }
-            grabPermissions: PointerHandler.TakeOverForbidden
         }
-        WheelHandler {
-            id: wheel
-            // workaround for QTBUG-87646 / QTBUG-112394 / QTBUG-112432:
-            // Magic Mouse pretends to be a trackpad but doesn't work with PinchHandler
-            // and we don't yet distinguish mice and trackpads on Wayland either
-            acceptedDevices: Qt.platform.pluginName === "cocoa" || Qt.platform.pluginName === "wayland"
-                            ? PointerDevice.Mouse | PointerDevice.TouchPad
-                            : PointerDevice.Mouse
-            rotationScale: 1/120
-            property: "zoomLevel"
-        }
-        DragHandler {
-            id: drag
-            target: null
-            onTranslationChanged: (delta) => map.pan(-delta.x, -delta.y)
-        }
-        Shortcut {
-            enabled: map.zoomLevel < map.maximumZoomLevel
-            sequence: StandardKey.ZoomIn
-            onActivated: map.zoomLevel = Math.round(map.zoomLevel + 1)
-        }
-        Shortcut {
-            enabled: map.zoomLevel > map.minimumZoomLevel
-            sequence: StandardKey.ZoomOut
-            onActivated: map.zoomLevel = Math.round(map.zoomLevel - 1)
-        }
+    //! [MapView Creation1]
     }
 }
+
