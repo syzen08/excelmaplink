@@ -1,18 +1,19 @@
 import json
 from pathlib import Path
 
-from PySide6.QtCore import QTemporaryDir, QUrl
+from PySide6.QtCore import QTemporaryDir, QThreadPool, QUrl
 from PySide6.QtGui import QAction
 from PySide6.QtQuickWidgets import QQuickWidget
 from PySide6.QtWidgets import (
     QFileDialog,
     QGridLayout,
     QMainWindow,
+    QProgressDialog,
     QSpacerItem,
     QWidget,
 )
 
-from src import importkml
+from src.importkml import Worker, convert_kml_to_geojson
 
 
 class MainWindow(QMainWindow):
@@ -40,10 +41,10 @@ class MainWindow(QMainWindow):
         # placeholder widgets
         self.spacerL = QSpacerItem(200, 0)
         self.mainlayout.addItem(self.spacerL, 0, 1)
+        self.threadpool = QThreadPool()
 
         self.url = self.open_kml_file(path)
 
-        self.reloadMap()
 
         
         
@@ -59,6 +60,16 @@ class MainWindow(QMainWindow):
             raise Exception("Failed to load QML")
 
     def open_kml_file(self, path: Path = None) -> QUrl:
+
+        def finished_conversion():
+            url = QUrl.fromLocalFile(str(geojson_path))
+            print(url.toString())
+            self.url = url
+            self.reloadMap()
+            self.progressialog.close()
+            return url
+
+
         if path is None or path is False:
             kmlfile = Path(QFileDialog.getOpenFileName(self, "Open KML File", "", "KML Files (*.kml)")[0])
         else:
@@ -69,16 +80,15 @@ class MainWindow(QMainWindow):
         self.temp_dir = QTemporaryDir()
         if (self.temp_dir.isValid()):
             geojson_path = Path(self.temp_dir.path() + "/" + kmlfile.stem + ".geojson")
-            geojson = importkml.convert_kml_to_geojson(kmlfile)
-            with open(geojson_path, "w") as f:
-                json.dump(geojson, f)
+            self.progressialog = QProgressDialog("Loading KML...", None, 0, 0, self)
+            self.progressialog.show()
+            worker = Worker(convert_kml_to_geojson, kmlfile, geojson_path)
+            worker.signals.finished.connect(finished_conversion)
+            self.threadpool.start(worker)
         else:
             raise Exception("Failed to create temporary directory")
-        url = QUrl.fromLocalFile(str(geojson_path))
-        print(url.toString())
-        self.url = url
-        self.reloadMap()
-        return url
+
+    
 
 
         
