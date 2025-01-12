@@ -93,7 +93,7 @@ DelegateChooser {
             geoShape: modelData.data
             opacity: dc.defaultOpacity
             color: (props && props.color) || (parent && parent.props && parent.props.color) || dc.defaultColor
-            border.width: 2
+            border.width: hh.hovered ? 2 : 0
             border.color: hh.hovered ? "magenta" : Qt.darker(color)
             autoFadeIn: view.autoFadeIn
             referenceSurface: view.referenceSurface
