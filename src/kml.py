@@ -15,7 +15,9 @@ class KMLReader:
         if self.kml_path is None:
             raise Exception("No KML file specified")
         
+        print(f"loading {self.kml_path}...")
         self.kml = kml.KML.parse(self.kml_path)
+        print("loading placemarks...")
         self.placemarks = list(find_all(self.kml, of_type=Placemark))
         print(f"loaded {len(self.placemarks)} placemarks")
 
@@ -25,7 +27,6 @@ class KMLReader:
             point = placemark.geometry
             if isinstance(point, Point):
                 points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description))
-        print(len(points))
         return points
 
     def getPolygons(self):
