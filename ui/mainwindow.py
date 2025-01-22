@@ -3,7 +3,8 @@ from pathlib import Path
 
 from PySide6.QtCore import QTemporaryDir, QThreadPool, QUrl
 from PySide6.QtGui import QAction
-from PySide6.QtQuickWidgets import QQuickWidget
+from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEngineSettings
+from PySide6.QtWebEngineWidgets import QWebEngineView
 from PySide6.QtWidgets import (
     QFileDialog,
     QGridLayout,
@@ -13,7 +14,7 @@ from PySide6.QtWidgets import (
     QWidget,
 )
 
-from src.importkml import Worker, convert_kml_to_geojson
+from src.map import Map
 
 
 class MainWindow(QMainWindow):
@@ -22,7 +23,7 @@ class MainWindow(QMainWindow):
 
         self.setMinimumSize(1280, 768)
         
-
+        self.tempdir = QTemporaryDir()
         self.menubar = self.menuBar()
         self.filemenu = self.menubar.addMenu("File")
 
@@ -30,65 +31,39 @@ class MainWindow(QMainWindow):
         self.loadkmlaction.triggered.connect(self.open_kml_file)
         self.filemenu.addAction(self.loadkmlaction)
 
-        self.qtquick = None
+        self.reloadaction = QAction("Reload", self)
+        self.reloadaction.triggered.connect(self.load_map)
+        self.filemenu.addAction(self.reloadaction)
 
+        print("loading webview...")
+        self.webview = QWebEngineView()
+
+        s = QWebEngineProfile.defaultProfile().settings()
+        s.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
+
+        self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
+        self.map_url = QUrl().fromLocalFile(str(Path(self.tempdir.path() + "/map.html")))
 
         self.mainlayout = QGridLayout()
         self.widget = QWidget()
         self.widget.setLayout(self.mainlayout)
         self.setCentralWidget(self.widget)
 
-        # placeholder widgets
-        self.spacerL = QSpacerItem(200, 0)
-        self.mainlayout.addItem(self.spacerL, 0, 1)
-        self.threadpool = QThreadPool()
+        self.mainlayout.addWidget(self.webview)
+        self.load_map()
 
-        self.url = self.open_kml_file(path)
-
-
+    def load_map(self):
+        self.map.save()
+        self.webview.setUrl(self.map_url)
+        # h = self.map.get_html()
+        # self.webview.setHtml(h)
         
-        
-    def reloadMap(self):
-        if self.qtquick:
-            self.qtquick.destroy()
-        self.qtquick = QQuickWidget()
-        self.qtquick.setResizeMode(QQuickWidget.SizeRootObjectToView)
-        self.qtquick.rootContext().setContextProperty("dataPath", self.url)
-        self.qtquick.setSource(QUrl.fromLocalFile(str(Path("./ui/qml/main.qml"))))
-        self.mainlayout.addWidget(self.qtquick, 0, 0)
-        if not self.qtquick.rootObject():
-            raise Exception("Failed to load QML")
-
-    def open_kml_file(self, path: Path = None) -> QUrl:
-
-        def finished_conversion():
-            url = QUrl.fromLocalFile(str(geojson_path))
-            print(url.toString())
-            self.url = url
-            self.reloadMap()
-            self.progressialog.close()
-            return url
 
 
-        if path is None or path is False:
-            kmlfile = Path(QFileDialog.getOpenFileName(self, "Open KML File", "", "KML Files (*.kml)")[0])
-        else:
-            kmlfile = path
+    def open_kml_file(self):
+        path = Path(QFileDialog.getOpenFileName(self, "Open KML File", "", "KML Files (*.kml)")[0])
+        if path.exists():
+            print("loading kml file")
+            self.map.load_placemarks(path)
+            self.load_map()
 
-        print(kmlfile)
-
-        self.temp_dir = QTemporaryDir()
-        if (self.temp_dir.isValid()):
-            geojson_path = Path(self.temp_dir.path() + "/" + kmlfile.stem + ".geojson")
-            self.progressialog = QProgressDialog("Loading KML...", None, 0, 0, self)
-            self.progressialog.show()
-            worker = Worker(convert_kml_to_geojson, kmlfile, geojson_path)
-            worker.signals.finished.connect(finished_conversion)
-            self.threadpool.start(worker)
-        else:
-            raise Exception("Failed to create temporary directory")
-
-    
-
-
-        

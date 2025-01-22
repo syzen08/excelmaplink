@@ -1,2 +1,3 @@
 pyside6
-kml2geojson
+fastkml
+folium
