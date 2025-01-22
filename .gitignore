@@ -172,5 +172,4 @@ cython_debug/
 
 *.json
 *.geojson
-*.kml
 *.html
