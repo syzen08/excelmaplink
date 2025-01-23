@@ -25,12 +25,15 @@ class Map:
     
     def load_placemarks(self, kml_path):
         self.kml_reader.loadKML(kml_path)
+        print("getting points...")
         points = self.kml_reader.getPoints()
         print(f"adding {len(points)} points...")
         for point in points:
             folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3]).add_to(self.map)
-
+        
+        print("getting polygons...")
         polygons = self.kml_reader.getPolygons()
         print(f"adding {len(polygons)} polygons...")
         for polygon in polygons:
             folium.Polygon(locations=polygon[0], color="red", fill_color="red", weight=1, tooltip=polygon[1], popup=polygon[2]).add_to(self.map)
+        print("done")

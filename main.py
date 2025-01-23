@@ -3,14 +3,14 @@ import traceback
 
 from PySide6.QtWidgets import QApplication, QMessageBox
 
-from ui.mainwindow import MainWindow
+from src.mainwindow import MainWindow
 
 
 def main():
     app = QApplication(sys.argv)
-
-    window = MainWindow(None)
+    window = MainWindow()
     window.show()
+
     sys.exit(app.exec())
 
 if __name__ == "__main__":
