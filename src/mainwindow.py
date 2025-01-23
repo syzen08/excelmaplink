@@ -1,10 +1,11 @@
 from pathlib import Path
 
-from PySide6.QtCore import QTemporaryDir, QUrl
+from PySide6.QtCore import QTemporaryDir, QThreadPool, QUrl
 from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEngineSettings
-from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow
+from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow, QProgressBar
 
 from src.map import Map
+from src.worker import Worker
 from ui.ui_mainwindow import Ui_MainWindow
 
 
@@ -17,6 +18,7 @@ class MainWindow(QMainWindow):
         self.ui.setupUi(self)
 
         self.tempdir = QTemporaryDir()
+        self.threadpool = QThreadPool()
 
         self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
         self.map_url = QUrl().fromLocalFile(str(Path(self.tempdir.path() + "/map.html")))
@@ -39,8 +41,28 @@ class MainWindow(QMainWindow):
         self.ui.webEngineView.setUrl(self.map_url)
 
     def open_kml_file(self):
+        def progress_callback(value):
+            print(value)
+            pbar.setValue(value)
+
+        def finished():
+            print("thread finished")
+            self.ui.statusbar.removeWidget(pbar)
+            self.ui.statusbar.showMessage("loading...")
+            self.load_map()
+        
         path = Path(QFileDialog.getOpenFileName(self, "Open KML File", "", "KML Files (*.kml)")[0])
         if path.exists():
-            self.map.load_placemarks(path)
-            self.load_map()
+            pbar = QProgressBar()
+            pbar.setMaximum(100)
+            pbar.setMaximumHeight(16)
+            self.ui.statusbar.addWidget(pbar)
+            worker = Worker(self.map.load_placemarks, path)
+            worker.signals.progress.connect(progress_callback)
+            worker.signals.finished.connect(finished)
+
+            self.threadpool.start(worker)
+            # self.map.load_placemarks(path)
+
+
 

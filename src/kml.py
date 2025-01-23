@@ -8,7 +8,7 @@ class KMLReader:
         self.kml_path = kml_path
         self.kml = None
 
-    def loadKML(self, kml_path=None):
+    def loadKML(self, kml_path=None, progress_callback = None):
         if kml_path is not None:
             self.kml_path = kml_path
         
@@ -17,8 +17,12 @@ class KMLReader:
         
         print(f"loading {self.kml_path}...")
         self.kml = kml.KML.parse(self.kml_path)
+        if progress_callback is not None:
+            progress_callback.emit(20)
         print("loading placemarks...")
         self.placemarks = list(find_all(self.kml, of_type=Placemark))
+        if progress_callback is not None:
+            progress_callback.emit(40)
         print(f"loaded {len(self.placemarks)} placemarks")
 
     def getPoints(self):
