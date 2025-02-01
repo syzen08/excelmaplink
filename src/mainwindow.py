@@ -7,7 +7,6 @@ from PySide6.QtWidgets import (
     QApplication,
     QFileDialog,
     QMainWindow,
-    QProgressBar,
     QProgressDialog,
 )
 
@@ -63,6 +62,7 @@ class MainWindow(QMainWindow):
         
         path = Path(QFileDialog.getOpenFileName(self, "Open KML File", "", "KML Files (*.kml)")[0])
         if path.exists():
+            self.ui.webEngineView.setUrl("about:blank")
             pbar = QProgressDialog("Loading KML...", "", 0, 0, self)
             pbar.setWindowTitle("Loading KML...")
             pbar.setCancelButton(None)
