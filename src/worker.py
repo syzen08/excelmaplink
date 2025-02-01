@@ -8,7 +8,7 @@ class WorkerSignals(QObject):
     finished = Signal()
     error = Signal(tuple)
     result = Signal(object)
-    progress = Signal(int)
+    progress = Signal(int, str)
 
 class Worker(QRunnable):
     def __init__(self, fn, *args, **kwargs):

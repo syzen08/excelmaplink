@@ -1,8 +1,15 @@
+import time
 from pathlib import Path
 
 from PySide6.QtCore import QTemporaryDir, QThreadPool, QUrl
 from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEngineSettings
-from PySide6.QtWidgets import QApplication, QFileDialog, QMainWindow, QProgressBar
+from PySide6.QtWidgets import (
+    QApplication,
+    QFileDialog,
+    QMainWindow,
+    QProgressBar,
+    QProgressDialog,
+)
 
 from src.map import Map
 from src.worker import Worker
@@ -41,22 +48,26 @@ class MainWindow(QMainWindow):
         self.ui.webEngineView.setUrl(self.map_url)
 
     def open_kml_file(self):
-        def progress_callback(value):
-            print(value)
+        def progress_callback(value, message):
+            # print(value, message)
+            if value != 0 and pbar.maximum() == 0:
+                pbar.setMaximum(100)
             pbar.setValue(value)
+            if message != "":
+                pbar.setLabelText(message)
 
         def finished():
             print("thread finished")
-            self.ui.statusbar.removeWidget(pbar)
-            self.ui.statusbar.showMessage("loading...")
             self.load_map()
+            pbar.close()
         
         path = Path(QFileDialog.getOpenFileName(self, "Open KML File", "", "KML Files (*.kml)")[0])
         if path.exists():
-            pbar = QProgressBar()
-            pbar.setMaximum(100)
-            pbar.setMaximumHeight(16)
-            self.ui.statusbar.addWidget(pbar)
+            pbar = QProgressDialog("Loading KML...", "", 0, 0, self)
+            pbar.setWindowTitle("Loading KML...")
+            pbar.setCancelButton(None)
+            pbar.setMinimumWidth(400)
+            pbar.show()
             worker = Worker(self.map.load_placemarks, path)
             worker.signals.progress.connect(progress_callback)
             worker.signals.finished.connect(finished)
