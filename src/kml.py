@@ -56,7 +56,7 @@ class KMLReader:
             #     break
             polygon = placemark.geometry
             styleurl = placemark.style_url
-            if not isinstance(polygon, MultiPolygon):
+            if not isinstance(polygon, MultiPolygon) and not isinstance(polygon, Polygon):
                 continue
             styles = self.styles[styleurl.url[1:]]
             if isinstance(styles, StyleMap):
@@ -80,7 +80,7 @@ class KMLReader:
                 points = []
                 for point in polygon.exterior.coords:
                     points.append((point[1], point[0]))
-                polygons.append(points)
+                polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
             if i % 200 == 0:
                 if progress_callback:
                     progress_callback.emit(50 + int(((i + 1) / len(self.placemarks) + point_length / len(self.placemarks)) * 25), "")

@@ -1,4 +1,4 @@
-import time
+import shutil
 from pathlib import Path
 
 from PySide6.QtCore import QTemporaryDir, QThreadPool, QUrl
@@ -44,6 +44,7 @@ class MainWindow(QMainWindow):
 
     def load_map(self):
         self.map.save()
+        shutil.copy(str(Path(self.tempdir.path() + "/map.html")), str(Path("./")))
         self.ui.webEngineView.setUrl(self.map_url)
 
     def open_kml_file(self):
@@ -63,6 +64,7 @@ class MainWindow(QMainWindow):
         path = Path(QFileDialog.getOpenFileName(self, "Open KML File", "", "KML Files (*.kml)")[0])
         if path.exists():
             self.ui.webEngineView.setUrl("about:blank")
+            self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
             pbar = QProgressDialog("Loading KML...", "", 0, 0, self)
             pbar.setWindowTitle("Loading KML...")
             pbar.setCancelButton(None)
