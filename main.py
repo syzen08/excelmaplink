@@ -19,6 +19,7 @@ if __name__ == "__main__":
     except Exception as e:
         print("Unexpected error:", e)
         print(traceback.format_exc())
+        # show error message box on exception
         errmsgbox = QMessageBox()
         errmsgbox.setText(f"Unexpected error: {e}")
         errmsgbox.setDetailedText(traceback.format_exc())

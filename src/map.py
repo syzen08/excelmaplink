@@ -19,16 +19,20 @@ class Map:
             raise Exception("path does not exist")
 
     def save(self):
+        # ? is there a way to speed this up?
         self.map.save(str(Path(self.path / "map.html")))
 
     def get_html(self):
         return self.map.get_root().render()
     
     def load_placemarks(self, kml_path, progress_callback = None):
+        # TODO: all these ifs look like shit, find a better way to do this
         if progress_callback:
             progress_callback.emit(0, "")
         self.kml_reader.loadKML(kml_path, progress_callback)
-        print("getting points...")
+
+        # TODO: launch thread for each type of placemark (point, polygon, etc.)
+        print("getting points...") 
         if progress_callback:
             progress_callback.emit(45, "getting points...")
         points = self.kml_reader.getPoints()
@@ -55,4 +59,5 @@ class Map:
         print("done")
         if progress_callback:
             progress_callback.emit(100, "finished")
-        time.sleep(0.5) #wait for all signals to fire
+        time.sleep(0.5) # wait for all signals to fire
+        # ? why do i have to do this?

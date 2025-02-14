@@ -1,5 +1,5 @@
 from fastkml import Placemark, kml
-from fastkml.styles import IconStyle, LineStyle, PolyStyle, StyleMap
+from fastkml.styles import LineStyle, PolyStyle, StyleMap
 from fastkml.utils import find_all
 from pygeoif.geometry import MultiPolygon, Point, Polygon
 
@@ -23,7 +23,7 @@ class KMLReader:
         print("loading placemarks...")
         if progress_callback is not None:
             progress_callback.emit(20, "loading placemarks...")
-        self.placemarks = list(find_all(self.kml, of_type=Placemark))
+        self.placemarks = list(find_all(self.kml, of_type=Placemark)) # TODO: reimplement using dictionary for faster loading
         print(f"loaded {len(self.placemarks)} placemarks")
         if progress_callback is not None:
             progress_callback.emit(40, "loading styles...")
@@ -42,6 +42,7 @@ class KMLReader:
         return r + g + b + a
 
     def getPoints(self):
+        # TODO: add style support
         points = []
         for placemark in self.placemarks:
             point = placemark.geometry
@@ -52,18 +53,18 @@ class KMLReader:
     def getPolygons(self, progress_callback = None, point_length = None):
         polygons = []
         for i, placemark in enumerate(self.placemarks):
-            # if i > 200:
-            #     break
             polygon = placemark.geometry
             styleurl = placemark.style_url
+            # if placemark is not a polygon, skip
             if not isinstance(polygon, MultiPolygon) and not isinstance(polygon, Polygon):
                 continue
+
+            # get style from style dict
             styles = self.styles[styleurl.url[1:]]
+            # if style is a StyleMap, get the first style (usually the normal style) instead
             if isinstance(styles, StyleMap):
                 styles = self.styles[styles.pairs[0].style.url[1:]]
-            # stylemap = self.kml.features[0].get_style_by_url(styleurl.url)
-            # normal_style_url = stylemap.pairs[0].style
-            # normal_styles = self.kml.features[0].get_style_by_url(normal_style_url.url).styles
+            # seperate style types
             for style in styles.styles:
                 if isinstance(style, LineStyle):
                     linestyle = style
@@ -75,12 +76,15 @@ class KMLReader:
                     points = []
                     for point in poly.exterior.coords:
                         points.append((point[1], point[0]))
+
                     polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
+
             if isinstance(polygon, Polygon):
                 points = []
                 for point in polygon.exterior.coords:
                     points.append((point[1], point[0]))
                 polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
+
             if i % 200 == 0:
                 if progress_callback:
                     progress_callback.emit(50 + int(((i + 1) / len(self.placemarks) + point_length / len(self.placemarks)) * 25), "")
