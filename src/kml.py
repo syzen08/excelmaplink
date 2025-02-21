@@ -33,7 +33,9 @@ class KMLReader:
             self.styles[style.id] = style
         print(f"loaded {len(self.styles)} styles")
 
-    def convert_color(self, color: str):
+    def convert_color(self, color: str) -> str:
+        """Converts the colors from the format `#AABBGGRR` used in kml to the more standard `#RRGGBBAA`"""
+
         r = color[6:8]
         g = color[4:6]
         b = color[2:4]
@@ -44,13 +46,14 @@ class KMLReader:
     def getPoints(self):
         # TODO: add style support
         points = []
+        # iterate through all placemarks
         for placemark in self.placemarks:
             point = placemark.geometry
             if isinstance(point, Point):
                 points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description))
         return points
 
-    def getPolygons(self, progress_callback = None, point_length = None):
+    def getPolygons(self, progress_callback = None, point_length = None) -> list:
         polygons = []
         for i, placemark in enumerate(self.placemarks):
             polygon = placemark.geometry
@@ -83,6 +86,7 @@ class KMLReader:
                 points = []
                 for point in polygon.exterior.coords:
                     points.append((point[1], point[0]))
+
                 polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
 
             if i % 200 == 0:
