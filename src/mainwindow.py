@@ -69,7 +69,7 @@ class MainWindow(QMainWindow):
             # clear webengineview
             self.ui.webEngineView.setUrl("about:blank")
             # re-init map
-            self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
+            # self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
             pbar = QProgressDialog("Loading KML...", "", 0, 0, self)
             pbar.setWindowTitle("Loading KML...")
             pbar.setCancelButton(None)
