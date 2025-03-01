@@ -1,4 +1,5 @@
 import sys
+import time
 import traceback
 
 from PySide6.QtCore import QObject, QRunnable, Signal, Slot
@@ -8,7 +9,7 @@ class WorkerSignals(QObject):
     finished = Signal()
     error = Signal(tuple)
     result = Signal(object)
-    progress = Signal(int, str)
+    progress = Signal(str)
 
 class Worker(QRunnable):
     def __init__(self, fn, *args, **kwargs):
@@ -33,3 +34,4 @@ class Worker(QRunnable):
             self.signals.result.emit(result)
         finally:
             self.signals.finished.emit()
+            time.sleep(0.1) # without this the finished signal sometimes doesn't get emitted

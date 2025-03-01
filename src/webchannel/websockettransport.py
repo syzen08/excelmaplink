@@ -21,10 +21,6 @@ class WebSocketTransport(QWebChannelAbstractTransport):
         self._socket.textMessageReceived.connect(self.text_message_received)
         self._socket.disconnected.connect(self._disconnected)
 
-    def __del__(self):
-        """Destroys the WebSocketTransport."""
-        self._socket.deleteLater()
-
     def _disconnected(self):
         self.deleteLater()
 

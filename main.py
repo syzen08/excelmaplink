@@ -1,12 +1,16 @@
 import sys
 import traceback
 
+from PySide6.QtCore import QLoggingCategory, qSetMessagePattern
 from PySide6.QtWidgets import QApplication, QMessageBox
 
 from src.mainwindow import MainWindow
 
 
 def main():
+    QLoggingCategory.setFilterRules("""*.info=true
+                                    qt.widgets.painting.info=false""")
+    qSetMessagePattern("[%{time process}] [%{if-debug}DEBUG%{endif}%{if-info}INFO%{endif}%{if-warning}WARN%{endif}%{if-critical}CRITICAL%{endif}%{if-fatal}FATAL%{endif}] <%{category}>: %{message}")
     app = QApplication(sys.argv)
     window = MainWindow()
     window.show()

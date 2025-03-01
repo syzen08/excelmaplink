@@ -1,10 +1,10 @@
 import multiprocessing
-import time
 from pathlib import Path
 
 import folium
 from branca.element import Element
 from folium.template import Template
+from PySide6.QtCore import QLoggingCategory, qCInfo
 from PySide6.QtNetwork import QHostAddress, QSslSocket
 from PySide6.QtWebChannel import QWebChannel
 from PySide6.QtWebSockets import QWebSocketServer
@@ -71,7 +71,8 @@ class Map:
                     new QWebChannel(socket, function(channel) {
                         // make core object accessible globally
                         window.core = channel.objects.core;
-                        core.receiveText("Client connected, ready to send/receive messages!");
+                        console.info("Connected");
+                        core.receiveText("Client connected!");
                     });
                 }
             }
@@ -80,23 +81,27 @@ class Map:
         """)
         self.map.get_root().header.add_child(webchanneljs)
 
+        self.log_category = QLoggingCategory("map")
 
-    def save(self):
+
+    def save(self, progress_callback):
         # ? is there a way to speed this up?
+        qCInfo(self.log_category, 'saving...')
         self.map.save(str(Path(self.path / "map.html")))
+        qCInfo(self.log_category, 'saved')
 
     def get_html(self):
         return self.map.get_root().render()
     
     def load_placemarks(self, kml_path, progress_callback):
-        progress_callback.emit(0, "")
+        progress_callback.emit("")
 
         self.kml_reader.loadKML(kml_path, progress_callback)
 
         # TODO: create seperate feature groups for each folder in the kml 
         fg = CustomFeatureGroup(name="placemarks", control=False).add_to(self.map)
 
-        progress_callback.emit(0, "adding elements...")
+        progress_callback.emit("adding elements...")
 
         with multiprocessing.Manager() as manager:
             points = manager.list([])
@@ -108,21 +113,20 @@ class Map:
             p1.start()
             p2.start()
 
-            p1.join()
             p2.join()
+            p1.join()
 
             # add points to map as markers
-            print(f"adding {len(points)} points...")
+            qCInfo(self.log_category, f"adding {len(points)} points...")
             for i, point in enumerate(points):
                 folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3]).add_to(fg)
 
             # add polygons to map
-            print(f"adding {len(polygons)} polygons...")
+            qCInfo(self.log_category, f"adding {len(polygons)} polygons...")
             for i, polygon in enumerate(polygons):
                 folium.Polygon(locations=polygon[0], color=f"#{polygon[3][0]}", fill_color=f"#{polygon[4]}", weight=polygon[3][1], tooltip=polygon[1], popup=polygon[2], fillOpacity=0.5).add_to(fg)
 
-            print("done")
-        time.sleep(0.01) # wait for all signals to fire
+            qCInfo(self.log_category, "done")
 
 class CustomFeatureGroup(folium.FeatureGroup):
     
