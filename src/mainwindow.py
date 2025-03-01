@@ -28,6 +28,7 @@ class MainWindow(QMainWindow):
         # init map and save url for loading later
         self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
         self.map_url = QUrl().fromLocalFile(str(Path(self.tempdir.path() + "/map.html")))
+        self.map.core.recievedText.connect(self.clicked_in_map)
 
         # setup actions
         self.ui.actionLoad_KML.triggered.connect(self.open_kml_file)
@@ -82,6 +83,10 @@ class MainWindow(QMainWindow):
 
             self.threadpool.start(worker)
             # self.map.load_placemarks(path)
+
+    def clicked_in_map(self, data: str):
+        print(f"data: |{data}|")
+        self.ui.statusbar.showMessage(data)
 
 
 

@@ -1,3 +1,4 @@
 pyside6
 fastkml
 folium
+bs4
