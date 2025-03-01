@@ -1,3 +1,4 @@
+import multiprocessing
 import time
 from pathlib import Path
 
@@ -87,49 +88,41 @@ class Map:
     def get_html(self):
         return self.map.get_root().render()
     
-    def load_placemarks(self, kml_path, progress_callback = None):
-        # TODO: all these ifs look like shit, find a better way to do this
-        if progress_callback:
-            progress_callback.emit(0, "")
+    def load_placemarks(self, kml_path, progress_callback):
+        progress_callback.emit(0, "")
+
         self.kml_reader.loadKML(kml_path, progress_callback)
+
         # TODO: create seperate feature groups for each folder in the kml 
         fg = CustomFeatureGroup(name="placemarks", control=False).add_to(self.map)
 
-        # TODO: launch thread for each type of placemark (point, polygon, etc.)
-        # get all points from the kml
-        print("getting points...") 
-        if progress_callback:
-            progress_callback.emit(45, "getting points...")
-        points = self.kml_reader.getPoints()
-        if progress_callback:
-            progress_callback.emit(50, "")
-        # add points to map as markers
-        print(f"adding {len(points)} points...")
-        for i, point in enumerate(points):
-            folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3]).add_to(fg)
-            if progress_callback:
-                progress_callback.emit(50 + int((i + 1) / len(self.kml_reader.placemarks) * 50), "")
-        
-        # get all polygons from the kml
-        print("getting polygons...")
-        if progress_callback:
-            progress_callback.emit(50, "loading polygons...")
+        progress_callback.emit(0, "adding elements...")
 
-        # expected format: (list[float point], String: name, String: description, (String lineColor, int lineWidth), String fillColor)
-        polygons = self.kml_reader.getPolygons(progress_callback=progress_callback, point_length=len(points))
-        if progress_callback:
-            progress_callback.emit(75, "adding polygons...")
-        # add polygons to map
-        print(f"adding {len(polygons)} polygons...")
-        for i, polygon in enumerate(polygons):
-            folium.Polygon(locations=polygon[0], color=f"#{polygon[3][0]}", fill_color=f"#{polygon[4]}", weight=polygon[3][1], tooltip=polygon[1], popup=polygon[2], fillOpacity=0.5).add_to(fg)
-            if i % 200 == 0:
-                if progress_callback:
-                    progress_callback.emit(75 + int(((i + 1) / len(self.kml_reader.placemarks) + len(points) / len(self.kml_reader.placemarks)) * 25), "")
-        print("done")
-        if progress_callback:
-            progress_callback.emit(100, "finished")
-        time.sleep(0.5) # wait for all signals to fire
+        with multiprocessing.Manager() as manager:
+            points = manager.list([])
+            polygons = manager.list([])
+
+            p1 = multiprocessing.Process(target=self.kml_reader.getPoints, args=(points, ))
+            p2 = multiprocessing.Process(target=self.kml_reader.getPolygons, args=(polygons, ))
+
+            p1.start()
+            p2.start()
+
+            p1.join()
+            p2.join()
+
+            # add points to map as markers
+            print(f"adding {len(points)} points...")
+            for i, point in enumerate(points):
+                folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3]).add_to(fg)
+
+            # add polygons to map
+            print(f"adding {len(polygons)} polygons...")
+            for i, polygon in enumerate(polygons):
+                folium.Polygon(locations=polygon[0], color=f"#{polygon[3][0]}", fill_color=f"#{polygon[4]}", weight=polygon[3][1], tooltip=polygon[1], popup=polygon[2], fillOpacity=0.5).add_to(fg)
+
+            print("done")
+        time.sleep(0.01) # wait for all signals to fire
 
 class CustomFeatureGroup(folium.FeatureGroup):
     

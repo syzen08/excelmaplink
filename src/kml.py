@@ -22,11 +22,11 @@ class KMLReader:
         self.kml = kml.KML.parse(self.kml_path)
         print("loading placemarks...")
         if progress_callback is not None:
-            progress_callback.emit(20, "loading placemarks...")
+            progress_callback.emit(0, "loading placemarks...")
         self.placemarks = list(find_all(self.kml, of_type=Placemark)) # TODO: reimplement using dictionary for faster loading
         print(f"loaded {len(self.placemarks)} placemarks")
         if progress_callback is not None:
-            progress_callback.emit(40, "loading styles...")
+            progress_callback.emit(0, "loading styles...")
         print("creating style index...")
         self.styles = {}
         for style in self.kml.features[0].styles:
@@ -43,18 +43,19 @@ class KMLReader:
 
         return r + g + b + a
 
-    def getPoints(self):
+    def getPoints(self, points):
         # TODO: add style support
-        points = []
         # iterate through all placemarks
-        for placemark in self.placemarks:
+        print('point process started')
+        for i, placemark in enumerate(self.placemarks):
             point = placemark.geometry
             if isinstance(point, Point):
                 points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description))
-        return points
+        print(len(points))
 
-    def getPolygons(self, progress_callback = None, point_length = None) -> list:
-        polygons = []
+
+    def getPolygons(self, polygons):
+        print('polygon process started')
         for i, placemark in enumerate(self.placemarks):
             polygon = placemark.geometry
             styleurl = placemark.style_url
@@ -81,6 +82,7 @@ class KMLReader:
                         points.append((point[1], point[0]))
 
                     polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
+                    
 
             if isinstance(polygon, Polygon):
                 points = []
@@ -89,10 +91,7 @@ class KMLReader:
 
                 polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
 
-            if i % 200 == 0:
-                if progress_callback:
-                    progress_callback.emit(50 + int(((i + 1) / len(self.placemarks) + point_length / len(self.placemarks)) * 25), "")
-        return polygons
+        print(len(polygons))
 
 if __name__ == "__main__":
     kmlr = KMLReader(kml_path="C:\\Users\\David\\Documents\\DD Touren Test.kml")
