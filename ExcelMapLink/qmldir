@@ -1,0 +1,4 @@
+module ExcelMapLink
+Main 1.0 Main.qml
+MapComponent 1.0 map/MapComponent.qml
+GeoJsonDelegate 1.0 map/GeoJsonDelegate.qml
