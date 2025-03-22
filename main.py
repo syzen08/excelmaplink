@@ -12,7 +12,7 @@ if __name__ == "__main__":
     QQuickStyle.setStyle("FluentWinUI3")
     engine = QQmlApplicationEngine()
     engine.addImportPath(Path(__file__).parent)
-    engine.rootContext().setContextProperty("dataPath", QUrl.fromLocalFile(str(Path("./data/default.geojson").absolute())))
+    engine.setInitialProperties({"dataPath": QUrl.fromLocalFile(str(Path("./data/default.geojson").absolute()))})
     engine.loadFromModule("ExcelMapLink", "Main")
     engine.quit.connect(QCoreApplication.quit)
 

@@ -174,3 +174,4 @@ cython_debug/
 *.geojson
 *.html
 tests/
+qml_rc.py
