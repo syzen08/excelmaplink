@@ -39,7 +39,7 @@ class MainWindow(QMainWindow):
         qCDebug(self.log_category, "initializing map...")
         self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
         self.map_url = QUrl().fromLocalFile(str(Path(self.tempdir.path() + "/map.html")))
-        self.map.core.recievedText.connect(self.clicked_in_map)
+        self.map.core.receivedText.connect(self.clicked_in_map)
 
         # set up actions
         self.ui.actionLoad_KML.triggered.connect(self.open_kml_file)

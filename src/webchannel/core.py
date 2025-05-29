@@ -9,7 +9,7 @@ class Core(QObject):
     """An instance of this class gets published over the WebChannel and is then
        accessible to HTML clients."""
     sendText = Signal(str)
-    recievedText = Signal(str)
+    receivedText = Signal(str)
 
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -22,4 +22,4 @@ class Core(QObject):
     def receiveText(self, text):
         # remove any html tags and weird spaces
         text = BeautifulSoup(text, "html.parser").get_text().strip()
-        self.recievedText.emit(text)
+        self.receivedText.emit(text)

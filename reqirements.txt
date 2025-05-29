@@ -1,4 +1,4 @@
-pyside6
+pyside6>6.9 # Qt 6.9 crashes on windows due to https://codereview.qt-project.org/c/qt/qtwebengine-chromium/+/634034, will be fixed in 6.9.1 but that's not released yet 
 fastkml
 folium
 bs4
