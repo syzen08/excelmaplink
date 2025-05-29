@@ -4,7 +4,7 @@ from pathlib import Path
 import folium
 from branca.element import Element
 from folium.template import Template
-from PySide6.QtCore import QLoggingCategory, qCInfo
+from PySide6.QtCore import QLoggingCategory, qCDebug, qCInfo  # noqa: F401
 from PySide6.QtNetwork import QHostAddress, QSslSocket
 from PySide6.QtWebChannel import QWebChannel
 from PySide6.QtWebSockets import QWebSocketServer
@@ -26,7 +26,7 @@ class Map:
         else:
             raise Exception("path does not exist")
         
-        # set up web channel for communication between the map and this program.
+        # set up web channel for communication between the leaflet map and python.
         # taken from https://doc.qt.io/qtforpython-6/examples/example_webchannel_standalone.html#example-webchannel-standalone
         if not QSslSocket.supportsSsl():
             raise("No SSL support detected")
@@ -107,8 +107,8 @@ class Map:
             points = manager.list([])
             polygons = manager.list([])
 
-            p1 = multiprocessing.Process(target=self.kml_reader.getPoints, args=(points, ))
-            p2 = multiprocessing.Process(target=self.kml_reader.getPolygons, args=(polygons, ))
+            p1 = multiprocessing.Process(name="points", target=self.kml_reader.getPoints, args=(points, ))
+            p2 = multiprocessing.Process(name="polygons", target=self.kml_reader.getPolygons, args=(polygons, ))
 
             p1.start()
             p2.start()
@@ -125,6 +125,7 @@ class Map:
             qCInfo(self.log_category, f"adding {len(polygons)} polygons...")
             for i, polygon in enumerate(polygons):
                 folium.Polygon(locations=polygon[0], color=f"#{polygon[3][0]}", fill_color=f"#{polygon[4]}", weight=polygon[3][1], tooltip=polygon[1], popup=polygon[2], fillOpacity=0.5).add_to(fg)
+                # qCDebug(self.log_category, f"polygon {i}: {polygon[1]} - {polygon[2]} - {polygon[3]} - {polygon[4]}")
 
             qCInfo(self.log_category, "done")
 

@@ -60,6 +60,9 @@ class KMLReader:
     def getPolygons(self, polygons):
         qCInfo(QLoggingCategory("kml"), 'polygon process started')
         for i, placemark in enumerate(self.placemarks):
+            # if placemark is invisible, skip
+            if placemark.visibility is False:
+                continue
             polygon = placemark.geometry
             styleurl = placemark.style_url
             # if placemark is not a polygon, skip
@@ -75,8 +78,17 @@ class KMLReader:
             for style in styles.styles:
                 if isinstance(style, LineStyle):
                     linestyle = style
-                if isinstance(style, PolyStyle):
+                elif isinstance(style, PolyStyle):
                     polystyle = style
+                else:
+                    linestyle = None
+                    polystyle = None
+
+            # if linestyle or polystyle is not set, use default values
+            if linestyle is None:
+                linestyle = LineStyle(color="40000000", width=3.0)
+            if polystyle is None:
+                polystyle = PolyStyle(color="FFFF00FF")
 
             if isinstance(polygon, MultiPolygon):
                 for poly in polygon.geoms:
