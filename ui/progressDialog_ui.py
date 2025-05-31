@@ -1,7 +1,7 @@
 # -*- coding: utf-8 -*-
 
 ################################################################################
-## Form generated from reading UI file 'progressDialogloBGQm.ui'
+## Form generated from reading UI file 'progressDialog.ui'
 ##
 ## Created by: Qt User Interface Compiler version 6.8.3
 ##

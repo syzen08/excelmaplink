@@ -19,8 +19,8 @@ from PySide6.QtWidgets import (
 
 from src.map import Map
 from src.worker import Worker
-from ui.ui_mainwindow import Ui_MainWindow
-from ui.ui_progressDialog import Ui_progressDialog
+from ui.mainwindow_ui import Ui_MainWindow
+from ui.progressDialog_ui import Ui_progressDialog
 
 
 class MainWindow(QMainWindow):
