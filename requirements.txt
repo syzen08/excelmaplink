@@ -2,3 +2,4 @@ pyside6>6.9 # Qt 6.9 crashes on windows due to https://codereview.qt-project.org
 fastkml
 folium
 bs4
+xlwings

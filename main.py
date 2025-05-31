@@ -6,6 +6,8 @@ from PySide6.QtWidgets import QApplication, QMessageBox
 
 from src.mainwindow import MainWindow
 
+# Guide: Also, wenn ich in der Karte eine mehrere Touren anklicke, soll er den Namen (aus C oder AP ) in den Reiter Berechnung in Spalte B  ab zeile 6 bis 24 auflisten ….
+
 
 def main():
     QLoggingCategory.setFilterRules("""*.info=true

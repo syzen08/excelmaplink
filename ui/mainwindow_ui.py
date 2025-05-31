@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(813, 637)
+        MainWindow.resize(800, 600)
         self.actionLoad_KML = QAction(MainWindow)
         self.actionLoad_KML.setObjectName(u"actionLoad_KML")
         self.actionReload = QAction(MainWindow)
@@ -38,6 +38,8 @@ class Ui_MainWindow(object):
         self.actionAbout_Qt = QAction(MainWindow)
         self.actionAbout_Qt.setObjectName(u"actionAbout_Qt")
         self.actionAbout_Qt.setMenuRole(QAction.MenuRole.AboutQtRole)
+        self.actionOpen_Excel = QAction(MainWindow)
+        self.actionOpen_Excel.setObjectName(u"actionOpen_Excel")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -52,7 +54,7 @@ class Ui_MainWindow(object):
         MainWindow.setCentralWidget(self.centralwidget)
         self.menubar = QMenuBar(MainWindow)
         self.menubar.setObjectName(u"menubar")
-        self.menubar.setGeometry(QRect(0, 0, 813, 22))
+        self.menubar.setGeometry(QRect(0, 0, 800, 22))
         self.menuFile = QMenu(self.menubar)
         self.menuFile.setObjectName(u"menuFile")
         self.menuHelp = QMenu(self.menubar)
@@ -66,6 +68,7 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
         self.menuFile.addAction(self.actionLoad_KML)
+        self.menuFile.addAction(self.actionOpen_Excel)
         self.menuFile.addAction(self.actionReload)
         self.menuFile.addSeparator()
         self.menuFile.addAction(self.actionExit)
@@ -84,6 +87,7 @@ class Ui_MainWindow(object):
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About...", None))
         self.actionAbout_Qt.setText(QCoreApplication.translate("MainWindow", u"About Qt...", None))
+        self.actionOpen_Excel.setText(QCoreApplication.translate("MainWindow", u"Open Excel...", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
     # retranslateUi

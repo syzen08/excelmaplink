@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>813</width>
-    <height>637</height>
+    <width>800</width>
+    <height>600</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -34,7 +34,7 @@
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>813</width>
+     <width>800</width>
      <height>22</height>
     </rect>
    </property>
@@ -43,6 +43,7 @@
      <string>File</string>
     </property>
     <addaction name="actionLoad_KML"/>
+    <addaction name="actionOpen_Excel"/>
     <addaction name="actionReload"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
@@ -94,6 +95,11 @@
    </property>
    <property name="menuRole">
     <enum>QAction::MenuRole::AboutQtRole</enum>
+   </property>
+  </action>
+  <action name="actionOpen_Excel">
+   <property name="text">
+    <string>Open Excel...</string>
    </property>
   </action>
  </widget>

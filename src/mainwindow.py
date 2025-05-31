@@ -3,6 +3,7 @@ from pathlib import Path
 
 from PySide6.QtCore import (
     QLoggingCategory,
+    Qt,
     QTemporaryDir,
     QThreadPool,
     QUrl,
@@ -17,6 +18,7 @@ from PySide6.QtWidgets import (
     QMainWindow,
 )
 
+from src.excel import Spreadsheet
 from src.map import Map
 from src.worker import Worker
 from ui.mainwindow_ui import Ui_MainWindow
@@ -35,6 +37,7 @@ class MainWindow(QMainWindow):
         self.tempdir = QTemporaryDir()
         self.threadpool = QThreadPool()
 
+        self.spreadsheet = None
 
         # init map and save url for loading later
         qCDebug(self.log_category, "initializing map...")
@@ -47,6 +50,7 @@ class MainWindow(QMainWindow):
         self.ui.actionReload.triggered.connect(self.load_map)
         self.ui.actionAbout_Qt.triggered.connect(lambda: QApplication.aboutQt())
         self.ui.actionExit.triggered.connect(self.close)
+        self.ui.actionOpen_Excel.triggered.connect(self.openExcelFile)
 
         self.ui.webEngineView.loadFinished.connect(lambda: self.ui.statusbar.showMessage("ready", 5000))
         self.ui.webEngineView.loadStarted.connect(lambda: self.ui.statusbar.showMessage("loading..."))
@@ -61,12 +65,14 @@ class MainWindow(QMainWindow):
         def finished():
             # copy html here for debugging
             # shutil.copy(str(Path(self.tempdir.path() + "/map.html")), str(Path("./")))
+            self.setCursor(Qt.CursorShape.ArrowCursor)
             self.ui.webEngineView.setUrl(self.map_url)
         
         qCInfo(self.log_category, "saving map...")
         self.ui.statusbar.showMessage("saving map...")
         worker = Worker(self.map.save)
         worker.signals.finished.connect(finished)
+        self.setCursor(Qt.CursorShape.WaitCursor)
         self.threadpool.start(worker)
 
     def open_kml_file(self):
@@ -76,6 +82,7 @@ class MainWindow(QMainWindow):
 
         def finished():
             qCInfo(self.log_category, "loading thread finished")
+            self.setCursor(Qt.CursorShape.ArrowCursor)
             self.load_map()
             pbar.close()
         
@@ -97,6 +104,7 @@ class MainWindow(QMainWindow):
             worker.signals.progress.connect(progress_callback)
             worker.signals.finished.connect(finished)
 
+            self.setCursor(Qt.CursorShape.WaitCursor)
             self.threadpool.start(worker)
             # self.map.load_placemarks(path)
 
@@ -104,5 +112,9 @@ class MainWindow(QMainWindow):
         qCDebug(self.log_category, f"data: |{data}|")
         self.ui.statusbar.showMessage(data)
 
-
+    def openExcelFile(self):
+        path = Path(QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx *.xls)")[0])
+        if path.exists():
+            qCInfo(self.log_category, f"opening excel file: {path}")
+            self.spreadsheet = Spreadsheet(path)
 
