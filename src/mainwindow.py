@@ -12,14 +12,15 @@ from PySide6.QtCore import (
 from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEngineSettings
 from PySide6.QtWidgets import (
     QApplication,
+    QDialog,
     QFileDialog,
     QMainWindow,
-    QProgressDialog,
 )
 
 from src.map import Map
 from src.worker import Worker
 from ui.ui_mainwindow import Ui_MainWindow
+from ui.ui_progressDialog import Ui_progressDialog
 
 
 class MainWindow(QMainWindow):
@@ -71,7 +72,7 @@ class MainWindow(QMainWindow):
     def open_kml_file(self):
         def progress_callback(message):
             if message != "":
-                pbar.setLabelText(message)
+                pbarui.message.setText(message)
 
         def finished():
             qCInfo(self.log_category, "loading thread finished")
@@ -86,10 +87,10 @@ class MainWindow(QMainWindow):
             self.ui.webEngineView.setUrl("about:blank")
             # re-init map
             # self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
-            pbar = QProgressDialog("Loading KML...", "", 0, 0, self)
-            pbar.setWindowTitle("Loading KML...")
-            pbar.setCancelButton(None)
-            pbar.setMinimumWidth(400)
+            pbarui = Ui_progressDialog()
+            pbar = QDialog(self)
+            pbarui.setupUi(pbar)
+            pbarui.progressBar.setRange(0, 0)
             pbar.show()
             # load kml in seperate thread to not block event loop
             worker = Worker(self.map.load_placemarks, path)
