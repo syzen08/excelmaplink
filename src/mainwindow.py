@@ -112,6 +112,7 @@ class MainWindow(QMainWindow):
         qCDebug(self.log_category, f"data: |{data}|")
         if data.startswith("click&"):
             self.ui.statusbar.showMessage(f"clicked on: {data[6:]}", 5000)
+            self.spreadsheet.toggle_region(data[6:])
         else:
             self.ui.statusbar.showMessage(f"received data: {data}", 5000)
 
@@ -119,5 +120,6 @@ class MainWindow(QMainWindow):
         path = Path(QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx *.xls)")[0])
         if path.exists():
             qCInfo(self.log_category, f"opening excel file: {path}")
-            self.spreadsheet = Spreadsheet(path)
+            # TODO: get these values from a config instead of hardcoding them
+            self.spreadsheet = Spreadsheet(path, "Übersicht", "AP", 4, "C", "Berechnung", "B", (6, 24))
 

@@ -22,8 +22,8 @@ class KMLReader:
         if self.kml_path is None:
             raise Exception("No KML file specified")
         
-        qCInfo(QLoggingCategory("kml"), f"loading {self.kml_path}...")
-        progress_callback.emit(f"loading {self.kml_path}...")
+        qCInfo(QLoggingCategory("kml"), f"parsing {self.kml_path}...")
+        progress_callback.emit(f"parsing {self.kml_path}...")
         self.kml = kml.KML.parse(self.kml_path)
         qCInfo(QLoggingCategory("kml"), "loading placemarks...")
         progress_callback.emit("loading placemarks...")

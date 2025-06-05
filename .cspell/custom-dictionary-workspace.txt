@@ -1,6 +1,7 @@
 # Custom Dictionary Words
 AABBGGRR
 addaction
+calcd
 centralwidget
 customwidget
 customwidgets
@@ -29,6 +30,7 @@ qtwebchannel
 qwebchannel
 RRGGBBAA
 seperate
+smth
 styleurl
 tojavascript
 Touren
