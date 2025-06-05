@@ -110,7 +110,10 @@ class MainWindow(QMainWindow):
 
     def clicked_in_map(self, data: str):
         qCDebug(self.log_category, f"data: |{data}|")
-        self.ui.statusbar.showMessage(data)
+        if data.startswith("click&"):
+            self.ui.statusbar.showMessage(f"clicked on: {data[6:]}", 5000)
+        else:
+            self.ui.statusbar.showMessage(f"received data: {data}", 5000)
 
     def openExcelFile(self):
         path = Path(QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx *.xls)")[0])

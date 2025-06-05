@@ -21,5 +21,5 @@ class Core(QObject):
     @Slot(str)
     def receiveText(self, text):
         # remove any html tags and weird spaces
-        text = BeautifulSoup(text, "html.parser").get_text().strip()
+        text = BeautifulSoup(text, "html.parser").get_text(strip=True).strip()
         self.receivedText.emit(text)
