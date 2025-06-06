@@ -32,11 +32,13 @@ class Spreadsheet:
         qCDebug(self.log_category, f"spreadsheet: {self.wb.name}, sheets: {self.wb.sheets}")
         self.region_sheet = self.wb.sheets[self.region_sheet]
         self.calc_sheet = self.wb.sheets[self.calc_sheet]
+        # populate the currently calculated regions from the calc sheet
         self.get_currently_calculated_regions()
         
     
     def __del__(self):
         """close the workbook and quit the app when the object is deleted."""
+        # if we created the app, we close it, otherwise we just leave it open
         if self.created:
             qCDebug(self.log_category, "closing workbook and quitting app...")
         else:
@@ -47,32 +49,50 @@ class Spreadsheet:
             self.app.quit()
             
     def get_currently_calculated_regions(self):
-        self.cur_calcd_regions = self.calc_sheet[self.calc_column + str(self.calc_range[0]) + ":" + self.calc_column + str(self.calc_range[1])].value
+        '''reads the currently calculated regions from the calc sheet and stores them in self.cur_calcd_regions.'''
+        self.cur_calcd_regions = self.calc_sheet[self.range_string(self.calc_column, self.calc_range[0], self.calc_range[1])].value
         qCInfo(self.log_category, f"currently calculated regions: {self.cur_calcd_regions}")
         
+    def range_string(self, column: str, start_row: int, end_row: int = -1) -> str:
+        '''returns a string in the format "A1:A10" for the given column and row range.
+        if end_row is -1, it will use the last row of the used range in the sheet.'''
         
-    def toggle_region(self, region_name: str):
+        if end_row == -1:
+            end_row = self.region_sheet.used_range.last_cell.row
+        return f"{column}{start_row}:{column}{end_row}"
 
+    def toggle_region(self, region_name: str):
+        '''toggles the given region in the spreadsheet, adding if its not there and removing if it is.'''
+        
         # this code is absolute shit, copilot did a lot of the heavy lifting here. i should eventually rewrite it so it's actually humanly comprehensible and not repeating all the time
         # but it finally fucking works
+        # TODO: this is weird, make it not
+        
+        # check if the region exists in the spreadsheet
         try:
-            row = self.region_sheet[self.region_map_name_column + str(self.region_map_name_start_row) + ":" + self.region_map_name_column + str(self.region_sheet.used_range.last_cell.row)].value.index(region_name)
+            row = self.region_sheet[self.range_string(self.region_map_name_column, self.region_map_name_start_row)].value.index(region_name)
         except ValueError:
+            # try again but with underscores instead of spaces
             try:
-                row = self.region_sheet[self.region_map_name_column + str(self.region_map_name_start_row) + ":" + self.region_map_name_column + str(self.region_sheet.used_range.last_cell.row)].value.index(region_name.replace(" ", "_"))
+                row = self.region_sheet[self.range_string(self.region_map_name_column, self.region_map_name_start_row)].value.index(region_name.replace(" ", "_"))
             except ValueError:
+                # somethings probably wrong here, let's not risk breaking the spreadsheet
                 raise ValueError(f"region name {region_name} not found in the map name column.")
-            
+        
+        # convert the map name to the proper name
         region_name = self.region_sheet[self.region_name_column + str(self.region_map_name_start_row + row)].value
+        # if the region is already in the calc range, remove it
         if region_name in self.cur_calcd_regions:
             qCInfo(self.log_category, f"removing {region_name} from currently calculated regions")
             self.cur_calcd_regions[self.cur_calcd_regions.index(region_name)] = None
+        # otherwise add it
         else: 
             qCInfo(self.log_category, f"adding {region_name} to currently calculated regions")
             self.cur_calcd_regions[self.cur_calcd_regions.index(None)] = region_name
             
-        qCDebug(self.log_category, f"setting {self.calc_column + str(self.calc_range[0]) + ':' + self.calc_column + str(self.calc_range[1])} to {self.cur_calcd_regions}")
-        self.calc_sheet.range(self.calc_column + str(self.calc_range[0]) + ":" + self.calc_column + str(self.calc_range[1])).options(transpose=True).value = self.cur_calcd_regions
+        # write the updated list back to the spreadsheet
+        qCDebug(self.log_category, f"setting {self.range_string(self.calc_column, self.calc_range[0], self.calc_range[1])} to {self.cur_calcd_regions}")
+        self.calc_sheet.range(self.range_string(self.calc_column, self.calc_range[0], self.calc_range[1])).options(transpose=True).value = self.cur_calcd_regions #using the transpose to write in row orientation
             
 if __name__ == "__main__":
     spsh = Spreadsheet(Path("ÜBERSICHT DD - 3.0 05.04.2025 - sR (Ascheberg Touren ab Nienberge).xlsx"))
