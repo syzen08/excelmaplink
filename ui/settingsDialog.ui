@@ -1,0 +1,208 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ui version="4.0">
+ <class>settingsDialog</class>
+ <widget class="QDialog" name="settingsDialog">
+  <property name="geometry">
+   <rect>
+    <x>0</x>
+    <y>0</y>
+    <width>600</width>
+    <height>256</height>
+   </rect>
+  </property>
+  <property name="windowTitle">
+   <string>Settings</string>
+  </property>
+  <property name="modal">
+   <bool>true</bool>
+  </property>
+  <layout class="QVBoxLayout" name="verticalLayout" stretch="1,0,0">
+   <item>
+    <layout class="QHBoxLayout" name="sheetSettingsHBoxLayout">
+     <item>
+      <widget class="QGroupBox" name="tourSheetSettings">
+       <property name="title">
+        <string>Overview Sheet Settings</string>
+       </property>
+       <layout class="QFormLayout" name="formLayout">
+        <item row="0" column="0">
+         <widget class="QLabel" name="tourSheetNameLabel">
+          <property name="text">
+           <string>Overview Sheet Name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="tourSheetNameLineEdit">
+          <property name="placeholderText">
+           <string>Übersicht</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="tourSheetMapNameColumnLineEdit">
+          <property name="maxLength">
+           <number>4</number>
+          </property>
+          <property name="placeholderText">
+           <string>AP</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="tourSheetStartRowLabel">
+          <property name="text">
+           <string>Overview Start Row</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="tourSheetMapNameColumnLabel">
+          <property name="text">
+           <string>Tour Map Name Column</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QSpinBox" name="tourSheetStartRowSpinBox"/>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="tourSheetTourNameLabel">
+          <property name="text">
+           <string>Tour Name Column</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <widget class="QLineEdit" name="tourSheetTourNameLineEdit">
+          <property name="inputMask">
+           <string/>
+          </property>
+          <property name="maxLength">
+           <number>4</number>
+          </property>
+          <property name="placeholderText">
+           <string>C</string>
+          </property>
+         </widget>
+        </item>
+       </layout>
+      </widget>
+     </item>
+     <item>
+      <widget class="QGroupBox" name="calcSheetSettings">
+       <property name="title">
+        <string>Calculation Sheet Settings</string>
+       </property>
+       <layout class="QFormLayout" name="formLayout_2">
+        <item row="0" column="0">
+         <widget class="QLabel" name="calcSheetNameLabel">
+          <property name="text">
+           <string>Calculation Sheet Name</string>
+          </property>
+         </widget>
+        </item>
+        <item row="0" column="1">
+         <widget class="QLineEdit" name="calcSheetNameLineEdit">
+          <property name="placeholderText">
+           <string>Berechnung</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="0">
+         <widget class="QLabel" name="calcSheetColumnLabel">
+          <property name="text">
+           <string>Calculation Sheet Insertion Column</string>
+          </property>
+         </widget>
+        </item>
+        <item row="1" column="1">
+         <widget class="QLineEdit" name="calcSheetColumnLineEdit">
+          <property name="maxLength">
+           <number>4</number>
+          </property>
+          <property name="placeholderText">
+           <string>B</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="0">
+         <widget class="QLabel" name="calcSheetRangeLabel">
+          <property name="text">
+           <string>Calculation Row Range</string>
+          </property>
+         </widget>
+        </item>
+        <item row="2" column="1">
+         <layout class="QHBoxLayout" name="rangeSelectorLayout" stretch="1,0,1">
+          <item>
+           <widget class="QSpinBox" name="fromSpinbox"/>
+          </item>
+          <item>
+           <widget class="QLabel" name="colonLabel">
+            <property name="text">
+             <string>:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QSpinBox" name="toSpinbox"/>
+          </item>
+         </layout>
+        </item>
+       </layout>
+      </widget>
+     </item>
+    </layout>
+   </item>
+   <item>
+    <widget class="QGroupBox" name="otherSettings">
+     <property name="title">
+      <string>Other Settings</string>
+     </property>
+     <layout class="QGridLayout" name="gridLayout">
+      <item row="0" column="1">
+       <widget class="QCheckBox" name="saveMapLocationCheckBox">
+        <property name="text">
+         <string/>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="0">
+       <widget class="QLabel" name="saveMapLocationLabel">
+        <property name="text">
+         <string>Save map location in Workbook</string>
+        </property>
+       </widget>
+      </item>
+      <item row="0" column="2">
+       <spacer name="horizontalSpacer">
+        <property name="orientation">
+         <enum>Qt::Orientation::Horizontal</enum>
+        </property>
+        <property name="sizeHint" stdset="0">
+         <size>
+          <width>40</width>
+          <height>20</height>
+         </size>
+        </property>
+       </spacer>
+      </item>
+     </layout>
+    </widget>
+   </item>
+   <item>
+    <widget class="QDialogButtonBox" name="buttonBox">
+     <property name="standardButtons">
+      <set>QDialogButtonBox::StandardButton::Ok</set>
+     </property>
+     <property name="centerButtons">
+      <bool>false</bool>
+     </property>
+    </widget>
+   </item>
+  </layout>
+ </widget>
+ <resources/>
+ <connections/>
+</ui>

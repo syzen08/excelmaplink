@@ -1,21 +1,16 @@
 from pathlib import Path
 
 import xlwings as xw
-from PySide6.QtCore import QLoggingCategory, qCDebug, qCInfo
+from PySide6.QtCore import QLoggingCategory, Signal, qCDebug, qCInfo, qCWarning
 
 
 class Spreadsheet:
-    def __init__(self, file_path: Path, region_sheet: str, region_map_name_column: str, region_map_name_start_row: int, region_name_column: str, calc_sheet: str, calc_column: str, calc_range: tuple[int, int]):
+    show_init_dialog = Signal()
+    
+    def __init__(self, file_path: Path, settings_dialog_callback):
         self.log_category = QLoggingCategory("excel")
         self.file_path = file_path
-        self.region_sheet = region_sheet
-        self.region_map_name_column = region_map_name_column
-        self.region_map_name_start_row = region_map_name_start_row
-        self.region_name_column = region_name_column
-        self.calc_sheet = calc_sheet
-        self.calc_column = calc_column
-        self.calc_range = calc_range
-        self.cur_calcd_regions = []
+        self.settings_dialog_callback = settings_dialog_callback
         if not self.file_path.exists():
             raise FileNotFoundError(f"The file {self.file_path} does not exist.")
         # check if excel is running, if yes then connect to to it, otherwise start a new instance
@@ -30,10 +25,38 @@ class Spreadsheet:
             self.wb = xw.Book(str(self.file_path))
             self.app = self.wb.app
         qCDebug(self.log_category, f"spreadsheet: {self.wb.name}, sheets: {self.wb.sheets}")
-        self.region_sheet = self.wb.sheets[self.region_sheet]
-        self.calc_sheet = self.wb.sheets[self.calc_sheet]
+        settings = self.get_config_options()
+        
+        # TODO: autocalc column
+        self.config = {
+            "region_sheet": ConfigOption(self.config_sheet, "region_sheet", "A"),
+            "region_map_name_column": ConfigOption(self.config_sheet, "region_map_name_column", "B"),
+            "region_sheet_start_row": ConfigOption(self.config_sheet, "region_map_name_start_row", "C"),
+            "region_name_column": ConfigOption(self.config_sheet, "region_name_column", "D"),
+            "calc_sheet": ConfigOption(self.config_sheet, "calc_sheet", "E"),
+            "calc_column": ConfigOption(self.config_sheet, "calc_column", "F"),
+            "calc_range": ConfigOption(self.config_sheet, "calc_range", "G")
+        }
+        
+        if settings:
+            for key, value in settings.items():
+                if key in self.config:
+                    self.config[key].set_value(value)
+                else:
+                    qCWarning(self.log_category, f"unknown config option {key}, ignoring.")
+        
+        self.region_sheet = self.wb.sheets[self.config["region_sheet"].get_value()]
+        self.calc_sheet = self.wb.sheets[self.config["calc_sheet"].get_value()]
+        self.region_map_name_column = self.config["region_map_name_column"].get_value()
+        self.region_map_name_start_row = self.config["region_sheet_start_row"].get_value()
+        self.region_name_column = self.config["region_name_column"].get_value()
+        self.calc_column = self.config["calc_column"].get_value()
+        self.calc_range = self.config["calc_range"].get_value().split("@@")
+        self.cur_calcd_regions = []
+        
         # populate the currently calculated regions from the calc sheet
         self.get_currently_calculated_regions()
+        
         
     
     def __del__(self):
@@ -94,5 +117,43 @@ class Spreadsheet:
         qCDebug(self.log_category, f"setting {self.range_string(self.calc_column, self.calc_range[0], self.calc_range[1])} to {self.cur_calcd_regions}")
         self.calc_sheet.range(self.range_string(self.calc_column, self.calc_range[0], self.calc_range[1])).options(transpose=True).value = self.cur_calcd_regions #using the transpose to write in row orientation
             
+    def get_config_options(self):
+        if "excelmaplink_config" not in [sheet.name for sheet in self.wb.sheets]:
+            qCInfo(self.log_category, "no config sheet found")
+            self.wb.sheets.add("excelmaplink_config")
+            self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
+            # self.config_sheet.visible = False
+            # TODO: send signal to show init dialog (and also actually make that dialog)
+            # qCWarning(self.log_category, "implement")
+            settings = self.settings_dialog_callback()
+            return settings
+        else:
+            qCInfo(self.log_category, "config sheet found")
+            self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
+            return None
+            
+class ConfigOption:
+    def __init__(self, sheet: xw.Sheet, name: str, column: str, value: str = ""):
+        self.sheet = sheet
+        self.name = name
+        self.column = column
+        
+        # if the name is not set, then the sheet is either not initialized or out of date, so reset it
+        # ?: find a way to migrate old options
+        if not self.sheet[self.column + "1"].value == self.name:
+            self.sheet[self.column + "1"].value = self.name
+            self.sheet[self.column + "2"].value = value
+            qCDebug(QLoggingCategory("excel"), f"reset config option {self.name}")
+        
+    def get_value(self) -> str:
+        """returns the value of the config option."""
+        return self.sheet[self.column + "2"].value
+    
+    def set_value(self, value: str):
+        """sets the value of the config option."""
+        qCInfo(QLoggingCategory("excel"), f"set config option {self.name} to {value}")
+        self.sheet[self.column + "2"].value = value
+        
+        
 if __name__ == "__main__":
     spsh = Spreadsheet(Path("ÜBERSICHT DD - 3.0 05.04.2025 - sR (Ascheberg Touren ab Nienberge).xlsx"))

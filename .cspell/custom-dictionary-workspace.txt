@@ -8,6 +8,7 @@ customwidgets
 Datakonsult
 endmacro
 errmsgbox
+excelmaplink
 exctype
 fastkml
 forthebadge

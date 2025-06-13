@@ -9,6 +9,7 @@ from PySide6.QtCore import (
     QUrl,
     qCDebug,
     qCInfo,
+    qCWarning,
 )
 from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEngineSettings
 from PySide6.QtWidgets import (
@@ -23,6 +24,7 @@ from src.map import Map
 from src.worker import Worker
 from ui.mainwindow_ui import Ui_MainWindow
 from ui.progressDialog_ui import Ui_progressDialog
+from ui.settingsDialog_ui import Ui_settingsDialog
 
 
 class MainWindow(QMainWindow):
@@ -121,5 +123,28 @@ class MainWindow(QMainWindow):
         if path.exists():
             qCInfo(self.log_category, f"opening excel file: {path}")
             # TODO: get these values from a config instead of hardcoding them
-            self.spreadsheet = Spreadsheet(path, "Übersicht", "AP", 4, "C", "Berechnung", "B", (6, 24))
+            self.spreadsheet = Spreadsheet(path, self.show_settings_dialog)
+            
+    def show_settings_dialog(self):
+        qCDebug(self.log_category, "showing settings dialog")
+        dialog = QDialog(self)
+        ui = Ui_settingsDialog()
+        ui.setupUi(dialog)
+        ui.buttonBox.accepted.connect(dialog.accept)
+        if dialog.exec():
+            settings = {
+                "region_sheet": ui.tourSheetNameLineEdit.text(),
+                "region_map_name_column": ui.tourSheetMapNameColumnLineEdit.text(),
+                "region_sheet_start_row": ui.tourSheetStartRowSpinBox.value(),
+                "region_name_column": ui.tourSheetTourNameLineEdit.text(),
+                "calc_sheet": ui.calcSheetNameLineEdit.text(),
+                "calc_column": ui.calcSheetColumnLineEdit.text(),
+                "calc_range": f"{ui.fromSpinbox.value()}@@{ui.toSpinbox.value()}",
+                "save_map_path": ui.saveMapLocationCheckBox.isChecked()
+            }
+            qCDebug(self.log_category, f"settings: {settings}")
+            return settings
+        else:
+            qCWarning(self.log_category, "settings dialog cancelled, idk what to do now")
+            raise NotImplementedError("settings dialog was cancelled")
 
