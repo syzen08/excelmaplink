@@ -7,10 +7,11 @@ from PySide6.QtCore import QLoggingCategory, Signal, qCDebug, qCInfo, qCWarning
 class Spreadsheet:
     show_init_dialog = Signal()
     
-    def __init__(self, file_path: Path, settings_dialog_callback):
+    def __init__(self, file_path: Path, settings_dialog_callback, open_kml_file_callback):
         self.log_category = QLoggingCategory("excel")
         self.file_path = file_path
         self.settings_dialog_callback = settings_dialog_callback
+        self.open_kml_file_callback = open_kml_file_callback
         if not self.file_path.exists():
             raise FileNotFoundError(f"The file {self.file_path} does not exist.")
         # check if excel is running, if yes then connect to to it, otherwise start a new instance
@@ -35,7 +36,10 @@ class Spreadsheet:
             "region_name_column": ConfigOption(self.config_sheet, "region_name_column", "D"),
             "calc_sheet": ConfigOption(self.config_sheet, "calc_sheet", "E"),
             "calc_column": ConfigOption(self.config_sheet, "calc_column", "F"),
-            "calc_range": ConfigOption(self.config_sheet, "calc_range", "G")
+            "calc_range": ConfigOption(self.config_sheet, "calc_range", "G"),
+            "save_map_path": ConfigOption(self.config_sheet, "save_map_path", "H"),
+            "linked_map": ConfigOption(self.config_sheet, "linked_map", "I"),
+            "temp_map": ConfigOption(self.config_sheet, "temp_map", "J")
         }
         
         if settings:
@@ -52,10 +56,20 @@ class Spreadsheet:
         self.region_name_column = self.config["region_name_column"].get_value()
         self.calc_column = self.config["calc_column"].get_value()
         self.calc_range = self.config["calc_range"].get_value().split("@@")
+        self.save_map_path = self.config["save_map_path"].get_value()
+        self.linked_map = self.config["linked_map"].get_value()
+        self.temp_map = self.config["temp_map"].get_value()
         self.cur_calcd_regions = []
         
         # populate the currently calculated regions from the calc sheet
         self.get_currently_calculated_regions()
+        
+        if self.save_map_path:
+            qCInfo(self.log_category, f"loading linked map {self.linked_map}")
+            self.open_kml_file_callback(Path(self.linked_map))
+        else:
+            qCWarning(self.log_category, "implement")
+            raise NotImplementedError("too lazy to implement this right now")
         
         
     
@@ -123,8 +137,6 @@ class Spreadsheet:
             self.wb.sheets.add("excelmaplink_config")
             self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
             # self.config_sheet.visible = False
-            # TODO: send signal to show init dialog (and also actually make that dialog)
-            # qCWarning(self.log_category, "implement")
             settings = self.settings_dialog_callback()
             return settings
         else:
@@ -147,11 +159,18 @@ class ConfigOption:
         
     def get_value(self) -> str:
         """returns the value of the config option."""
-        return self.sheet[self.column + "2"].value
+        val = self.sheet[self.column + "2"].value
+        if val == "NONE":
+            return None
+        return val
     
     def set_value(self, value: str):
         """sets the value of the config option."""
         qCInfo(QLoggingCategory("excel"), f"set config option {self.name} to {value}")
+        if value is None:
+            value = "NONE"
+        if isinstance(value, tuple):
+            value = "@@".join(map(str, value))
         self.sheet[self.column + "2"].value = value
         
         

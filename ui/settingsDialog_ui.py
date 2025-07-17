@@ -17,14 +17,14 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QDialog,
     QDialogButtonBox, QFormLayout, QGridLayout, QGroupBox,
-    QHBoxLayout, QLabel, QLineEdit, QSizePolicy,
-    QSpacerItem, QSpinBox, QVBoxLayout, QWidget)
+    QHBoxLayout, QLabel, QLineEdit, QPushButton,
+    QSizePolicy, QSpinBox, QVBoxLayout, QWidget)
 
 class Ui_settingsDialog(object):
     def setupUi(self, settingsDialog):
         if not settingsDialog.objectName():
             settingsDialog.setObjectName(u"settingsDialog")
-        settingsDialog.resize(600, 256)
+        settingsDialog.resize(600, 280)
         settingsDialog.setModal(True)
         self.verticalLayout = QVBoxLayout(settingsDialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -141,19 +141,31 @@ class Ui_settingsDialog(object):
         self.otherSettings.setObjectName(u"otherSettings")
         self.gridLayout = QGridLayout(self.otherSettings)
         self.gridLayout.setObjectName(u"gridLayout")
-        self.saveMapLocationCheckBox = QCheckBox(self.otherSettings)
-        self.saveMapLocationCheckBox.setObjectName(u"saveMapLocationCheckBox")
-
-        self.gridLayout.addWidget(self.saveMapLocationCheckBox, 0, 1, 1, 1)
-
         self.saveMapLocationLabel = QLabel(self.otherSettings)
         self.saveMapLocationLabel.setObjectName(u"saveMapLocationLabel")
 
         self.gridLayout.addWidget(self.saveMapLocationLabel, 0, 0, 1, 1)
 
-        self.horizontalSpacer = QSpacerItem(40, 20, QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Minimum)
+        self.mapLocationLabel = QLabel(self.otherSettings)
+        self.mapLocationLabel.setObjectName(u"mapLocationLabel")
 
-        self.gridLayout.addItem(self.horizontalSpacer, 0, 2, 1, 1)
+        self.gridLayout.addWidget(self.mapLocationLabel, 1, 0, 1, 1)
+
+        self.mapLocationLineEdit = QLineEdit(self.otherSettings)
+        self.mapLocationLineEdit.setObjectName(u"mapLocationLineEdit")
+
+        self.gridLayout.addWidget(self.mapLocationLineEdit, 1, 2, 1, 1)
+
+        self.saveMapLocationCheckBox = QCheckBox(self.otherSettings)
+        self.saveMapLocationCheckBox.setObjectName(u"saveMapLocationCheckBox")
+        self.saveMapLocationCheckBox.setChecked(True)
+
+        self.gridLayout.addWidget(self.saveMapLocationCheckBox, 0, 1, 1, 1)
+
+        self.mapLocationButton = QPushButton(self.otherSettings)
+        self.mapLocationButton.setObjectName(u"mapLocationButton")
+
+        self.gridLayout.addWidget(self.mapLocationButton, 1, 1, 1, 1)
 
 
         self.verticalLayout.addWidget(self.otherSettings)
@@ -190,8 +202,10 @@ class Ui_settingsDialog(object):
         self.calcSheetColumnLineEdit.setPlaceholderText(QCoreApplication.translate("settingsDialog", u"B", None))
         self.calcSheetRangeLabel.setText(QCoreApplication.translate("settingsDialog", u"Calculation Row Range", None))
         self.colonLabel.setText(QCoreApplication.translate("settingsDialog", u":", None))
-        self.otherSettings.setTitle(QCoreApplication.translate("settingsDialog", u"Other Settings", None))
-        self.saveMapLocationCheckBox.setText("")
+        self.otherSettings.setTitle(QCoreApplication.translate("settingsDialog", u"Map Settings", None))
         self.saveMapLocationLabel.setText(QCoreApplication.translate("settingsDialog", u"Save map location in Workbook", None))
+        self.mapLocationLabel.setText(QCoreApplication.translate("settingsDialog", u"Map Location:", None))
+        self.saveMapLocationCheckBox.setText("")
+        self.mapLocationButton.setText(QCoreApplication.translate("settingsDialog", u"Select File...", None))
     # retranslateUi
 
