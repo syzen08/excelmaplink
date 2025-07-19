@@ -46,11 +46,12 @@ class MainWindow(QMainWindow):
         qCDebug(self.log_category, "initializing map...")
         self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
         self.map_url = QUrl().fromLocalFile(str(Path(self.tempdir.path() + "/map.html")))
-        self.map.core.receivedText.connect(self.clicked_in_map)
+        self.ui.webEngineView.page().setWebChannel(self.map.webchannel)
+        self.map.map_bridge.region_clicked_signal.connect(self.clicked_in_map)
 
         # set up actions
-        self.ui.actionLoad_KML.triggered.connect(self.open_kml_file)
-        self.ui.actionLoad_KML.setVisible(False)
+        self.ui.actionLoad_KML.triggered.connect(lambda: self.open_kml_file(self.select_kml_file()))
+        # self.ui.actionLoad_KML.setVisible(False)
         self.ui.actionReload.triggered.connect(self.load_map)
         self.ui.actionAbout_Qt.triggered.connect(lambda: QApplication.aboutQt())
         self.ui.actionExit.triggered.connect(self.close)
@@ -68,7 +69,7 @@ class MainWindow(QMainWindow):
     def load_map(self):
         def finished():
             # copy html here for debugging
-            # shutil.copy(str(Path(self.tempdir.path() + "/map.html")), str(Path("./")))
+            shutil.copy(str(Path(self.tempdir.path() + "/map.html")), str(Path("./")))
             self.setCursor(Qt.CursorShape.ArrowCursor)
             self.ui.webEngineView.setUrl(self.map_url)
         
@@ -123,7 +124,7 @@ class MainWindow(QMainWindow):
         qCDebug(self.log_category, f"data: |{data}|")
         if data.startswith("click&"):
             self.ui.statusbar.showMessage(f"clicked on: {data[6:]}", 5000)
-            self.spreadsheet.toggle_region(data[6:])
+            # self.spreadsheet.toggle_region(data[6:])
         else:
             self.ui.statusbar.showMessage(f"received data: {data}", 5000)
 

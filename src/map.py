@@ -5,13 +5,10 @@ import folium
 from branca.element import Element
 from folium.template import Template
 from PySide6.QtCore import QLoggingCategory, qCDebug, qCInfo  # noqa: F401
-from PySide6.QtNetwork import QHostAddress, QSslSocket
 from PySide6.QtWebChannel import QWebChannel
-from PySide6.QtWebSockets import QWebSocketServer
 
+from src.bridge import MapBridge
 from src.kml import KMLReader
-from src.webchannel.core import Core
-from src.webchannel.websocketclientwrapper import WebSocketClientWrapper
 
 
 class Map:
@@ -26,24 +23,10 @@ class Map:
         else:
             raise Exception("path does not exist")
         
-        # set up web channel for communication between the leaflet map and python.
-        # taken from https://doc.qt.io/qtforpython-6/examples/example_webchannel_standalone.html#example-webchannel-standalone
-        if not QSslSocket.supportsSsl():
-            raise("No SSL support detected")
-            
-        self.server = QWebSocketServer("QWebChannel Server",
-                                       QWebSocketServer.SslMode.NonSecureMode)
-        # start server and check if its running
-        if not self.server.listen(QHostAddress.SpecialAddress.LocalHost, 12345):
-            raise("Failed to start web socket server")
-        
-        self.client_wrapper = WebSocketClientWrapper(self.server)
-
-        self.channel = QWebChannel()
-        self.client_wrapper.client_connected.connect(self.channel.connectTo)
-
-        self.core = Core()
-        self.channel.registerObject("core", self.core)
+        #setup webchannel
+        self.webchannel = QWebChannel()
+        self.map_bridge = MapBridge()
+        self.webchannel.registerObject("bridge", self.map_bridge)
 
         # add qwebchannel js to map
         self.map.add_js_link("qwebchannel", "qrc:///qtwebchannel/qwebchannel.js")
@@ -52,30 +35,17 @@ class Map:
         <script type="text/javascript">
             //BEGIN SETUP
             window.onload = function() {
-                if (location.search != "")
-                    var baseUrl = (/[?&]webChannelBaseUrl=([A-Za-z0-9\-:/\.]+)/.exec(location.search)[1]);
-                else
-                    var baseUrl = "ws://localhost:12345";
-
-                console.info("Connecting to WebSocket server at " + baseUrl + ".");
-                var socket = new WebSocket(baseUrl);
-
-                socket.onclose = function() {
-                    console.error("web channel closed");
-                };
-                socket.onerror = function(error) {
-                    console.error("web channel error: " + error);
-                };
-                socket.onopen = function() {
-                    console.info("WebSocket connected, setting up QWebChannel.");
-                    new QWebChannel(socket, function(channel) {
-                        // make core object accessible globally
-                        window.core = channel.objects.core;
-                        console.info("Connected");
-                        core.receiveText("Client connected!");
+                new QWebChannel(qt.webChannelTransport, function(channel) {
+                    window.bridge = channel.objects.bridge;
+                    
+                    bridge.region_clicked("hello, pretend this is a region");
+                    
+                    bridge.highlight_region.connect(function(region_name) {
+                        console.log("highlighting region: " + region_name);
+                        // TODO: implement highlighting logic
                     });
-                }
-            }
+                });
+            };
             //END SETUP
         </script>
         """)
@@ -139,7 +109,9 @@ class CustomFeatureGroup(folium.FeatureGroup):
             var {{ this.get_name() }} = L.featureGroup(
                 {{ this.options|tojavascript }}
             )
-            .on('click', function(ev) { core.receiveText("<p>click&</p>" + ev.sourceTarget.getTooltip().getContent()); });
+            .on('click', function(ev) { 
+                bridge.region_clicked(ev.sourceTarget.getTooltip().getContent());
+            });
         {% endmacro %}
         """
     )
