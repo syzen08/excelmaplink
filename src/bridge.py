@@ -3,8 +3,10 @@ from PySide6.QtCore import QObject, Signal, Slot
 
 
 class MapBridge(QObject):
-    highlight_region = Signal(str)
+    highlight_region_signal = Signal(str)
     region_clicked_signal = Signal(str)
+    reset_highlight_signal = Signal()
+    
     
     def __init__(self, parent=None):
         super().__init__(parent)
@@ -15,6 +17,11 @@ class MapBridge(QObject):
         self.region_clicked_signal.emit(region_name)
         
     @Slot(str)
-    def _emit_highlight_region(self, region_name: str):
+    def highlight_region(self, region_name: str):
         print(f"highlighting region: {region_name}")
-        self.highlight_region.emit(region_name)
+        self.highlight_region_signal.emit(region_name)
+        
+    def reset_highlight(self):
+        print("resetting highlight")
+        self.reset_highlight_signal.emit()
+    

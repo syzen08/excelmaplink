@@ -70,8 +70,15 @@
     <addaction name="actionAbout"/>
     <addaction name="actionAbout_Qt"/>
    </widget>
+   <widget class="QMenu" name="menuDebug">
+    <property name="title">
+     <string>Debug</string>
+    </property>
+    <addaction name="actionReset_Highlight"/>
+   </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
+   <addaction name="menuDebug"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
    <property name="sizeGripEnabled">
@@ -115,6 +122,11 @@
   <action name="actionOpen_Excel">
    <property name="text">
     <string>Open Excel...</string>
+   </property>
+  </action>
+  <action name="actionReset_Highlight">
+   <property name="text">
+    <string>Reset Highlight</string>
    </property>
   </action>
  </widget>

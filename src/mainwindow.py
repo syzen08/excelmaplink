@@ -56,6 +56,7 @@ class MainWindow(QMainWindow):
         self.ui.actionAbout_Qt.triggered.connect(lambda: QApplication.aboutQt())
         self.ui.actionExit.triggered.connect(self.close)
         self.ui.actionOpen_Excel.triggered.connect(self.openExcelFile)
+        self.ui.actionReset_Highlight.triggered.connect(self.reset_highlight)
 
         self.ui.webEngineView.loadFinished.connect(lambda: self.ui.statusbar.showMessage("ready", 5000))
         self.ui.webEngineView.loadStarted.connect(lambda: self.ui.statusbar.showMessage("loading..."))
@@ -65,6 +66,9 @@ class MainWindow(QMainWindow):
         s.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
         qCDebug(self.log_category, "loading map...")
         self.load_map()
+
+    def reset_highlight(self):
+        self.map.map_bridge.reset_highlight()
 
     def load_map(self):
         def finished():
@@ -127,6 +131,8 @@ class MainWindow(QMainWindow):
             # self.spreadsheet.toggle_region(data[6:])
         else:
             self.ui.statusbar.showMessage(f"received data: {data}", 5000)
+            
+        self.map.map_bridge.highlight_region(data)
 
     def openExcelFile(self):
         path = Path(QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx *.xls)")[0])

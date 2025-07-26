@@ -40,6 +40,8 @@ class Ui_MainWindow(object):
         self.actionAbout_Qt.setMenuRole(QAction.MenuRole.AboutQtRole)
         self.actionOpen_Excel = QAction(MainWindow)
         self.actionOpen_Excel.setObjectName(u"actionOpen_Excel")
+        self.actionReset_Highlight = QAction(MainWindow)
+        self.actionReset_Highlight.setObjectName(u"actionReset_Highlight")
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -61,6 +63,8 @@ class Ui_MainWindow(object):
         self.menuFile.setObjectName(u"menuFile")
         self.menuHelp = QMenu(self.menubar)
         self.menuHelp.setObjectName(u"menuHelp")
+        self.menuDebug = QMenu(self.menubar)
+        self.menuDebug.setObjectName(u"menuDebug")
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
@@ -69,6 +73,7 @@ class Ui_MainWindow(object):
 
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
+        self.menubar.addAction(self.menuDebug.menuAction())
         self.menuFile.addAction(self.actionLoad_KML)
         self.menuFile.addAction(self.actionOpen_Excel)
         self.menuFile.addAction(self.actionReload)
@@ -76,6 +81,7 @@ class Ui_MainWindow(object):
         self.menuFile.addAction(self.actionExit)
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionAbout_Qt)
+        self.menuDebug.addAction(self.actionReset_Highlight)
 
         self.retranslateUi(MainWindow)
 
@@ -90,7 +96,9 @@ class Ui_MainWindow(object):
         self.actionAbout.setText(QCoreApplication.translate("MainWindow", u"About...", None))
         self.actionAbout_Qt.setText(QCoreApplication.translate("MainWindow", u"About Qt...", None))
         self.actionOpen_Excel.setText(QCoreApplication.translate("MainWindow", u"Open Excel...", None))
+        self.actionReset_Highlight.setText(QCoreApplication.translate("MainWindow", u"Reset Highlight", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
+        self.menuDebug.setTitle(QCoreApplication.translate("MainWindow", u"Debug", None))
     # retranslateUi
 

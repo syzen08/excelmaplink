@@ -33,20 +33,68 @@ class Map:
         # add required js code 
         webchanneljs = Element("""
         <script type="text/javascript">
-            //BEGIN SETUP
+        
+            const origStyles = new Map();
+        
+            //find the feature group as it gets a random name from folium
+            function findFeatureGroupByPrefix(prefix = 'feature_group_') {
+                for (let key in window) {
+                    if (key.startsWith(prefix) && window[key] instanceof L.FeatureGroup) {
+                        return window[key];
+                    }
+                }
+                return null;
+            }
+
+            function highlightPolygonByName(name) {
+
+                // TODO: this should only run the first time the map is loaded
+                const fg = findFeatureGroupByPrefix();
+                if (!fg) { 
+                    console.error("Feature group not found"); 
+                    return;
+                }
+                fg.eachLayer(function(layer) {
+                    if (layer.getTooltip && layer.getTooltip()) {
+                        let tooltip = layer.getTooltip().getContent();
+                        if (tooltip && tooltip.includes(name) && layer.setStyle) {
+                            if (!origStyles.has(layer)) {
+                                origStyles.set(layer, {
+                                    ...layer.options
+                                });
+                            }
+                            layer.setStyle({ weight: 10, opacity: 1, color: 'magenta'});
+                        }
+                    }
+                });
+            }
+
+            function resetHighlight() {
+                origStyles.forEach((style, layer) => {
+                    if (layer.setStyle) {
+                        layer.setStyle(style);
+                    }
+                });
+                origStyles.clear();
+            }
+
+            // set up webchannel
             window.onload = function() {
+                console.log("setting up webchannel...");
                 new QWebChannel(qt.webChannelTransport, function(channel) {
                     window.bridge = channel.objects.bridge;
-                    
-                    bridge.region_clicked("hello, pretend this is a region");
-                    
-                    bridge.highlight_region.connect(function(region_name) {
-                        console.log("highlighting region: " + region_name);
-                        // TODO: implement highlighting logic
+
+                    bridge.highlight_region_signal.connect(function(region_name) {
+                        console.log("highlighted regions: " + region_name);
+                        highlightPolygonByName(region_name);
+                    });
+
+                    bridge.reset_highlight_signal.connect(function() {
+                        console.log("resetting highlight");
+                        resetHighlight();
                     });
                 });
             };
-            //END SETUP
         </script>
         """)
         self.map.get_root().header.add_child(webchanneljs)
