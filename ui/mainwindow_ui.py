@@ -74,7 +74,6 @@ class Ui_MainWindow(object):
         self.menubar.addAction(self.menuFile.menuAction())
         self.menubar.addAction(self.menuHelp.menuAction())
         self.menubar.addAction(self.menuDebug.menuAction())
-        self.menuFile.addAction(self.actionLoad_KML)
         self.menuFile.addAction(self.actionOpen_Excel)
         self.menuFile.addAction(self.actionReload)
         self.menuFile.addSeparator()
@@ -82,6 +81,7 @@ class Ui_MainWindow(object):
         self.menuHelp.addAction(self.actionAbout)
         self.menuHelp.addAction(self.actionAbout_Qt)
         self.menuDebug.addAction(self.actionReset_Highlight)
+        self.menuDebug.addAction(self.actionLoad_KML)
 
         self.retranslateUi(MainWindow)
 

@@ -57,7 +57,6 @@
     <property name="title">
      <string>File</string>
     </property>
-    <addaction name="actionLoad_KML"/>
     <addaction name="actionOpen_Excel"/>
     <addaction name="actionReload"/>
     <addaction name="separator"/>
@@ -75,6 +74,7 @@
      <string>Debug</string>
     </property>
     <addaction name="actionReset_Highlight"/>
+    <addaction name="actionLoad_KML"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
