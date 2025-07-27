@@ -75,6 +75,7 @@
     </property>
     <addaction name="actionReset_Highlight"/>
     <addaction name="actionLoad_KML"/>
+    <addaction name="actionHighlighting_Test"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
@@ -125,8 +126,19 @@
    </property>
   </action>
   <action name="actionReset_Highlight">
+   <property name="checkable">
+    <bool>false</bool>
+   </property>
    <property name="text">
     <string>Reset Highlight</string>
+   </property>
+  </action>
+  <action name="actionHighlighting_Test">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Highlighting Test</string>
    </property>
   </action>
  </widget>

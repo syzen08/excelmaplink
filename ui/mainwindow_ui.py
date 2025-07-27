@@ -42,6 +42,10 @@ class Ui_MainWindow(object):
         self.actionOpen_Excel.setObjectName(u"actionOpen_Excel")
         self.actionReset_Highlight = QAction(MainWindow)
         self.actionReset_Highlight.setObjectName(u"actionReset_Highlight")
+        self.actionReset_Highlight.setCheckable(False)
+        self.actionHighlighting_Test = QAction(MainWindow)
+        self.actionHighlighting_Test.setObjectName(u"actionHighlighting_Test")
+        self.actionHighlighting_Test.setCheckable(True)
         self.centralwidget = QWidget(MainWindow)
         self.centralwidget.setObjectName(u"centralwidget")
         self.gridLayout = QGridLayout(self.centralwidget)
@@ -82,6 +86,7 @@ class Ui_MainWindow(object):
         self.menuHelp.addAction(self.actionAbout_Qt)
         self.menuDebug.addAction(self.actionReset_Highlight)
         self.menuDebug.addAction(self.actionLoad_KML)
+        self.menuDebug.addAction(self.actionHighlighting_Test)
 
         self.retranslateUi(MainWindow)
 
@@ -97,6 +102,7 @@ class Ui_MainWindow(object):
         self.actionAbout_Qt.setText(QCoreApplication.translate("MainWindow", u"About Qt...", None))
         self.actionOpen_Excel.setText(QCoreApplication.translate("MainWindow", u"Open Excel...", None))
         self.actionReset_Highlight.setText(QCoreApplication.translate("MainWindow", u"Reset Highlight", None))
+        self.actionHighlighting_Test.setText(QCoreApplication.translate("MainWindow", u"Highlighting Test", None))
         self.menuFile.setTitle(QCoreApplication.translate("MainWindow", u"File", None))
         self.menuHelp.setTitle(QCoreApplication.translate("MainWindow", u"Help", None))
         self.menuDebug.setTitle(QCoreApplication.translate("MainWindow", u"Debug", None))

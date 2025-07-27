@@ -132,7 +132,8 @@ class MainWindow(QMainWindow):
         else:
             self.ui.statusbar.showMessage(f"received data: {data}", 5000)
             
-        self.map.map_bridge.highlight_region(data)
+        if self.ui.actionHighlighting_Test.isChecked():
+            self.map.map_bridge.highlight_region(data)
 
     def openExcelFile(self):
         path = Path(QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx *.xls)")[0])
