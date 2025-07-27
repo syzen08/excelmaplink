@@ -100,6 +100,8 @@ class Map:
         self.map.get_root().header.add_child(webchanneljs)
 
         self.log_category = QLoggingCategory("map")
+        
+        multiprocessing.freeze_support()
 
 
     def save(self, progress_callback):
