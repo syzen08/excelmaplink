@@ -20,7 +20,7 @@ from PySide6.QtWidgets import (
     QMessageBox,
 )
 
-from src.excel import Spreadsheet
+from src.excel.spreadsheet import Spreadsheet
 from src.map import Map
 from src.worker import Worker
 from ui.mainwindow_ui import Ui_MainWindow
@@ -127,11 +127,8 @@ class MainWindow(QMainWindow):
 
     def clicked_in_map(self, data: str):
         qCDebug(self.log_category, f"data: |{data}|")
-        if data.startswith("click&"):
-            self.ui.statusbar.showMessage(f"clicked on: {data[6:]}", 5000)
-            # self.spreadsheet.toggle_region(data[6:])
-        else:
-            self.ui.statusbar.showMessage(f"received data: {data}", 5000)
+        self.ui.statusbar.showMessage(f"clicked on: {data}", 5000)
+        self.spreadsheet.toggle_region(data)
             
         if self.ui.actionHighlighting_Test.isChecked():
             self.map.map_bridge.highlight_region(data)

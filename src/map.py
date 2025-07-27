@@ -85,8 +85,8 @@ class Map:
                     window.bridge = channel.objects.bridge;
 
                     bridge.highlight_region_signal.connect(function(region_name) {
-                        console.log("highlighted regions: " + region_name);
                         highlightPolygonByName(region_name);
+                        console.log("highlighted regions: " + region_name);
                     });
 
                     bridge.reset_highlight_signal.connect(function() {
