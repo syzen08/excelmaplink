@@ -24,7 +24,7 @@ class Ui_MainWindow(object):
     def setupUi(self, MainWindow):
         if not MainWindow.objectName():
             MainWindow.setObjectName(u"MainWindow")
-        MainWindow.resize(800, 600)
+        MainWindow.resize(800, 601)
         self.actionLoad_KML = QAction(MainWindow)
         self.actionLoad_KML.setObjectName(u"actionLoad_KML")
         self.actionReload = QAction(MainWindow)
@@ -79,7 +79,7 @@ class Ui_MainWindow(object):
         MainWindow.setMenuBar(self.menubar)
         self.statusbar = QStatusBar(MainWindow)
         self.statusbar.setObjectName(u"statusbar")
-        self.statusbar.setEnabled(False)
+        self.statusbar.setEnabled(True)
         self.statusbar.setSizeGripEnabled(True)
         MainWindow.setStatusBar(self.statusbar)
 
