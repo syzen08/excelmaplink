@@ -58,7 +58,7 @@
      <string>File</string>
     </property>
     <addaction name="actionOpen_Excel"/>
-    <addaction name="actionReload"/>
+    <addaction name="actionWorkbook_Settings"/>
     <addaction name="separator"/>
     <addaction name="actionExit"/>
    </widget>
@@ -73,15 +73,22 @@
     <property name="title">
      <string>Debug</string>
     </property>
-    <addaction name="actionReset_Highlight"/>
     <addaction name="actionLoad_KML"/>
+    <addaction name="actionReload"/>
+    <addaction name="separator"/>
     <addaction name="actionHighlighting_Test"/>
+    <addaction name="actionReset_Highlight"/>
+    <addaction name="separator"/>
+    <addaction name="actionShow_Statusbar"/>
    </widget>
    <addaction name="menuFile"/>
    <addaction name="menuHelp"/>
    <addaction name="menuDebug"/>
   </widget>
   <widget class="QStatusBar" name="statusbar">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
    <property name="sizeGripEnabled">
     <bool>true</bool>
    </property>
@@ -141,6 +148,25 @@
     <string>Highlighting Test</string>
    </property>
   </action>
+  <action name="actionShow_Statusbar">
+   <property name="checkable">
+    <bool>true</bool>
+   </property>
+   <property name="checked">
+    <bool>true</bool>
+   </property>
+   <property name="text">
+    <string>Show Statusbar</string>
+   </property>
+  </action>
+  <action name="actionWorkbook_Settings">
+   <property name="enabled">
+    <bool>false</bool>
+   </property>
+   <property name="text">
+    <string>Workbook Settings...</string>
+   </property>
+  </action>
  </widget>
  <customwidgets>
   <customwidget>
@@ -150,5 +176,22 @@
   </customwidget>
  </customwidgets>
  <resources/>
- <connections/>
+ <connections>
+  <connection>
+   <sender>actionShow_Statusbar</sender>
+   <signal>toggled(bool)</signal>
+   <receiver>statusbar</receiver>
+   <slot>setVisible(bool)</slot>
+   <hints>
+    <hint type="sourcelabel">
+     <x>-1</x>
+     <y>-1</y>
+    </hint>
+    <hint type="destinationlabel">
+     <x>399</x>
+     <y>589</y>
+    </hint>
+   </hints>
+  </connection>
+ </connections>
 </ui>

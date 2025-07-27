@@ -3,15 +3,16 @@ from pathlib import Path
 import xlwings as xw
 from PySide6.QtCore import QLoggingCategory, Signal, qCDebug, qCInfo, qCWarning
 
+from src.mainwindow import MainWindow
+
 
 class Spreadsheet:
     show_init_dialog = Signal()
     
-    def __init__(self, file_path: Path, settings_dialog_callback, open_kml_file_callback):
+    def __init__(self, file_path: Path, main_window: MainWindow):
         self.log_category = QLoggingCategory("excel")
         self.file_path = file_path
-        self.settings_dialog_callback = settings_dialog_callback
-        self.open_kml_file_callback = open_kml_file_callback
+        self.main_window = main_window
         if not self.file_path.exists():
             raise FileNotFoundError(f"The file {self.file_path} does not exist.")
         # check if excel is running, if yes then connect to to it, otherwise start a new instance
@@ -66,7 +67,7 @@ class Spreadsheet:
         
         if self.save_map_path:
             qCInfo(self.log_category, f"loading linked map {self.linked_map}")
-            self.open_kml_file_callback(Path(self.linked_map))
+            self.main_window.open_kml_file(Path(self.linked_map))
         else:
             qCWarning(self.log_category, "implement")
             raise NotImplementedError("too lazy to implement this right now")
@@ -137,7 +138,7 @@ class Spreadsheet:
             self.wb.sheets.add("excelmaplink_config")
             self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
             # self.config_sheet.visible = False
-            settings = self.settings_dialog_callback()
+            settings = self.main_window.show_settings_dialog()
             return settings
         else:
             qCInfo(self.log_category, "config sheet found")

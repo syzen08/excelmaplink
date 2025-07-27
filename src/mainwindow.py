@@ -57,6 +57,7 @@ class MainWindow(QMainWindow):
         self.ui.actionExit.triggered.connect(self.close)
         self.ui.actionOpen_Excel.triggered.connect(self.openExcelFile)
         self.ui.actionReset_Highlight.triggered.connect(self.reset_highlight)
+        self.ui.actionShow_Statusbar.toggle()
 
         self.ui.webEngineView.loadFinished.connect(lambda: self.ui.statusbar.showMessage("ready", 5000))
         self.ui.webEngineView.loadStarted.connect(lambda: self.ui.statusbar.showMessage("loading..."))
@@ -139,7 +140,8 @@ class MainWindow(QMainWindow):
         path = Path(QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx *.xls)")[0])
         if path.exists() and path.is_file():
             qCInfo(self.log_category, f"opening excel file: {path}")
-            self.spreadsheet = Spreadsheet(path, self.show_settings_dialog, self.open_kml_file)
+            self.spreadsheet = Spreadsheet(path, self)
+            self.ui.actionWorkbook_Settings.setEnabled(True)
             
     def show_settings_dialog(self):
         tempmap = None
