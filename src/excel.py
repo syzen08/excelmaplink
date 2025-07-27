@@ -3,13 +3,11 @@ from pathlib import Path
 import xlwings as xw
 from PySide6.QtCore import QLoggingCategory, Signal, qCDebug, qCInfo, qCWarning
 
-from src.mainwindow import MainWindow
-
 
 class Spreadsheet:
     show_init_dialog = Signal()
     
-    def __init__(self, file_path: Path, main_window: MainWindow):
+    def __init__(self, file_path: Path, main_window):
         self.log_category = QLoggingCategory("excel")
         self.file_path = file_path
         self.main_window = main_window
