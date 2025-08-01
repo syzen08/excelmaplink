@@ -102,8 +102,6 @@ class MainWindow(QMainWindow):
             pbar.close()
         
         qCDebug(self.log_category, "open_kml_file triggered")
-        # path = Path(QFileDialog.getOpenFileName(self, "Open KML File", "", "KML Files (*.kml)")[0])
-        # if path.exists() and path.is_file():
         qCInfo(self.log_category, f"starting loading of kml... (path: {path})")
         # clear webengineview
         self.ui.webEngineView.setUrl("about:blank")
@@ -120,7 +118,6 @@ class MainWindow(QMainWindow):
 
         self.setCursor(Qt.CursorShape.WaitCursor)
         self.threadpool.start(worker)
-        # self.map.load_placemarks(path)
 
     def clicked_in_map(self, data: str):
         qCDebug(self.log_category, f"data: |{data}|")

@@ -147,7 +147,6 @@ class Map:
             qCInfo(self.log_category, f"adding {len(polygons)} polygons...")
             for i, polygon in enumerate(polygons):
                 folium.Polygon(locations=polygon[0], color=f"#{polygon[3][0]}", fill_color=f"#{polygon[4]}", weight=polygon[3][1], tooltip=polygon[1], popup=polygon[2], fillOpacity=0.5).add_to(fg)
-                # qCDebug(self.log_category, f"polygon {i}: {polygon[1]} - {polygon[2]} - {polygon[3]} - {polygon[4]}")
 
         qCInfo(self.log_category, "done")
 

@@ -9,7 +9,6 @@ from src.mainwindow import MainWindow
 
 # Guide: Also, wenn ich in der Karte eine mehrere Touren anklicke, soll er den Namen (aus C oder AP ) in den Reiter Berechnung in Spalte B  ab zeile 6 bis 24 auflisten ….
 
-
 def main():
     install(show_locals=True)
     QLoggingCategory.setFilterRules("""*.info=true
@@ -19,7 +18,6 @@ def main():
     QApplication.setStyle("Fusion")
     window = MainWindow()
     window.show()
-
     sys.exit(app.exec())
 
 if __name__ == "__main__":

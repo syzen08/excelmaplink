@@ -7,7 +7,6 @@ class MapBridge(QObject):
     region_clicked_signal = Signal(str)
     reset_highlight_signal = Signal()
     
-    
     def __init__(self, parent=None):
         super().__init__(parent)
     

@@ -34,4 +34,4 @@ class Worker(QRunnable):
             self.signals.result.emit(result)
         finally:
             self.signals.finished.emit()
-            time.sleep(0.1) # without this the finished signal sometimes doesn't get emitted
+            time.sleep(0.1) #FIXME: without this the finished signal sometimes doesn't get emitted
