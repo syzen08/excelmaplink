@@ -1,7 +1,9 @@
 from pathlib import Path
 
 import xlwings as xw
-from PySide6.QtCore import QLoggingCategory, qCDebug, qCInfo, qCWarning
+from PySide6.QtCore import QLoggingCategory, qCCritical, qCDebug, qCInfo, qCWarning
+from PySide6.QtWidgets import QMessageBox
+from pywintypes import com_error
 
 from src.excel.config import ConfigOption
 from src.excel.cur_regions import CurrentRegions
@@ -45,33 +47,9 @@ class Spreadsheet:
         }
 
         if settings:
-            for key, value in settings.items():
-                if key in self.config:
-                    self.config[key].set_value(value)
-                else:
-                    qCWarning(self.log_category, f"unknown config option {key}, ignoring.")
-                    
-        self.region_sheet = self.wb.sheets[self.config["region_sheet"].get_value()]
-        self.calc_sheet = self.wb.sheets[self.config["calc_sheet"].get_value()]
-        cur_regions = []
-        for cell in self.calc_sheet.range(range_string(self.config["calc_column"].get_value(), *self.config["calc_range"].get_value())).value:
-            if cell is None:
-                cur_regions.append(None)
-                continue
-            try:
-                region = region_from_excel_name(cell, self.config, self.region_sheet)
-                cur_regions.append(region)
-            except ValueError as e:
-                qCWarning(self.log_category, f"could not find region {cell} in region sheet {self.region_sheet.name}: {e}")
-                cur_regions.append(None)
-        self.cur_calc_regions = CurrentRegions(cur_regions, self.config["calc_range"].get_value()[1] - self.config["calc_range"].get_value()[0] + 1, main_window)
-        qCDebug(self.log_category, f"current calc regions: {self.cur_calc_regions.regions}")
-        
-        if self.config["save_map_path"].get_value():
-            qCInfo(self.log_category, f"loading map from {self.config['linked_map'].get_value()}")
-            self.main_window.open_kml_file(Path(self.config["linked_map"].get_value()))
-        else:
-            raise NotImplementedError("TODO: implement loading of temp map")
+            self.import_settings(settings)
+            self.populate_cur_regions()
+            self.load_map()
 
     def __del__(self):
         """close the workbook and quit the app when the object is deleted."""
@@ -86,7 +64,11 @@ class Spreadsheet:
             self.app.quit()
 
     def toggle_region(self, region_map_name: str):
-        self.cur_calc_regions.toggle_region(region_map_name)
+        try:
+            self.cur_calc_regions.toggle_region(region_map_name)
+        except ValueError as e:
+            qCCritical(self.log_category, f"could not toggle region {region_map_name}: {e}")
+            QMessageBox.critical(self.main_window, "Region Not Found", f"Could not find region {region_map_name} in region sheet {self.region_sheet.name}. Please make sure that you have the correct column selected in the settings and the names in the column are the correct format.")
         qCDebug(self.log_category, f"cur_regions: {self.cur_calc_regions.regions}")
         
         self.calc_sheet.range(range_string(self.config["calc_column"].get_value(), *self.config["calc_range"].get_value())).options(transpose=True).value = [r.excel_name if r is not None else None for r in self.cur_calc_regions.regions]
@@ -103,3 +85,50 @@ class Spreadsheet:
             qCInfo(self.log_category, "config sheet found, loading settings...")
             self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
             return None
+        
+    def import_settings(self, settings: dict):
+        """import settings from a dictionary."""
+        for key, value in settings.items():
+            if key in self.config:
+                self.config[key].set_value(value)
+            else:
+                qCWarning(self.log_category, f"unknown config option {key}, ignoring.")
+        try:
+            self.region_sheet = self.wb.sheets[self.config["region_sheet"].get_value()]
+            self.calc_sheet = self.wb.sheets[self.config["calc_sheet"].get_value()]
+        except com_error as e:
+            qCCritical(self.log_category, f"could not find sheet {self.config['region_sheet'].get_value()} or {self.config['calc_sheet'].get_value()}: {e}")
+            QMessageBox.critical(self.main_window, "Sheet Not Found", f"Could not find sheet {self.config['region_sheet'].get_value()} or {self.config['calc_sheet'].get_value()}. Please check your settings.")
+            settings = self.main_window.show_settings_dialog(self.config)
+            if settings:
+                self.import_settings(settings)
+            return
+        qCDebug(self.log_category, "settings imported successfully")
+        
+    def populate_cur_regions(self):
+        cur_regions = []
+        for cell in self.calc_sheet.range(range_string(self.config["calc_column"].get_value(), *self.config["calc_range"].get_value())).value:
+            if cell is None:
+                cur_regions.append(None)
+                continue
+            try:
+                region = region_from_excel_name(cell, self.config, self.region_sheet)
+                cur_regions.append(region)
+            except ValueError as e:
+                qCWarning(self.log_category, f"could not find region {cell} in region sheet {self.region_sheet.name}: {e}")
+                cur_regions.append(None)
+        self.cur_calc_regions = CurrentRegions(cur_regions, self.config["calc_range"].get_value()[1] - self.config["calc_range"].get_value()[0] + 1, self.main_window)
+        qCDebug(self.log_category, f"current calc regions: {self.cur_calc_regions.regions}")
+        
+    def load_map(self):
+        if self.config["save_map_path"].get_value():
+            qCInfo(self.log_category, f"loading map from {self.config['linked_map'].get_value()}")
+            self.main_window.open_kml_file(Path(self.config["linked_map"].get_value()))
+        else:
+            raise NotImplementedError("TODO: implement loading of temp map")
+        
+    def load_config(self, settings: dict):
+        if settings:
+            self.import_settings(settings)
+        self.populate_cur_regions()
+        self.load_map()

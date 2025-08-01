@@ -57,6 +57,7 @@ class MainWindow(QMainWindow):
         self.ui.actionOpen_Excel.triggered.connect(self.openExcelFile)
         self.ui.actionReset_Highlight.triggered.connect(self.reset_highlight)
         self.ui.actionShow_Statusbar.toggle()
+        self.ui.actionWorkbook_Settings.triggered.connect(lambda: self.show_settings_dialog(self.spreadsheet.config))
 
         self.ui.webEngineView.loadFinished.connect(lambda: self.ui.statusbar.showMessage("ready", 5000))
         self.ui.webEngineView.loadStarted.connect(lambda: self.ui.statusbar.showMessage("loading..."))
@@ -106,8 +107,7 @@ class MainWindow(QMainWindow):
         qCInfo(self.log_category, f"starting loading of kml... (path: {path})")
         # clear webengineview
         self.ui.webEngineView.setUrl("about:blank")
-        # re-init map
-        # self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
+        self.reset_map()
         pbarui = Ui_progressDialog()
         pbar = QDialog(self)
         pbarui.setupUi(pbar)
@@ -134,10 +134,17 @@ class MainWindow(QMainWindow):
         path = Path(QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx *.xls)")[0])
         if path.exists() and path.is_file():
             qCInfo(self.log_category, f"opening excel file: {path}")
+            if self.spreadsheet:
+                self.spreadsheet.__del__()  # close the old spreadsheet if it exists
             self.spreadsheet = Spreadsheet(path, self)
             self.ui.actionWorkbook_Settings.setEnabled(True)
             
-    def show_settings_dialog(self):
+    def reset_map(self):
+        self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
+        self.ui.webEngineView.page().setWebChannel(self.map.webchannel)
+        self.map.map_bridge.region_clicked_signal.connect(self.clicked_in_map)
+            
+    def show_settings_dialog(self, settings: dict = None):
         tempmap = None
         def validate_kml_path():
             if ui.saveMapLocationCheckBox.isChecked() and (Path(ui.mapLocationLineEdit.text()).exists() and Path(ui.mapLocationLineEdit.text()).is_file()):
@@ -151,15 +158,25 @@ class MainWindow(QMainWindow):
                 dialog.accept()
             else:
                 QMessageBox.critical(self, "Missing Map Location", "Please select a valid map using the 'Select File...' Button.")
-
         qCDebug(self.log_category, "showing settings dialog")
         dialog = QDialog(self)
         ui = Ui_settingsDialog()
         ui.setupUi(dialog)
+        if settings:
+            ui.tourSheetNameLineEdit.setText(settings["region_sheet"].get_value())
+            ui.tourSheetMapNameColumnLineEdit.setText(settings["region_map_name_column"].get_value())
+            ui.tourSheetStartRowSpinBox.setValue(settings["region_sheet_start_row"].get_value())
+            ui.tourSheetTourNameLineEdit.setText(settings["region_name_column"].get_value())
+            ui.calcSheetNameLineEdit.setText(settings["calc_sheet"].get_value())
+            ui.calcSheetColumnLineEdit.setText(settings["calc_column"].get_value())
+            ui.fromSpinbox.setValue(settings["calc_range"].get_value()[0])
+            ui.toSpinbox.setValue(settings["calc_range"].get_value()[1])
+            ui.saveMapLocationCheckBox.setChecked(settings["save_map_path"].get_value())
+            ui.mapLocationLineEdit.setText(settings["linked_map"].get_value())
         ui.buttonBox.accepted.connect(validate_kml_path)
         ui.mapLocationButton.clicked.connect(lambda: ui.mapLocationLineEdit.setText(str(self.select_kml_file())))
         if dialog.exec():
-            settings = {
+            new_settings = {
                 "region_sheet": ui.tourSheetNameLineEdit.text(),
                 "region_map_name_column": ui.tourSheetMapNameColumnLineEdit.text(),
                 "region_sheet_start_row": ui.tourSheetStartRowSpinBox.value(),
@@ -171,8 +188,11 @@ class MainWindow(QMainWindow):
                 "linked_map": ui.mapLocationLineEdit.text(),
                 "temp_map": tempmap if ui.saveMapLocationCheckBox.isChecked() else None
             }
-            qCDebug(self.log_category, f"settings: {settings}")
-            return settings
+            qCDebug(self.log_category, f"settings: {new_settings}")
+            if settings:
+                if self.spreadsheet:
+                    self.spreadsheet.load_config(new_settings)
+            return new_settings
         else:
             qCWarning(self.log_category, "settings dialog cancelled, idk what to do now")
             raise NotImplementedError("settings dialog was cancelled")
