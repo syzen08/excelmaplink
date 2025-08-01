@@ -1,4 +1,3 @@
-import shutil
 from pathlib import Path
 
 from PySide6.QtCore import (
@@ -73,8 +72,6 @@ class MainWindow(QMainWindow):
 
     def load_map(self):
         def finished():
-            # copy html here for debugging
-            # shutil.copy(str(Path(self.tempdir.path() + "/map.html")), str(Path("./")))
             self.setCursor(Qt.CursorShape.ArrowCursor)
             self.ui.webEngineView.setUrl(self.map_url)
         
