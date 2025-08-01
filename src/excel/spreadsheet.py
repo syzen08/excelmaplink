@@ -1,7 +1,14 @@
 from pathlib import Path
 
 import xlwings as xw
-from PySide6.QtCore import QLoggingCategory, qCCritical, qCDebug, qCInfo, qCWarning
+from PySide6.QtCore import (
+    QCoreApplication,
+    QLoggingCategory,
+    qCCritical,
+    qCDebug,
+    qCInfo,
+    qCWarning,
+)
 from PySide6.QtWidgets import QMessageBox
 from pywintypes import com_error
 
@@ -68,7 +75,7 @@ class Spreadsheet:
             self.cur_calc_regions.toggle_region(region_map_name)
         except ValueError as e:
             qCCritical(self.log_category, f"could not toggle region {region_map_name}: {e}")
-            QMessageBox.critical(self.main_window, "Region Not Found", f"Could not find region {region_map_name} in region sheet {self.region_sheet.name}. Please make sure that you have the correct column selected in the settings and the names in the column are the correct format.")
+            QMessageBox.critical(self.main_window, QCoreApplication.translate("Spreadsheet", "Region Not Found"), QCoreApplication.translate("Spreadsheet", "Could not find region {} in region sheet {}.\nPlease make sure that you have the correct column selected in the settings and the names in the column are the correct format.").format(region_map_name, self.region_sheet.name))
         qCDebug(self.log_category, f"cur_regions: {self.cur_calc_regions.regions}")
         
         self.calc_sheet.range(range_string(self.config["calc_column"].get_value(), *self.config["calc_range"].get_value())).options(transpose=True).value = [r.excel_name if r is not None else None for r in self.cur_calc_regions.regions]
@@ -98,7 +105,7 @@ class Spreadsheet:
             self.calc_sheet = self.wb.sheets[self.config["calc_sheet"].get_value()]
         except com_error as e:
             qCCritical(self.log_category, f"could not find sheet {self.config['region_sheet'].get_value()} or {self.config['calc_sheet'].get_value()}: {e}")
-            QMessageBox.critical(self.main_window, "Sheet Not Found", f"Could not find sheet {self.config['region_sheet'].get_value()} or {self.config['calc_sheet'].get_value()}. Please check your settings.")
+            QMessageBox.critical(self.main_window, QCoreApplication.translate("Spreadsheet", "Sheet Not Found"), QCoreApplication.translate("Spreadsheet", "Could not find sheet {} or {}. Please check your settings.").format(self.config['region_sheet'].get_value(), self.config['calc_sheet'].get_value()))
             settings = self.main_window.show_settings_dialog(self.config)
             if settings:
                 self.import_settings(settings)

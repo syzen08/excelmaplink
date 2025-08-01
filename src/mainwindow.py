@@ -84,7 +84,7 @@ class MainWindow(QMainWindow):
         self.threadpool.start(worker)
 
     def select_kml_file(self):
-        path, _ = QFileDialog.getOpenFileName(self, "Select KML File", "", "KML Files (*.kml)")
+        path, _ = QFileDialog.getOpenFileName(self, self.tr("Select KML File"), "", self.tr("KML Files (*.kml)"))
         if path and Path(path).exists() and Path(path).is_file():
             return Path(path)
         else:
@@ -128,7 +128,7 @@ class MainWindow(QMainWindow):
             self.map.map_bridge.highlight_region(data)
 
     def openExcelFile(self):
-        path = Path(QFileDialog.getOpenFileName(self, "Open Excel File", "", "Excel Files (*.xlsx *.xls)")[0])
+        path = Path(QFileDialog.getOpenFileName(self, self.tr("Open Excel File"), "", self.tr("Excel Files (*.xlsx *.xls)"))[0])
         if path.exists() and path.is_file():
             qCInfo(self.log_category, f"opening excel file: {path}")
             if self.spreadsheet:
@@ -149,12 +149,12 @@ class MainWindow(QMainWindow):
             elif not ui.saveMapLocationCheckBox.isChecked():
                 tempmap = self.select_kml_file() #BUG: make this actually store in the settings dict, that would be nice
                 if not tempmap:
-                    QMessageBox.critical(self, "Missing Map Location", "Please select a valid map to open.")
+                    QMessageBox.critical(self, self.tr("Missing Map Location"), self.tr("Please select a valid map to open."))
                     validate_kml_path()
                     return
                 dialog.accept()
             else:
-                QMessageBox.critical(self, "Missing Map Location", "Please select a valid map using the 'Select File...' Button.")
+                QMessageBox.critical(self, self.tr("Missing Map Location"), self.tr("Please select a valid map using the 'Select File...' Button."))
         qCDebug(self.log_category, "showing settings dialog")
         dialog = QDialog(self)
         ui = Ui_settingsDialog()

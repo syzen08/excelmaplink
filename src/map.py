@@ -4,7 +4,12 @@ from pathlib import Path
 import folium
 from branca.element import Element
 from folium.template import Template
-from PySide6.QtCore import QLoggingCategory, qCDebug, qCInfo  # noqa: F401
+from PySide6.QtCore import (  # noqa: F401
+    QCoreApplication,
+    QLoggingCategory,
+    qCDebug,
+    qCInfo,
+)
 from PySide6.QtWebChannel import QWebChannel
 
 from src.bridge import MapBridge
@@ -121,7 +126,7 @@ class Map:
         # TODO: create seperate feature groups for each folder in the kml 
         fg = CustomFeatureGroup(name="placemarks", control=False).add_to(self.map)
 
-        progress_callback.emit("adding elements...")
+        progress_callback.emit(QCoreApplication.translate("Map", "adding elements..."))
         
         # TODO: just execute everything in one thread if there aren't that many placemarks (>500 or smth, will have to test), since starting the processes usually takes longer than the loading itself
 

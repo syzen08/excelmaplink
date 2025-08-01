@@ -7,7 +7,7 @@ with warnings.catch_warnings(action="ignore"):
     from fastkml.utils import find_all
 
 from pygeoif.geometry import MultiPolygon, Point, Polygon
-from PySide6.QtCore import QLoggingCategory, qCInfo
+from PySide6.QtCore import QCoreApplication, QLoggingCategory, qCInfo
 
 
 class KMLReader:
@@ -23,13 +23,13 @@ class KMLReader:
             raise Exception("No KML file specified")
         
         qCInfo(QLoggingCategory("kml"), f"parsing {self.kml_path}...")
-        progress_callback.emit(f"parsing {self.kml_path}...")
+        progress_callback.emit(QCoreApplication.translate("KMLReader", "parsing {}...").format(self.kml_path))
         self.kml = kml.KML.parse(self.kml_path)
         qCInfo(QLoggingCategory("kml"), "loading placemarks...")
-        progress_callback.emit("loading placemarks...")
+        progress_callback.emit(QCoreApplication.translate("KMLReader", "loading placemarks..."))
         self.placemarks = list(find_all(self.kml, of_type=Placemark)) # TODO: reimplement using dictionary for faster loading
         qCInfo(QLoggingCategory("kml"), f"loaded {len(self.placemarks)} placemarks")
-        progress_callback.emit("loading styles...")
+        progress_callback.emit(QCoreApplication.translate("KMLReader", "loading styles..."))
         qCInfo(QLoggingCategory("kml"), "creating style index...")
         self.styles = {}
         for style in self.kml.features[0].styles:
