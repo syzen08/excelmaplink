@@ -1,3 +1,3 @@
-pyside6-lupdate.exe main.py .\src\bridge.py .\src\kml.py .\src\mainwindow.py .\src\map.py .\src\worker.py .\src\excel\config.py .\src\excel\cur_regions.py .\src\excel\region.py .\src\excel\spreadsheet.py .\src\excel\util.py .\ui\mainwindow.ui .\ui\progressDialog.ui .\ui\settingsDialog.ui -ts .\translations\app_de.ts
+pyside6-lupdate.exe main.py .\src\bridge.py .\src\kml.py .\src\mainwindow.py .\src\map.py .\src\worker.py .\src\excel\config.py .\src\excel\cur_regions.py .\src\excel\region.py .\src\excel\spreadsheet.py .\src\excel\util.py .\ui\mainwindow.ui .\ui\progressDialog.ui .\ui\settingsDialog.ui .\ui\aboutDialog.ui -ts .\translations\app_de.ts
 pyside6-linguist.exe .\translations\app_de.ts
 pyside6-lrelease.exe .\translations\app_de.ts .\translations\app_de.qm

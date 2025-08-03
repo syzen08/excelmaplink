@@ -132,18 +132,18 @@
         <translation>Fehler: {}</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="169"/>
-        <location filename="../src/mainwindow.py" line="174"/>
+        <location filename="../src/mainwindow.py" line="170"/>
+        <location filename="../src/mainwindow.py" line="175"/>
         <source>Missing Map Location</source>
         <translation>Kartendatei fehlt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="169"/>
+        <location filename="../src/mainwindow.py" line="170"/>
         <source>Please select a valid map to open.</source>
         <translation>Bitte wählen sie eine valide Karte zum öffnen aus.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="174"/>
+        <location filename="../src/mainwindow.py" line="175"/>
         <source>Please select a valid map using the &apos;Select File...&apos; Button.</source>
         <translation>Bitte wählen sie eine valide Karte aus, indem sie auf &apos;Datei öffnen...&apos; klicken.</translation>
     </message>
@@ -159,41 +159,64 @@
 <context>
     <name>Spreadsheet</name>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="70"/>
+        <location filename="../src/excel/spreadsheet.py" line="77"/>
         <source>Region Not Found</source>
         <translation>Tour nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="74"/>
+        <location filename="../src/excel/spreadsheet.py" line="81"/>
         <source>Could not find region {} in region sheet {}.
 Please make sure that you have the correct column selected in the settings and the names in the column are the correct format.</source>
         <translation>Die Tour {} konnte im Übersichtsblatt {} nicht gefunden werden.
 Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewählt ist und dass die Namen in der Spalte das Richtige Format haben.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="110"/>
+        <location filename="../src/excel/spreadsheet.py" line="117"/>
         <source>Sheet Not Found</source>
         <translation>Blatt nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="114"/>
+        <location filename="../src/excel/spreadsheet.py" line="121"/>
         <source>Could not find sheet {} or {}. Please check your settings.</source>
         <translation>Das Blatt {} oder {} konnte nicht gefunden werden. Stellen sie sicher, dass die Namen in den Einstellungen stimmen.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="143"/>
+        <location filename="../src/excel/spreadsheet.py" line="150"/>
         <source>The map at {} could not be found.</source>
         <translation>Die Karte bei {} konnte nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="146"/>
+        <location filename="../src/excel/spreadsheet.py" line="153"/>
         <source>Map not found</source>
         <translation>Karte nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="150"/>
+        <location filename="../src/excel/spreadsheet.py" line="157"/>
         <source>The map at {} could not be found. Make sure that the file path is still accessible and exists.</source>
         <translation>Die Karte bei {} konnte nicht gefunden werden. Stellen sie sicher, dass der Ort noch verfügbar ist und existiert.</translation>
+    </message>
+</context>
+<context>
+    <name>aboutDialog</name>
+    <message>
+        <location filename="../ui/aboutDialog.ui" line="14"/>
+        <source>About</source>
+        <translation>Über</translation>
+    </message>
+    <message>
+        <location filename="../ui/aboutDialog.ui" line="20"/>
+        <source>© 2025 David Barthel</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/aboutDialog.ui" line="61"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p align=&quot;center&quot;&gt;&lt;span style=&quot; font-size:20pt; font-weight:700;&quot;&gt;excelmaplink&lt;/span&gt;&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation></translation>
+    </message>
+    <message>
+        <location filename="../ui/aboutDialog.ui" line="68"/>
+        <source>&lt;html&gt;&lt;head/&gt;&lt;body&gt;&lt;p&gt;An interactive map that allow the user to toggle areas on a map which in turn adds or removes the name of that region in an excel spreadsheet.&lt;/p&gt;&lt;p&gt;Made with &amp;lt;3&lt;/p&gt;&lt;/body&gt;&lt;/html&gt;</source>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -252,62 +275,62 @@ Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewä
         <translation>Tournamenspalte</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="85"/>
+        <location filename="../ui/settingsDialog.ui" line="82"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="95"/>
+        <location filename="../ui/settingsDialog.ui" line="92"/>
         <source>Calculation Sheet Settings</source>
         <translation>Berechnungsblatt Einstellungen</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="101"/>
+        <location filename="../ui/settingsDialog.ui" line="98"/>
         <source>Calculation Sheet Name</source>
         <translation>Berechnungsblatt Name</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="108"/>
+        <location filename="../ui/settingsDialog.ui" line="105"/>
         <source>Berechnung</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="115"/>
+        <location filename="../ui/settingsDialog.ui" line="112"/>
         <source>Calculation Sheet Insertion Column</source>
         <translation>Tourenspalte</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="125"/>
+        <location filename="../ui/settingsDialog.ui" line="122"/>
         <source>B</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="132"/>
+        <location filename="../ui/settingsDialog.ui" line="129"/>
         <source>Calculation Row Range</source>
         <translation>Berechnungsbereich</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="144"/>
+        <location filename="../ui/settingsDialog.ui" line="141"/>
         <source>:</source>
         <translation>:</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="161"/>
+        <location filename="../ui/settingsDialog.ui" line="158"/>
         <source>Map Settings</source>
         <translation>Karten Einstellungen</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="167"/>
+        <location filename="../ui/settingsDialog.ui" line="164"/>
         <source>Save map location in Workbook</source>
         <translation>Kartenspeicherort in Arbeitsmappe speichern</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="174"/>
+        <location filename="../ui/settingsDialog.ui" line="171"/>
         <source>Map Location:</source>
         <translation>Kartenspeicherort:</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="194"/>
+        <location filename="../ui/settingsDialog.ui" line="191"/>
         <source>Select File...</source>
         <translation>Datei auswählen...</translation>
     </message>
