@@ -65,7 +65,14 @@ class Spreadsheet:
             self.cur_calc_regions.toggle_region(region_map_name)
         except ValueError as e:
             self.logger.error(f"could not toggle region {region_map_name}: {e}")
-            QMessageBox.critical(self.main_window, QCoreApplication.translate("Spreadsheet", "Region Not Found"), QCoreApplication.translate("Spreadsheet", "Could not find region {} in region sheet {}.\nPlease make sure that you have the correct column selected in the settings and the names in the column are the correct format.").format(region_map_name, self.region_sheet.name))
+            QMessageBox.critical(
+                self.main_window, 
+                QCoreApplication.translate("Spreadsheet", "Region Not Found"), 
+                QCoreApplication.translate(
+                    "Spreadsheet", 
+                    "Could not find region {} in region sheet {}.\nPlease make sure that you have the correct column selected in the settings and the names in the column are the correct format."
+                ).format(region_map_name, self.region_sheet.name)
+            )
         self.logger.debug(f"cur_regions: {self.cur_calc_regions.regions}")
         
         self.calc_sheet.range(range_string(self.config["calc_column"].get_value(), *self.config["calc_range"].get_value())).options(transpose=True).value = [r.excel_name if r is not None else None for r in self.cur_calc_regions.regions]
@@ -98,7 +105,14 @@ class Spreadsheet:
             self.calc_sheet = self.wb.sheets[self.config["calc_sheet"].get_value()]
         except com_error as e:
             self.logger.error(f"could not find sheet {self.config['region_sheet'].get_value()} or {self.config['calc_sheet'].get_value()}: {e}")
-            QMessageBox.critical(self.main_window, QCoreApplication.translate("Spreadsheet", "Sheet Not Found"), QCoreApplication.translate("Spreadsheet", "Could not find sheet {} or {}. Please check your settings.").format(self.config['region_sheet'].get_value(), self.config['calc_sheet'].get_value()))
+            QMessageBox.critical(
+                self.main_window, 
+                QCoreApplication.translate("Spreadsheet", "Sheet Not Found"), 
+                QCoreApplication.translate(
+                    "Spreadsheet", 
+                    "Could not find sheet {} or {}. Please check your settings."
+                ).format(self.config['region_sheet'].get_value(), self.config['calc_sheet'].get_value())
+            )
             settings = self.main_window.show_settings_dialog(self.config)
             if settings:
                 self.load_config(settings)
@@ -121,6 +135,22 @@ class Spreadsheet:
         
     def load_map(self):
         if self.config["save_map_path"].get_value():
+            if not Path(self.config['linked_map'].get_value()).exists():
+                self.logger.error("map does not exist at stored location!")
+                self.main_window.display_error(QCoreApplication.translate(
+                        "Spreadsheet", 
+                        "The map at {} could not be found."
+                    ).format(str(Path(self.config['linked_map'].get_value()))))
+                QMessageBox.critical(
+                    self.main_window, 
+                    QCoreApplication.translate("Spreadsheet", "Map not found"), 
+                    QCoreApplication.translate(
+                        "Spreadsheet", 
+                        "The map at {} could not be found. Make sure that the file path is still accessible and exists."
+                    ).format(str(Path(self.config['linked_map'].get_value())))
+                )
+                #clear webview to signal to user that something is wrong
+                return -1
             self.logger.info(f"loading map from {self.config['linked_map'].get_value()}")
             self.main_window.open_kml_file(Path(self.config["linked_map"].get_value()))
         elif self.config["temp_map"].get_value():

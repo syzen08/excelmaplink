@@ -150,6 +150,11 @@ class MainWindow(QMainWindow):
         ui.setupUi(dialog)
         dialog.show()
         
+    def display_error(self, error: str):
+        self.ui.webEngineView.setHtml(f"""<div style="width:90%;height:200px;position:absolute;top:50%;left:50%;margin-left:-45%;margin-top:-100px;background-color:rgb(243,139,168);border-radius:10px">
+            <h1 style="text-align: center;">{self.tr("Uh Oh! Something went wrong!")}</h1>
+            <p style="text-align: center;"><strong>{self.tr("Error: {}").format(error)}</strong></p>
+            </div>""")
             
     def show_settings_dialog(self, settings: dict = None):
         tempmap = None
@@ -205,8 +210,8 @@ class MainWindow(QMainWindow):
                     self.spreadsheet.load_config(new_settings)
             return new_settings
         else:
-            self.logger.critical("settings dialog cancelled, idk what to do now")
+            self.logger.critical("settings dialog cancelled, this is not implemented")
             self.logger.critical("program in unsafe state, quitting...")
             self.close()
-            raise NotImplementedError("settings dialog was cancelled, program in unsafe state")
+            raise NotImplementedError()
 
