@@ -52,9 +52,16 @@ class Spreadsheet:
         """close the workbook and quit the app when the object is deleted."""
         # if we created the app, we close it, otherwise we just leave it open
         if self.created:
-            self.logger.debug("closing workbook and quitting app...")
+            # if this doesnt properly work, just ignore it, it's not that deep
+            try:
+                self.logger.debug("closing workbook and quitting app...")
+            except Exception:
+                pass
         else:
-            self.logger.debug("excel was not created by me, not closing.")
+            try:
+                self.logger.debug("excel was not created by me, not closing.")
+            except Exception:
+                pass
         if self.wb and self.created:
             self.wb.close()
         if self.app and self.created:

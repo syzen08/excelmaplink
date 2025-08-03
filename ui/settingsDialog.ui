@@ -75,9 +75,6 @@
         </item>
         <item row="2" column="1">
          <widget class="QLineEdit" name="tourSheetTourNameLineEdit">
-          <property name="inputMask">
-           <string/>
-          </property>
           <property name="maxLength">
            <number>4</number>
           </property>
@@ -210,6 +207,19 @@
    </item>
   </layout>
  </widget>
+ <tabstops>
+  <tabstop>tourSheetNameLineEdit</tabstop>
+  <tabstop>tourSheetStartRowSpinBox</tabstop>
+  <tabstop>tourSheetTourNameLineEdit</tabstop>
+  <tabstop>tourSheetMapNameColumnLineEdit</tabstop>
+  <tabstop>calcSheetNameLineEdit</tabstop>
+  <tabstop>calcSheetColumnLineEdit</tabstop>
+  <tabstop>fromSpinbox</tabstop>
+  <tabstop>toSpinbox</tabstop>
+  <tabstop>saveMapLocationCheckBox</tabstop>
+  <tabstop>mapLocationButton</tabstop>
+  <tabstop>mapLocationLineEdit</tabstop>
+ </tabstops>
  <resources/>
  <connections/>
 </ui>

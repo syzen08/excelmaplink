@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'settingsDialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.8.3
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -37,44 +37,44 @@ class Ui_settingsDialog(object):
         self.tourSheetNameLabel = QLabel(self.tourSheetSettings)
         self.tourSheetNameLabel.setObjectName(u"tourSheetNameLabel")
 
-        self.formLayout.setWidget(0, QFormLayout.LabelRole, self.tourSheetNameLabel)
+        self.formLayout.setWidget(0, QFormLayout.ItemRole.LabelRole, self.tourSheetNameLabel)
 
         self.tourSheetNameLineEdit = QLineEdit(self.tourSheetSettings)
         self.tourSheetNameLineEdit.setObjectName(u"tourSheetNameLineEdit")
 
-        self.formLayout.setWidget(0, QFormLayout.FieldRole, self.tourSheetNameLineEdit)
+        self.formLayout.setWidget(0, QFormLayout.ItemRole.FieldRole, self.tourSheetNameLineEdit)
 
         self.tourSheetMapNameColumnLineEdit = QLineEdit(self.tourSheetSettings)
         self.tourSheetMapNameColumnLineEdit.setObjectName(u"tourSheetMapNameColumnLineEdit")
         self.tourSheetMapNameColumnLineEdit.setMaxLength(4)
 
-        self.formLayout.setWidget(3, QFormLayout.FieldRole, self.tourSheetMapNameColumnLineEdit)
+        self.formLayout.setWidget(3, QFormLayout.ItemRole.FieldRole, self.tourSheetMapNameColumnLineEdit)
 
         self.tourSheetStartRowLabel = QLabel(self.tourSheetSettings)
         self.tourSheetStartRowLabel.setObjectName(u"tourSheetStartRowLabel")
 
-        self.formLayout.setWidget(1, QFormLayout.LabelRole, self.tourSheetStartRowLabel)
+        self.formLayout.setWidget(1, QFormLayout.ItemRole.LabelRole, self.tourSheetStartRowLabel)
 
         self.tourSheetMapNameColumnLabel = QLabel(self.tourSheetSettings)
         self.tourSheetMapNameColumnLabel.setObjectName(u"tourSheetMapNameColumnLabel")
 
-        self.formLayout.setWidget(3, QFormLayout.LabelRole, self.tourSheetMapNameColumnLabel)
+        self.formLayout.setWidget(3, QFormLayout.ItemRole.LabelRole, self.tourSheetMapNameColumnLabel)
 
         self.tourSheetStartRowSpinBox = QSpinBox(self.tourSheetSettings)
         self.tourSheetStartRowSpinBox.setObjectName(u"tourSheetStartRowSpinBox")
 
-        self.formLayout.setWidget(1, QFormLayout.FieldRole, self.tourSheetStartRowSpinBox)
+        self.formLayout.setWidget(1, QFormLayout.ItemRole.FieldRole, self.tourSheetStartRowSpinBox)
 
         self.tourSheetTourNameLabel = QLabel(self.tourSheetSettings)
         self.tourSheetTourNameLabel.setObjectName(u"tourSheetTourNameLabel")
 
-        self.formLayout.setWidget(2, QFormLayout.LabelRole, self.tourSheetTourNameLabel)
+        self.formLayout.setWidget(2, QFormLayout.ItemRole.LabelRole, self.tourSheetTourNameLabel)
 
         self.tourSheetTourNameLineEdit = QLineEdit(self.tourSheetSettings)
         self.tourSheetTourNameLineEdit.setObjectName(u"tourSheetTourNameLineEdit")
         self.tourSheetTourNameLineEdit.setMaxLength(4)
 
-        self.formLayout.setWidget(2, QFormLayout.FieldRole, self.tourSheetTourNameLineEdit)
+        self.formLayout.setWidget(2, QFormLayout.ItemRole.FieldRole, self.tourSheetTourNameLineEdit)
 
 
         self.sheetSettingsHBoxLayout.addWidget(self.tourSheetSettings)
@@ -86,28 +86,28 @@ class Ui_settingsDialog(object):
         self.calcSheetNameLabel = QLabel(self.calcSheetSettings)
         self.calcSheetNameLabel.setObjectName(u"calcSheetNameLabel")
 
-        self.formLayout_2.setWidget(0, QFormLayout.LabelRole, self.calcSheetNameLabel)
+        self.formLayout_2.setWidget(0, QFormLayout.ItemRole.LabelRole, self.calcSheetNameLabel)
 
         self.calcSheetNameLineEdit = QLineEdit(self.calcSheetSettings)
         self.calcSheetNameLineEdit.setObjectName(u"calcSheetNameLineEdit")
 
-        self.formLayout_2.setWidget(0, QFormLayout.FieldRole, self.calcSheetNameLineEdit)
+        self.formLayout_2.setWidget(0, QFormLayout.ItemRole.FieldRole, self.calcSheetNameLineEdit)
 
         self.calcSheetColumnLabel = QLabel(self.calcSheetSettings)
         self.calcSheetColumnLabel.setObjectName(u"calcSheetColumnLabel")
 
-        self.formLayout_2.setWidget(1, QFormLayout.LabelRole, self.calcSheetColumnLabel)
+        self.formLayout_2.setWidget(1, QFormLayout.ItemRole.LabelRole, self.calcSheetColumnLabel)
 
         self.calcSheetColumnLineEdit = QLineEdit(self.calcSheetSettings)
         self.calcSheetColumnLineEdit.setObjectName(u"calcSheetColumnLineEdit")
         self.calcSheetColumnLineEdit.setMaxLength(4)
 
-        self.formLayout_2.setWidget(1, QFormLayout.FieldRole, self.calcSheetColumnLineEdit)
+        self.formLayout_2.setWidget(1, QFormLayout.ItemRole.FieldRole, self.calcSheetColumnLineEdit)
 
         self.calcSheetRangeLabel = QLabel(self.calcSheetSettings)
         self.calcSheetRangeLabel.setObjectName(u"calcSheetRangeLabel")
 
-        self.formLayout_2.setWidget(2, QFormLayout.LabelRole, self.calcSheetRangeLabel)
+        self.formLayout_2.setWidget(2, QFormLayout.ItemRole.LabelRole, self.calcSheetRangeLabel)
 
         self.rangeSelectorLayout = QHBoxLayout()
         self.rangeSelectorLayout.setObjectName(u"rangeSelectorLayout")
@@ -129,7 +129,7 @@ class Ui_settingsDialog(object):
         self.rangeSelectorLayout.setStretch(0, 1)
         self.rangeSelectorLayout.setStretch(2, 1)
 
-        self.formLayout_2.setLayout(2, QFormLayout.FieldRole, self.rangeSelectorLayout)
+        self.formLayout_2.setLayout(2, QFormLayout.ItemRole.FieldRole, self.rangeSelectorLayout)
 
 
         self.sheetSettingsHBoxLayout.addWidget(self.calcSheetSettings)
@@ -178,6 +178,16 @@ class Ui_settingsDialog(object):
         self.verticalLayout.addWidget(self.buttonBox)
 
         self.verticalLayout.setStretch(0, 1)
+        QWidget.setTabOrder(self.tourSheetNameLineEdit, self.tourSheetStartRowSpinBox)
+        QWidget.setTabOrder(self.tourSheetStartRowSpinBox, self.tourSheetTourNameLineEdit)
+        QWidget.setTabOrder(self.tourSheetTourNameLineEdit, self.tourSheetMapNameColumnLineEdit)
+        QWidget.setTabOrder(self.tourSheetMapNameColumnLineEdit, self.calcSheetNameLineEdit)
+        QWidget.setTabOrder(self.calcSheetNameLineEdit, self.calcSheetColumnLineEdit)
+        QWidget.setTabOrder(self.calcSheetColumnLineEdit, self.fromSpinbox)
+        QWidget.setTabOrder(self.fromSpinbox, self.toSpinbox)
+        QWidget.setTabOrder(self.toSpinbox, self.saveMapLocationCheckBox)
+        QWidget.setTabOrder(self.saveMapLocationCheckBox, self.mapLocationButton)
+        QWidget.setTabOrder(self.mapLocationButton, self.mapLocationLineEdit)
 
         self.retranslateUi(settingsDialog)
 
@@ -193,7 +203,6 @@ class Ui_settingsDialog(object):
         self.tourSheetStartRowLabel.setText(QCoreApplication.translate("settingsDialog", u"Overview Start Row", None))
         self.tourSheetMapNameColumnLabel.setText(QCoreApplication.translate("settingsDialog", u"Tour Map Name Column", None))
         self.tourSheetTourNameLabel.setText(QCoreApplication.translate("settingsDialog", u"Tour Name Column", None))
-        self.tourSheetTourNameLineEdit.setInputMask("")
         self.tourSheetTourNameLineEdit.setPlaceholderText(QCoreApplication.translate("settingsDialog", u"C", None))
         self.calcSheetSettings.setTitle(QCoreApplication.translate("settingsDialog", u"Calculation Sheet Settings", None))
         self.calcSheetNameLabel.setText(QCoreApplication.translate("settingsDialog", u"Calculation Sheet Name", None))
