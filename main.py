@@ -1,4 +1,5 @@
 import argparse
+import logging
 import sys
 import traceback
 
@@ -6,11 +7,13 @@ from PySide6.QtCore import (
     QLibraryInfo,
     QLocale,
     QLoggingCategory,
+    QtMsgType,
     QTranslator,
-    qSetMessagePattern,
+    qInstallMessageHandler,
 )
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMessageBox
+from rich.logging import RichHandler
 from rich.traceback import install
 
 import resources_rc  # noqa: F401
@@ -26,21 +29,21 @@ except ImportError:
 
 # Guide: Also, wenn ich in der Karte eine mehrere Touren anklicke, soll er den Namen (aus C oder AP ) in den Reiter Berechnung in Spalte B  ab zeile 6 bis 24 auflisten ….
 
-def main():
-    install(show_locals=True)
-    parser = argparse.ArgumentParser(
-        prog="excelmaplink"
-    )
-    parser.add_argument('--debug',
-                        action='store_true')
+def main(logger: logging.Logger):
+
+    parser = argparse.ArgumentParser(prog="excelmaplink")
+    parser.add_argument('--debug', action='store_true')
     debug_mode = parser.parse_args().debug
     if debug_mode:
-        QLoggingCategory.setFilterRules("""*.info=true
-                                        qt.widgets.painting.info=false""")
+        logger.setLevel(logging.DEBUG)
     else:
-        QLoggingCategory.setFilterRules("*.warning=true")
-    qSetMessagePattern("[%{time process}] [%{if-debug}DEBUG%{endif}%{if-info}INFO%{endif}%{if-warning}WARN%{endif}%{if-critical}CRITICAL%{endif}%{if-fatal}FATAL%{endif}] <%{category}>: %{message}")
+        logger.setLevel(logging.WARNING)
+    
+    QLoggingCategory.setFilterRules("""*.info=true
+                                    qt.widgets.painting.info=false""")
+    
     app = QApplication(sys.argv)
+    
     path = QLibraryInfo.location(QLibraryInfo.TranslationsPath)
     translator = QTranslator(app)
     if translator.load(QLocale.system(), 'qtbase', '_', path):
@@ -49,15 +52,39 @@ def main():
     path = ':/translations'
     if translator.load(QLocale.system(), 'app', '_', path):
         app.installTranslator(translator)
+        
     QApplication.setStyle("Fusion")
     app.setWindowIcon(QIcon(":/icons/icon.ico"))
+    logger.debug("init mainwindow")
     window = MainWindow(debug_mode)
     window.show()
     sys.exit(app.exec())
+    
+def qt_message_handler(mode, context, message):
+    match mode:
+        case QtMsgType.QtDebugMsg:
+            qtlogger.debug(message)
+        case QtMsgType.QtInfoMsg:
+            qtlogger.info(message)
+        case QtMsgType.QtWarningMsg:
+            qtlogger.warning(message)
+        case QtMsgType.QtCriticalMsg:
+            qtlogger.error(message)
+        case QtMsgType.QtFatalMsg:
+            qtlogger.critical(message)
+            
 
 if __name__ == "__main__":
     try:
-        main()
+        install(show_locals=True)
+        logging.basicConfig(
+            level="NOTSET", format="[%(name)s]: %(message)s", datefmt="[%X]", handlers=[RichHandler(rich_tracebacks=True)]
+        )
+        logger = logging.getLogger('eml')
+        qtlogger = logging.getLogger('eml.qt')
+        qInstallMessageHandler(qt_message_handler)
+        
+        main(logger)
     except Exception as e:
         print("Unexpected error:", e)
         print(traceback.format_exc())

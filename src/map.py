@@ -1,15 +1,11 @@
+import logging
 import multiprocessing
 from pathlib import Path
 
 import folium
 from branca.element import Element
 from folium.template import Template
-from PySide6.QtCore import (  # noqa: F401
-    QCoreApplication,
-    QLoggingCategory,
-    qCDebug,
-    qCInfo,
-)
+from PySide6.QtCore import QCoreApplication  # noqa: F401
 from PySide6.QtWebChannel import QWebChannel
 
 from src.bridge import MapBridge
@@ -18,6 +14,7 @@ from src.kml import KMLReader
 
 class Map:
     def __init__(self, lat, lon, zoom, path: Path):
+        self.logger = logging.getLogger("eml.map")
         self.lat = lat
         self.lon = lon
         self.zoom = zoom
@@ -26,7 +23,7 @@ class Map:
         if path.exists():
             self.path = path
         else:
-            raise Exception("path does not exist")
+            raise FileNotFoundError("path does not exist")
         
         #setup webchannel
         self.webchannel = QWebChannel()
@@ -103,17 +100,15 @@ class Map:
         </script>
         """)
         self.map.get_root().header.add_child(webchanneljs)
-
-        self.log_category = QLoggingCategory("map")
         
         multiprocessing.freeze_support()
 
 
     def save(self, progress_callback):
         # ? is there a way to speed this up?
-        qCInfo(self.log_category, 'saving...')
+        self.logger.info('saving...')
         self.map.save(str(Path(self.path / "map.html")))
-        qCInfo(self.log_category, 'saved')
+        self.logger.info('saved')
 
     def get_html(self):
         return self.map.get_root().render()
@@ -144,16 +139,16 @@ class Map:
             p1.join()
 
             # add points to map as markers
-            qCInfo(self.log_category, f"adding {len(points)} points...")
+            self.logger.info(f"adding {len(points)} points...")
             for i, point in enumerate(points):
                 folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3]).add_to(fg)
 
             # add polygons to map
-            qCInfo(self.log_category, f"adding {len(polygons)} polygons...")
+            self.logger.info(f"adding {len(polygons)} polygons...")
             for i, polygon in enumerate(polygons):
                 folium.Polygon(locations=polygon[0], color=f"#{polygon[3][0]}", fill_color=f"#{polygon[4]}", weight=polygon[3][1], tooltip=polygon[1], popup=polygon[2], fillOpacity=0.5).add_to(fg)
 
-        qCInfo(self.log_category, "done")
+        self.logger.info("done")
 
 class CustomFeatureGroup(folium.FeatureGroup):
     

@@ -1,4 +1,5 @@
-from PySide6.QtCore import QLoggingCategory, qCDebug, qCInfo
+import logging
+
 from xlwings import Sheet
 
 
@@ -7,7 +8,7 @@ class ConfigOption:
         self.sheet = sheet
         self.name = name
         self.column = column
-        self.log_category = QLoggingCategory("config")
+        self.logger = logging.getLogger("eml.spreadsheet.config")
         if len(type) > 1:
             raise ValueError("type must be a single character. got: " + type)
         if type not in ["s", "i", "b", "t"]:
@@ -19,7 +20,7 @@ class ConfigOption:
         if not self.sheet[self.column + "1"].value == self.name:
             self.sheet[self.column + "1"].value = self.name
             self.sheet[self.column + "2"].value = ""
-            qCDebug(self.log_category, f"reset config option {self.name}")
+            self.logger.debug(f"reset config option {self.name}")
             
     def convert_to_type(self):
         match self.type:
@@ -44,7 +45,7 @@ class ConfigOption:
     
     def set_value(self, value: str):
         """sets the value of the config option."""
-        qCInfo(self.log_category, f"set config option {self.name} to {value}")
+        self.logger.info(f"set config option {self.name} to {value}")
         if value is None:
             value = "NONE"
         if isinstance(value, tuple):

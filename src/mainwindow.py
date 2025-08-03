@@ -1,14 +1,11 @@
+import logging
 from pathlib import Path
 
 from PySide6.QtCore import (
-    QLoggingCategory,
     Qt,
     QTemporaryDir,
     QThreadPool,
     QUrl,
-    qCDebug,
-    qCInfo,
-    qCWarning,
 )
 from PySide6.QtWebEngineCore import QWebEngineProfile, QWebEngineSettings
 from PySide6.QtWidgets import (
@@ -31,10 +28,10 @@ from ui.settingsDialog_ui import Ui_settingsDialog
 class MainWindow(QMainWindow):
     def __init__(self, debug: bool):
         super().__init__()
-        self.log_category = QLoggingCategory("mainwindow")
+        self.logger = logging.getLogger("eml.mainwindow")
 
-        qCDebug(self.log_category, "loading ui...")
-        qCDebug(self.log_category, f"debug: {debug}")
+        self.logger.debug("loading ui...")
+        self.logger.debug(f"debug: {debug}")
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -44,7 +41,7 @@ class MainWindow(QMainWindow):
         self.spreadsheet = None
 
         # init map and save url for loading later
-        qCDebug(self.log_category, "initializing map...")
+        self.logger.debug("initializing map...")
         self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
         self.map_url = QUrl().fromLocalFile(str(Path(self.tempdir.path() + "/map.html")))
         self.ui.webEngineView.page().setWebChannel(self.map.webchannel)
@@ -71,7 +68,7 @@ class MainWindow(QMainWindow):
         # allow webengine to load external content, needed for leaflet
         s = QWebEngineProfile.defaultProfile().settings()
         s.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
-        qCDebug(self.log_category, "loading map...")
+        self.logger.debug("loading map...")
         self.load_map()
 
     def reset_highlight(self):
@@ -82,7 +79,7 @@ class MainWindow(QMainWindow):
             self.setCursor(Qt.CursorShape.ArrowCursor)
             self.ui.webEngineView.setUrl(self.map_url)
         
-        qCInfo(self.log_category, "saving map...")
+        self.logger.info("saving map...")
         self.ui.statusbar.showMessage("saving map...")
         worker = Worker(self.map.save)
         worker.signals.finished.connect(finished)
@@ -102,13 +99,13 @@ class MainWindow(QMainWindow):
                 pbarui.message.setText(message)
 
         def finished():
-            qCInfo(self.log_category, "loading thread finished")
+            self.logger.info("loading thread finished")
             self.setCursor(Qt.CursorShape.ArrowCursor)
             self.load_map()
             pbar.close()
         
-        qCDebug(self.log_category, "open_kml_file triggered")
-        qCInfo(self.log_category, f"starting loading of kml... (path: {path})")
+        self.logger.debug("open_kml_file triggered")
+        self.logger.info(f"starting loading of kml... (path: {path})")
         # clear webengineview
         self.ui.webEngineView.setUrl("about:blank")
         self.reset_map()
@@ -126,7 +123,7 @@ class MainWindow(QMainWindow):
         self.threadpool.start(worker)
 
     def clicked_in_map(self, data: str):
-        qCDebug(self.log_category, f"data: |{data}|")
+        self.logger.debug(f"data: |{data}|")
         self.ui.statusbar.showMessage(f"clicked on: {data}", 5000)
         self.spreadsheet.toggle_region(data)
             
@@ -136,7 +133,7 @@ class MainWindow(QMainWindow):
     def openExcelFile(self):
         path = Path(QFileDialog.getOpenFileName(self, self.tr("Open Excel File"), "", self.tr("Excel Files (*.xlsx *.xls)"))[0])
         if path.exists() and path.is_file():
-            qCInfo(self.log_category, f"opening excel file: {path}")
+            self.logger.info(f"opening excel file: {path}")
             if self.spreadsheet:
                 self.spreadsheet.__del__()  # close the old spreadsheet if it exists
             self.spreadsheet = Spreadsheet(path, self)
@@ -168,7 +165,7 @@ class MainWindow(QMainWindow):
                 dialog.accept()
             else:
                 QMessageBox.critical(self, self.tr("Missing Map Location"), self.tr("Please select a valid map using the 'Select File...' Button."))
-        qCDebug(self.log_category, "showing settings dialog")
+        self.logger.debug("showing settings dialog")
         dialog = QDialog(self)
         ui = Ui_settingsDialog()
         ui.setupUi(dialog)
@@ -198,12 +195,12 @@ class MainWindow(QMainWindow):
                 "linked_map": ui.mapLocationLineEdit.text(),
                 "temp_map": tempmap if ui.saveMapLocationCheckBox.isChecked() else None
             }
-            qCDebug(self.log_category, f"settings: {new_settings}")
+            self.logger.debug(f"settings: {new_settings}")
             if settings:
                 if self.spreadsheet:
                     self.spreadsheet.load_config(new_settings)
             return new_settings
         else:
-            qCWarning(self.log_category, "settings dialog cancelled, idk what to do now")
+            self.logger.warning("settings dialog cancelled, idk what to do now")
             raise NotImplementedError("settings dialog was cancelled")
 

@@ -1,3 +1,4 @@
+import logging
 import warnings
 
 # hide pretty print warning, as installing lxml breaks everything
@@ -7,13 +8,14 @@ with warnings.catch_warnings(action="ignore"):
     from fastkml.utils import find_all
 
 from pygeoif.geometry import MultiPolygon, Point, Polygon
-from PySide6.QtCore import QCoreApplication, QLoggingCategory, qCInfo
+from PySide6.QtCore import QCoreApplication
 
 
 class KMLReader:
     def __init__(self, kml_path=None):
         self.kml_path = kml_path
         self.kml = None
+        self.logger = logging.getLogger("eml.kml")
 
     def loadKML(self, kml_path, progress_callback):
         if kml_path is not None:
@@ -22,19 +24,19 @@ class KMLReader:
         if self.kml_path is None:
             raise Exception("No KML file specified")
         
-        qCInfo(QLoggingCategory("kml"), f"parsing {self.kml_path}...")
+        self.logger.info(f"parsing {self.kml_path}...")
         progress_callback.emit(QCoreApplication.translate("KMLReader", "parsing {}...").format(self.kml_path))
         self.kml = kml.KML.parse(self.kml_path)
-        qCInfo(QLoggingCategory("kml"), "loading placemarks...")
+        self.logger.info("loading placemarks...")
         progress_callback.emit(QCoreApplication.translate("KMLReader", "loading placemarks..."))
         self.placemarks = list(find_all(self.kml, of_type=Placemark)) # TODO: reimplement using dictionary for faster loading
-        qCInfo(QLoggingCategory("kml"), f"loaded {len(self.placemarks)} placemarks")
+        self.logger.info(f"loaded {len(self.placemarks)} placemarks")
         progress_callback.emit(QCoreApplication.translate("KMLReader", "loading styles..."))
-        qCInfo(QLoggingCategory("kml"), "creating style index...")
+        self.logger.info("creating style index...")
         self.styles = {}
         for style in self.kml.features[0].styles:
             self.styles[style.id] = style
-        qCInfo(QLoggingCategory("kml"), f"loaded {len(self.styles)} styles")
+        self.logger.info(f"loaded {len(self.styles)} styles")
 
     def convert_color(self, color: str) -> str:
         """Converts the colors from the format `#AABBGGRR` used in kml to the more standard `#RRGGBBAA`"""
@@ -49,16 +51,16 @@ class KMLReader:
     def getPoints(self, points):
         # TODO: add style support
         # iterate through all placemarks
-        qCInfo(QLoggingCategory("kml"), 'point process started')
+        self.logger.info('point process started')
         for i, placemark in enumerate(self.placemarks):
             point = placemark.geometry
             if isinstance(point, Point):
                 points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description))
-        qCInfo(QLoggingCategory("kml"), str(len(points)))
+        self.logger.info(str(len(points)))
 
 
     def getPolygons(self, polygons):
-        qCInfo(QLoggingCategory("kml"), 'polygon process started')
+        self.logger.info('polygon process started')
         for i, placemark in enumerate(self.placemarks):
             # if placemark is invisible, skip
             if placemark.visibility is False:
@@ -106,7 +108,7 @@ class KMLReader:
 
                 polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
 
-        qCInfo(QLoggingCategory("kml"), str(len(polygons)))
+        self.logger.info(str(len(polygons)))
 
 if __name__ == "__main__":
     kmlr = KMLReader(kml_path="C:\\Users\\David\\Documents\\DD Touren Test.kml")
