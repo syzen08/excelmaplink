@@ -22,17 +22,19 @@ from PySide6.QtWidgets import (
 from src.excel.spreadsheet import Spreadsheet
 from src.map import Map
 from src.worker import Worker
+from ui.aboutDialog_ui import Ui_aboutDialog
 from ui.mainwindow_ui import Ui_MainWindow
 from ui.progressDialog_ui import Ui_progressDialog
 from ui.settingsDialog_ui import Ui_settingsDialog
 
 
 class MainWindow(QMainWindow):
-    def __init__(self):
+    def __init__(self, debug: bool):
         super().__init__()
         self.log_category = QLoggingCategory("mainwindow")
 
         qCDebug(self.log_category, "loading ui...")
+        qCDebug(self.log_category, f"debug: {debug}")
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -53,6 +55,7 @@ class MainWindow(QMainWindow):
         # self.ui.actionLoad_KML.setVisible(False)
         self.ui.actionReload.triggered.connect(self.load_map)
         self.ui.actionAbout_Qt.triggered.connect(lambda: QApplication.aboutQt())
+        self.ui.actionAbout.triggered.connect(self.show_about_dialog)
         self.ui.actionExit.triggered.connect(self.close)
         self.ui.actionOpen_Excel.triggered.connect(self.openExcelFile)
         self.ui.actionReset_Highlight.triggered.connect(self.reset_highlight)
@@ -61,6 +64,9 @@ class MainWindow(QMainWindow):
 
         self.ui.webEngineView.loadFinished.connect(lambda: self.ui.statusbar.showMessage("ready", 5000))
         self.ui.webEngineView.loadStarted.connect(lambda: self.ui.statusbar.showMessage("loading..."))
+
+        if not debug:
+            self.ui.menubar.removeAction(self.ui.menuDebug.menuAction())
 
         # allow webengine to load external content, needed for leaflet
         s = QWebEngineProfile.defaultProfile().settings()
@@ -140,6 +146,13 @@ class MainWindow(QMainWindow):
         self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
         self.ui.webEngineView.page().setWebChannel(self.map.webchannel)
         self.map.map_bridge.region_clicked_signal.connect(self.clicked_in_map)
+            
+    def show_about_dialog(self):
+        dialog = QDialog(self)
+        ui = Ui_aboutDialog()
+        ui.setupUi(dialog)
+        dialog.show()
+        
             
     def show_settings_dialog(self, settings: dict = None):
         tempmap = None

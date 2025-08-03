@@ -53,11 +53,7 @@ class Spreadsheet:
             "temp_map": ConfigOption(self.config_sheet, "temp_map", "J", "s")
         }
 
-        if settings:
-            self.import_settings(settings)
-            self.populate_cur_regions()
-            self.load_map()
-
+        self.load_config()
     def __del__(self):
         """close the workbook and quit the app when the object is deleted."""
         # if we created the app, we close it, otherwise we just leave it open
@@ -100,6 +96,9 @@ class Spreadsheet:
                 self.config[key].set_value(value)
             else:
                 qCWarning(self.log_category, f"unknown config option {key}, ignoring.")
+        qCDebug(self.log_category, "settings imported successfully")
+        
+    def get_sheets(self):
         try:
             self.region_sheet = self.wb.sheets[self.config["region_sheet"].get_value()]
             self.calc_sheet = self.wb.sheets[self.config["calc_sheet"].get_value()]
@@ -108,9 +107,8 @@ class Spreadsheet:
             QMessageBox.critical(self.main_window, QCoreApplication.translate("Spreadsheet", "Sheet Not Found"), QCoreApplication.translate("Spreadsheet", "Could not find sheet {} or {}. Please check your settings.").format(self.config['region_sheet'].get_value(), self.config['calc_sheet'].get_value()))
             settings = self.main_window.show_settings_dialog(self.config)
             if settings:
-                self.import_settings(settings)
-            return
-        qCDebug(self.log_category, "settings imported successfully")
+                self.load_config(settings)
+                return -1
         
     def populate_cur_regions(self):
         cur_regions = []
@@ -134,8 +132,10 @@ class Spreadsheet:
         else:
             raise NotImplementedError("TODO: implement loading of temp map")
         
-    def load_config(self, settings: dict):
+    def load_config(self, settings: dict = None):
         if settings:
             self.import_settings(settings)
+        if self.get_sheets() == -1:
+            return
         self.populate_cur_regions()
         self.load_map()

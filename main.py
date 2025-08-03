@@ -1,3 +1,4 @@
+import argparse
 import sys
 import traceback
 
@@ -8,18 +9,36 @@ from PySide6.QtCore import (
     QTranslator,
     qSetMessagePattern,
 )
+from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMessageBox
 from rich.traceback import install
 
-import translations_rc  # noqa: F401
+import resources_rc  # noqa: F401
 from src.mainwindow import MainWindow
+
+# set taskbar icon
+try:
+    from ctypes import windll
+    appid = "com.syzen.excelmaplink.1.0"
+    windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
+except ImportError:
+    pass
 
 # Guide: Also, wenn ich in der Karte eine mehrere Touren anklicke, soll er den Namen (aus C oder AP ) in den Reiter Berechnung in Spalte B  ab zeile 6 bis 24 auflisten ….
 
 def main():
     install(show_locals=True)
-    QLoggingCategory.setFilterRules("""*.info=true
-                                    qt.widgets.painting.info=false""")
+    parser = argparse.ArgumentParser(
+        prog="excelmaplink"
+    )
+    parser.add_argument('--debug',
+                        action='store_true')
+    debug_mode = parser.parse_args().debug
+    if debug_mode:
+        QLoggingCategory.setFilterRules("""*.info=true
+                                        qt.widgets.painting.info=false""")
+    else:
+        QLoggingCategory.setFilterRules("*.warning=true")
     qSetMessagePattern("[%{time process}] [%{if-debug}DEBUG%{endif}%{if-info}INFO%{endif}%{if-warning}WARN%{endif}%{if-critical}CRITICAL%{endif}%{if-fatal}FATAL%{endif}] <%{category}>: %{message}")
     app = QApplication(sys.argv)
     path = QLibraryInfo.location(QLibraryInfo.TranslationsPath)
@@ -31,7 +50,8 @@ def main():
     if translator.load(QLocale.system(), 'app', '_', path):
         app.installTranslator(translator)
     QApplication.setStyle("Fusion")
-    window = MainWindow()
+    app.setWindowIcon(QIcon(":/icons/icon.ico"))
+    window = MainWindow(debug_mode)
     window.show()
     sys.exit(app.exec())
 

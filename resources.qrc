@@ -1,0 +1,7 @@
+<RCC>
+  <qresource>
+    <file>icons/icon.ico</file>
+    <file>icons/icon.png</file>
+    <file>translations/app_de.qm</file>
+  </qresource>
+</RCC>
