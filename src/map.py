@@ -100,8 +100,6 @@ class Map:
         </script>
         """)
         self.map.get_root().header.add_child(webchanneljs)
-        
-        multiprocessing.freeze_support()
 
 
     def save(self, progress_callback):

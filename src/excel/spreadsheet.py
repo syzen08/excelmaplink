@@ -47,7 +47,7 @@ class Spreadsheet:
             "temp_map": ConfigOption(self.config_sheet, "temp_map", "J", "s")
         }
 
-        self.load_config()
+        self.load_config(settings)
     def __del__(self):
         """close the workbook and quit the app when the object is deleted."""
         # if we created the app, we close it, otherwise we just leave it open

@@ -2,6 +2,7 @@ import argparse
 import logging
 import sys
 import traceback
+from multiprocessing import freeze_support
 
 from PySide6.QtCore import (
     QLibraryInfo,
@@ -75,6 +76,7 @@ def qt_message_handler(mode, context, message):
             
 
 if __name__ == "__main__":
+    freeze_support()
     try:
         install(show_locals=True)
         logging.basicConfig(
