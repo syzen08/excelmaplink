@@ -4,17 +4,17 @@
 <context>
     <name>KMLReader</name>
     <message>
-        <location filename="../src/kml.py" line="26"/>
+        <location filename="../src/kml.py" line="28"/>
         <source>parsing {}...</source>
         <translation>Parse {}...</translation>
     </message>
     <message>
-        <location filename="../src/kml.py" line="29"/>
+        <location filename="../src/kml.py" line="31"/>
         <source>loading placemarks...</source>
         <translation>Lade Markierungen...</translation>
     </message>
     <message>
-        <location filename="../src/kml.py" line="32"/>
+        <location filename="../src/kml.py" line="34"/>
         <source>loading styles...</source>
         <translation>Lade Styles...</translation>
     </message>
@@ -22,19 +22,19 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../main.py" line="46"/>
+        <location filename="../main.py" line="95"/>
         <source>Unexpected error: {}</source>
         <translation>Unerwarteter Fehler: {}</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="14"/>
         <source>MainWindow</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="40"/>
         <source>about:blank</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="58"/>
@@ -102,38 +102,48 @@
         <translation>Arbeitsmappen Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="87"/>
+        <location filename="../src/mainwindow.py" line="90"/>
         <source>Select KML File</source>
         <translation>KML-Datei auswählen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="87"/>
+        <location filename="../src/mainwindow.py" line="90"/>
         <source>KML Files (*.kml)</source>
         <translation>KML Datei (*.kml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="131"/>
+        <location filename="../src/mainwindow.py" line="134"/>
         <source>Open Excel File</source>
         <translation>Excel Arbeitsmappe öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="131"/>
+        <location filename="../src/mainwindow.py" line="134"/>
         <source>Excel Files (*.xlsx *.xls)</source>
         <translation>Excel Arbeitsmappen (*.xlsx *.xls)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="152"/>
-        <location filename="../src/mainwindow.py" line="157"/>
+        <location filename="../src/mainwindow.py" line="158"/>
+        <source>Uh Oh! Something went wrong!</source>
+        <translation>Ups! Etwas ist schiefgelaufen!</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.py" line="158"/>
+        <source>Error: {}</source>
+        <translation>Fehler: {}</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.py" line="169"/>
+        <location filename="../src/mainwindow.py" line="174"/>
         <source>Missing Map Location</source>
         <translation>Kartendatei fehlt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="152"/>
+        <location filename="../src/mainwindow.py" line="169"/>
         <source>Please select a valid map to open.</source>
         <translation>Bitte wählen sie eine valide Karte zum öffnen aus.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="157"/>
+        <location filename="../src/mainwindow.py" line="174"/>
         <source>Please select a valid map using the &apos;Select File...&apos; Button.</source>
         <translation>Bitte wählen sie eine valide Karte aus, indem sie auf &apos;Datei öffnen...&apos; klicken.</translation>
     </message>
@@ -141,7 +151,7 @@
 <context>
     <name>Map</name>
     <message>
-        <location filename="../src/map.py" line="129"/>
+        <location filename="../src/map.py" line="122"/>
         <source>adding elements...</source>
         <translation>Elemente werden hinzugefügt...</translation>
     </message>
@@ -149,26 +159,41 @@
 <context>
     <name>Spreadsheet</name>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="78"/>
+        <location filename="../src/excel/spreadsheet.py" line="70"/>
         <source>Region Not Found</source>
         <translation>Tour nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="78"/>
+        <location filename="../src/excel/spreadsheet.py" line="74"/>
         <source>Could not find region {} in region sheet {}.
 Please make sure that you have the correct column selected in the settings and the names in the column are the correct format.</source>
-        <translation>Die tour {} konnte im Übersichtsblatt {} nicht gefunden werden.
+        <translation>Die Tour {} konnte im Übersichtsblatt {} nicht gefunden werden.
 Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewählt ist und dass die Namen in der Spalte das Richtige Format haben.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="108"/>
+        <location filename="../src/excel/spreadsheet.py" line="110"/>
         <source>Sheet Not Found</source>
         <translation>Blatt nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="108"/>
+        <location filename="../src/excel/spreadsheet.py" line="114"/>
         <source>Could not find sheet {} or {}. Please check your settings.</source>
-        <translation type="unfinished">Das Blatt {} oder {} konnte nicht gefunden werden. Stellen sie sicher, dass die Namen in den Einstellungen stimmen.</translation>
+        <translation>Das Blatt {} oder {} konnte nicht gefunden werden. Stellen sie sicher, dass die Namen in den Einstellungen stimmen.</translation>
+    </message>
+    <message>
+        <location filename="../src/excel/spreadsheet.py" line="143"/>
+        <source>The map at {} could not be found.</source>
+        <translation>Die Karte bei {} konnte nicht gefunden werden.</translation>
+    </message>
+    <message>
+        <location filename="../src/excel/spreadsheet.py" line="146"/>
+        <source>Map not found</source>
+        <translation>Karte nicht gefunden</translation>
+    </message>
+    <message>
+        <location filename="../src/excel/spreadsheet.py" line="150"/>
+        <source>The map at {} could not be found. Make sure that the file path is still accessible and exists.</source>
+        <translation>Die Karte bei {} konnte nicht gefunden werden. Stellen sie sicher, dass der Ort noch verfügbar ist und existiert.</translation>
     </message>
 </context>
 <context>
@@ -176,12 +201,12 @@ Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewä
     <message>
         <location filename="../ui/progressDialog.ui" line="41"/>
         <source>Dialog</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/progressDialog.ui" line="50"/>
         <source>TextLabel</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
 </context>
 <context>
@@ -204,12 +229,12 @@ Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewä
     <message>
         <location filename="../ui/settingsDialog.ui" line="38"/>
         <source>Übersicht</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/settingsDialog.ui" line="48"/>
         <source>AP</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/settingsDialog.ui" line="55"/>
@@ -229,7 +254,7 @@ Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewä
     <message>
         <location filename="../ui/settingsDialog.ui" line="85"/>
         <source>C</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/settingsDialog.ui" line="95"/>
@@ -244,7 +269,7 @@ Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewä
     <message>
         <location filename="../ui/settingsDialog.ui" line="108"/>
         <source>Berechnung</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/settingsDialog.ui" line="115"/>
@@ -254,7 +279,7 @@ Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewä
     <message>
         <location filename="../ui/settingsDialog.ui" line="125"/>
         <source>B</source>
-        <translation type="unfinished"></translation>
+        <translation></translation>
     </message>
     <message>
         <location filename="../ui/settingsDialog.ui" line="132"/>
