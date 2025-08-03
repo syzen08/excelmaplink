@@ -4,17 +4,17 @@
 <context>
     <name>KMLReader</name>
     <message>
-        <location filename="../src/kml.py" line="28"/>
+        <location filename="../src/kml.py" line="43"/>
         <source>parsing {}...</source>
         <translation>Parse {}...</translation>
     </message>
     <message>
-        <location filename="../src/kml.py" line="31"/>
+        <location filename="../src/kml.py" line="46"/>
         <source>loading placemarks...</source>
         <translation>Lade Markierungen...</translation>
     </message>
     <message>
-        <location filename="../src/kml.py" line="34"/>
+        <location filename="../src/kml.py" line="49"/>
         <source>loading styles...</source>
         <translation>Lade Styles...</translation>
     </message>
@@ -107,9 +107,13 @@
         <translation>KML-Datei auswählen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="90"/>
         <source>KML Files (*.kml)</source>
-        <translation>KML Datei (*.kml)</translation>
+        <translation type="vanished">KML Datei (*.kml)</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.py" line="90"/>
+        <source>KML Files (*.kml *.kmz)</source>
+        <translation>KML Datei (*.kml *kmz)</translation>
     </message>
     <message>
         <location filename="../src/mainwindow.py" line="134"/>
@@ -132,18 +136,18 @@
         <translation>Fehler: {}</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="170"/>
-        <location filename="../src/mainwindow.py" line="175"/>
+        <location filename="../src/mainwindow.py" line="171"/>
+        <location filename="../src/mainwindow.py" line="176"/>
         <source>Missing Map Location</source>
         <translation>Kartendatei fehlt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="170"/>
+        <location filename="../src/mainwindow.py" line="171"/>
         <source>Please select a valid map to open.</source>
         <translation>Bitte wählen sie eine valide Karte zum öffnen aus.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="175"/>
+        <location filename="../src/mainwindow.py" line="176"/>
         <source>Please select a valid map using the &apos;Select File...&apos; Button.</source>
         <translation>Bitte wählen sie eine valide Karte aus, indem sie auf &apos;Datei öffnen...&apos; klicken.</translation>
     </message>
