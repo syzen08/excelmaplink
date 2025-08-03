@@ -46,3 +46,18 @@ to build the executable, run
 pyinstaller .\main.spec
 ```
 the finished executable will be in the `dist` folder.
+
+## Translation
+from inside the venv run 
+```
+.\translate.ps1
+```
+this will update the translation files and open Linguist.
+
+Once you're done, just close Linguist and it will generate the .qm binaries.
+
+make sure to run
+```
+pyside6-rcc .\resources.qrc -o .\resources_rc.py
+```
+to update the resources used by qt.
