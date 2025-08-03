@@ -54,7 +54,7 @@ from inside the venv run
 ```
 this will update the translation files and open Linguist.
 
-Once you're done, just close Linguist and it will generate the .qm binaries.
+once you're done, save and close Linguist and it will generate the .qm binaries.
 
 make sure to run
 ```
