@@ -1,4 +1,5 @@
 import logging
+from typing import Any
 
 from xlwings import Sheet
 
@@ -22,6 +23,9 @@ class ConfigOption:
             self.sheet[self.column + "2"].value = ""
             self.logger.debug(f"reset config option {self.name}")
             
+    def __str__(self) -> str:
+        return str(self.get_value())
+            
     def convert_to_type(self):
         match self.type:
             case "s":
@@ -43,10 +47,10 @@ class ConfigOption:
             return None
         return self.convert_to_type()
     
-    def set_value(self, value: str):
+    def set_value(self, value: Any):
         """sets the value of the config option."""
         self.logger.info(f"set config option {self.name} to {value}")
-        if value is None:
+        if value is None or value in ["None", "none", "NONE"]:
             value = "NONE"
         if isinstance(value, tuple):
             value = "@@".join(map(str, value))

@@ -157,7 +157,9 @@ class MainWindow(QMainWindow):
             if ui.saveMapLocationCheckBox.isChecked() and (Path(ui.mapLocationLineEdit.text()).exists() and Path(ui.mapLocationLineEdit.text()).is_file()):
                 dialog.accept()
             elif not ui.saveMapLocationCheckBox.isChecked():
-                tempmap = self.select_kml_file() #BUG: make this actually store in the settings dict, that would be nice
+                nonlocal tempmap
+                tempmap = self.select_kml_file()
+                self.logger.debug(f"selected temp map: {tempmap}")
                 if not tempmap:
                     QMessageBox.critical(self, self.tr("Missing Map Location"), self.tr("Please select a valid map to open."))
                     validate_kml_path()
@@ -170,6 +172,8 @@ class MainWindow(QMainWindow):
         ui = Ui_settingsDialog()
         ui.setupUi(dialog)
         if settings:
+            self.logger.debug("opened with settings dict, filling in gui")
+            self.logger.debug(settings["linked_map"].get_value())
             ui.tourSheetNameLineEdit.setText(settings["region_sheet"].get_value())
             ui.tourSheetMapNameColumnLineEdit.setText(settings["region_map_name_column"].get_value())
             ui.tourSheetStartRowSpinBox.setValue(settings["region_sheet_start_row"].get_value())
@@ -193,7 +197,7 @@ class MainWindow(QMainWindow):
                 "calc_range": (ui.fromSpinbox.value(), ui.toSpinbox.value()),
                 "save_map_path": ui.saveMapLocationCheckBox.isChecked(),
                 "linked_map": ui.mapLocationLineEdit.text(),
-                "temp_map": tempmap if ui.saveMapLocationCheckBox.isChecked() else None
+                "temp_map": tempmap
             }
             self.logger.debug(f"settings: {new_settings}")
             if settings:
@@ -201,6 +205,8 @@ class MainWindow(QMainWindow):
                     self.spreadsheet.load_config(new_settings)
             return new_settings
         else:
-            self.logger.warning("settings dialog cancelled, idk what to do now")
-            raise NotImplementedError("settings dialog was cancelled")
+            self.logger.critical("settings dialog cancelled, idk what to do now")
+            self.logger.critical("program in unsafe state, quitting...")
+            self.close()
+            raise NotImplementedError("settings dialog was cancelled, program in unsafe state")
 

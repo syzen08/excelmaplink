@@ -114,7 +114,7 @@ class Spreadsheet:
                 region = region_from_excel_name(cell, self.config, self.region_sheet)
                 cur_regions.append(region)
             except ValueError as e:
-                self.logger.warning(f"could not find region {cell} in region sheet {self.region_sheet.name}: {e}")
+                self.logger.error(f"could not find region {cell} in region sheet {self.region_sheet.name}: {e}")
                 cur_regions.append(None)
         self.cur_calc_regions = CurrentRegions(cur_regions, self.config["calc_range"].get_value()[1] - self.config["calc_range"].get_value()[0] + 1, self.main_window)
         self.logger.debug(f"current calc regions: {self.cur_calc_regions.regions}")
@@ -123,8 +123,15 @@ class Spreadsheet:
         if self.config["save_map_path"].get_value():
             self.logger.info(f"loading map from {self.config['linked_map'].get_value()}")
             self.main_window.open_kml_file(Path(self.config["linked_map"].get_value()))
+        elif self.config["temp_map"].get_value():
+            self.logger.info(f"loading temp map from {self.config['temp_map'].get_value()}")
+            self.main_window.open_kml_file(Path(self.config['temp_map'].get_value()))
+            self.logger.info("wiping temp map config")
+            self.config['temp_map'].set_value(None)
         else:
-            raise NotImplementedError("TODO: implement loading of temp map")
+            self.logger.warning("no map location found!")
+            new_settings = self.main_window.show_settings_dialog(self.config)
+            self.load_config(new_settings)
         
     def load_config(self, settings: dict = None):
         if settings:
