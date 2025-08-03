@@ -111,7 +111,7 @@ class Map:
     def get_html(self):
         return self.map.get_root().render()
     
-    def load_placemarks(self, kml_path, progress_callback):
+    def load_placemarks(self, kml_path: Path, progress_callback):
         progress_callback.emit("")
 
         self.kml_reader.loadKML(kml_path, progress_callback)

@@ -87,7 +87,7 @@ class MainWindow(QMainWindow):
         self.threadpool.start(worker)
 
     def select_kml_file(self):
-        path, _ = QFileDialog.getOpenFileName(self, self.tr("Select KML File"), "", self.tr("KML Files (*.kml)"))
+        path, _ = QFileDialog.getOpenFileName(self, self.tr("Select KML File"), "", self.tr("KML Files (*.kml *.kmz)"))
         if path and Path(path).exists() and Path(path).is_file():
             return Path(path)
         else:
@@ -157,6 +157,7 @@ class MainWindow(QMainWindow):
             </div>"""
         html = html.format(self.tr("Uh Oh! Something went wrong!"), self.tr("Error: {}").format(error))
         self.ui.webEngineView.setHtml(html)
+        
     def show_settings_dialog(self, settings: dict = None):
         tempmap = None
         def validate_kml_path():

@@ -1,5 +1,7 @@
 import logging
 import warnings
+from pathlib import Path
+from zipfile import ZipFile
 
 # hide pretty print warning, as installing lxml breaks everything
 with warnings.catch_warnings(action="ignore"):
@@ -17,16 +19,29 @@ class KMLReader:
         self.kml = None
         self.logger = logging.getLogger("eml.kml")
 
-    def loadKML(self, kml_path, progress_callback):
+    def loadKML(self, kml_path: Path, progress_callback):
         if kml_path is not None:
             self.kml_path = kml_path
         
         if self.kml_path is None:
-            raise Exception("No KML file specified")
+            raise FileNotFoundError("no kml file specified")
+        
+        if self.kml_path.suffix.lower() not in [".kml", ".kmz"]:
+            raise ValueError(f"invalid extension: {self.kml_path.suffix}. must be .kml or .kmz")
+        
+        if self.kml_path.suffix == ".kmz":
+            self.logger.debug("kmz, opening zip and reading in doc...")
+            with ZipFile(str(self.kml_path)) as zip:
+                with zip.open("doc.kml") as kml_doc:
+                    doc = kml_doc.read()
+        else:
+            self.logger.debug("kml, reading in doc...")
+            with open(str(self.kml_path)) as f:
+                doc = f.read()
         
         self.logger.info(f"parsing {self.kml_path}...")
         progress_callback.emit(QCoreApplication.translate("KMLReader", "parsing {}...").format(self.kml_path))
-        self.kml = kml.KML.parse(self.kml_path)
+        self.kml = kml.KML.from_string(doc)
         self.logger.info("loading placemarks...")
         progress_callback.emit(QCoreApplication.translate("KMLReader", "loading placemarks..."))
         self.placemarks = list(find_all(self.kml, of_type=Placemark)) # TODO: reimplement using dictionary for faster loading
