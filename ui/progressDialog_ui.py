@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'progressDialog.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.8.3
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -55,7 +55,7 @@ class Ui_progressDialog(object):
     # setupUi
 
     def retranslateUi(self, progressDialog):
-        progressDialog.setWindowTitle(QCoreApplication.translate("progressDialog", u"Dialog", None))
+        progressDialog.setWindowTitle(QCoreApplication.translate("progressDialog", u"please wait...", None))
         self.message.setText(QCoreApplication.translate("progressDialog", u"TextLabel", None))
     # retranslateUi
 

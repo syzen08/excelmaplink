@@ -28,8 +28,8 @@
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="14"/>
-        <source>MainWindow</source>
-        <translation></translation>
+        <source>Map</source>
+        <translation>Karte</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="40"/>
@@ -223,8 +223,8 @@ Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewä
     <name>progressDialog</name>
     <message>
         <location filename="../ui/progressDialog.ui" line="41"/>
-        <source>Dialog</source>
-        <translation></translation>
+        <source>please wait...</source>
+        <translation>Bitte Warten...</translation>
     </message>
     <message>
         <location filename="../ui/progressDialog.ui" line="50"/>

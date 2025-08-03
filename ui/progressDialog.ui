@@ -38,7 +38,7 @@
    <cursorShape>WaitCursor</cursorShape>
   </property>
   <property name="windowTitle">
-   <string>Dialog</string>
+   <string>please wait...</string>
   </property>
   <property name="modal">
    <bool>true</bool>

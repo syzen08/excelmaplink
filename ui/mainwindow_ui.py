@@ -3,7 +3,7 @@
 ################################################################################
 ## Form generated from reading UI file 'mainwindow.ui'
 ##
-## Created by: Qt User Interface Compiler version 6.8.3
+## Created by: Qt User Interface Compiler version 6.9.1
 ##
 ## WARNING! All changes made in this file will be lost when recompiling UI file!
 ################################################################################
@@ -107,7 +107,7 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Map", None))
         self.actionLoad_KML.setText(QCoreApplication.translate("MainWindow", u"Load KML...", None))
         self.actionReload.setText(QCoreApplication.translate("MainWindow", u"Reload", None))
         self.actionExit.setText(QCoreApplication.translate("MainWindow", u"Exit", None))
