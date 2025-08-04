@@ -13,6 +13,7 @@ from src.kml import KMLReader
 
 
 class Map:
+    
     def __init__(self, lat, lon, zoom, path: Path):
         self.logger = logging.getLogger("eml.map")
         self.lat = lat
@@ -95,6 +96,7 @@ class Map:
                         console.log("resetting highlight");
                         resetHighlight();
                     });
+                    bridge.finished_loading();
                 });
             };
         </script>

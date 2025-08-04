@@ -48,6 +48,8 @@ class Spreadsheet:
         }
 
         self.load_config(settings)
+        # update highlights once map has loaded
+        self.main_window.map.map_bridge.finished_loading_signal.connect(self.cur_calc_regions.update_highligts)
     def __del__(self):
         """close the workbook and quit the app when the object is deleted."""
         # if we created the app, we close it, otherwise we just leave it open
