@@ -22,9 +22,8 @@
 <context>
     <name>MainWindow</name>
     <message>
-        <location filename="../main.py" line="95"/>
         <source>Unexpected error: {}</source>
-        <translation>Unerwarteter Fehler: {}</translation>
+        <translation type="vanished">Unerwarteter Fehler: {}</translation>
     </message>
     <message>
         <location filename="../ui/mainwindow.ui" line="14"/>
@@ -102,7 +101,7 @@
         <translation>Arbeitsmappen Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="90"/>
+        <location filename="../src/mainwindow.py" line="91"/>
         <source>Select KML File</source>
         <translation>KML-Datei auswählen</translation>
     </message>
@@ -111,45 +110,75 @@
         <translation type="vanished">KML Datei (*.kml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="90"/>
+        <location filename="../src/mainwindow.py" line="91"/>
         <source>KML Files (*.kml *.kmz)</source>
         <translation>KML Datei (*.kml *kmz)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="134"/>
+        <location filename="../src/mainwindow.py" line="135"/>
         <source>Open Excel File</source>
         <translation>Excel Arbeitsmappe öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="134"/>
+        <location filename="../src/mainwindow.py" line="135"/>
         <source>Excel Files (*.xlsx *.xls)</source>
         <translation>Excel Arbeitsmappen (*.xlsx *.xls)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="158"/>
+        <location filename="../src/mainwindow.py" line="159"/>
         <source>Uh Oh! Something went wrong!</source>
         <translation>Ups! Etwas ist schiefgelaufen!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="158"/>
+        <location filename="../src/mainwindow.py" line="159"/>
         <source>Error: {}</source>
         <translation>Fehler: {}</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="171"/>
-        <location filename="../src/mainwindow.py" line="176"/>
+        <location filename="../src/mainwindow.py" line="172"/>
+        <location filename="../src/mainwindow.py" line="177"/>
         <source>Missing Map Location</source>
         <translation>Kartendatei fehlt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="171"/>
+        <location filename="../src/mainwindow.py" line="172"/>
         <source>Please select a valid map to open.</source>
         <translation>Bitte wählen sie eine valide Karte zum öffnen aus.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="176"/>
+        <location filename="../src/mainwindow.py" line="177"/>
         <source>Please select a valid map using the &apos;Select File...&apos; Button.</source>
         <translation>Bitte wählen sie eine valide Karte aus, indem sie auf &apos;Datei öffnen...&apos; klicken.</translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="83"/>
+        <source>Unexpected error</source>
+        <translation>Unerwarteter Fehler</translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="84"/>
+        <source>An unexpected error occurred.</source>
+        <translation>Ein unerwarteter Fehler ist aufgetreten.</translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="87"/>
+        <source>Continue</source>
+        <translation>Fortsetzen</translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="88"/>
+        <source>Quit</source>
+        <translation>Beenden</translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="92"/>
+        <source>WARNING!</source>
+        <translation>ACHTUNG!</translation>
+    </message>
+    <message>
+        <location filename="../main.py" line="92"/>
+        <source>This will continue execution in this unknown state. This can lead to unexpected behaviour. Do you really want to continue?</source>
+        <translation>Damit setzen sie das Programm in einem unsicheren Zustand fort, was zu unerwartetem Verhalten führen kann. Wollen sie wirklich fortfahren?</translation>
     </message>
 </context>
 <context>
@@ -175,27 +204,27 @@ Please make sure that you have the correct column selected in the settings and t
 Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewählt ist und dass die Namen in der Spalte das Richtige Format haben.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="117"/>
+        <location filename="../src/excel/spreadsheet.py" line="119"/>
         <source>Sheet Not Found</source>
         <translation>Blatt nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="121"/>
+        <location filename="../src/excel/spreadsheet.py" line="123"/>
         <source>Could not find sheet {} or {}. Please check your settings.</source>
         <translation>Das Blatt {} oder {} konnte nicht gefunden werden. Stellen sie sicher, dass die Namen in den Einstellungen stimmen.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="150"/>
+        <location filename="../src/excel/spreadsheet.py" line="152"/>
         <source>The map at {} could not be found.</source>
         <translation>Die Karte bei {} konnte nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="153"/>
+        <location filename="../src/excel/spreadsheet.py" line="155"/>
         <source>Map not found</source>
         <translation>Karte nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="157"/>
+        <location filename="../src/excel/spreadsheet.py" line="159"/>
         <source>The map at {} could not be found. Make sure that the file path is still accessible and exists.</source>
         <translation>Die Karte bei {} konnte nicht gefunden werden. Stellen sie sicher, dass der Ort noch verfügbar ist und existiert.</translation>
     </message>

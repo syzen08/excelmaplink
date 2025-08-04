@@ -32,6 +32,7 @@ class MainWindow(QMainWindow):
 
         self.logger.debug("loading ui...")
         self.logger.debug(f"debug: {debug}")
+        self.debug = debug
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
@@ -62,7 +63,7 @@ class MainWindow(QMainWindow):
         self.ui.webEngineView.loadFinished.connect(lambda: self.ui.statusbar.showMessage("ready", 5000))
         self.ui.webEngineView.loadStarted.connect(lambda: self.ui.statusbar.showMessage("loading..."))
 
-        if not debug:
+        if not self.debug:
             self.ui.menubar.removeAction(self.ui.menuDebug.menuAction())
 
         # allow webengine to load external content, needed for leaflet

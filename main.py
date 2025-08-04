@@ -13,7 +13,7 @@ from PySide6.QtCore import (
     qInstallMessageHandler,
 )
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QMessageBox
+from PySide6.QtWidgets import QApplication, QMessageBox, QPushButton
 from rich.logging import RichHandler
 from rich.traceback import install
 
@@ -75,26 +75,35 @@ def qt_message_handler(mode, context, message):
             qtlogger.critical(message)
             
 
+def global_exception_hook(exctype, value, tb):
+    # ngl completely over the top and unnecessary but interesting.
+    sys.__excepthook__(exctype, value, tb)
+    errmsgbox = QMessageBox()
+    errmsgbox.setIcon(QMessageBox.Icon.Critical)
+    errmsgbox.setWindowTitle(QApplication.translate("MainWindow", "Unexpected error"))
+    errmsgbox.setText(QApplication.translate("MainWindow", "An unexpected error occurred."))
+    errmsgbox.setInformativeText(f"{exctype.__name__}: {value}")
+    errmsgbox.setDetailedText("".join(traceback.format_tb(tb)))
+    continue_button = errmsgbox.addButton(QApplication.translate("MainWindow", "Continue"), QMessageBox.ButtonRole.AcceptRole)
+    quit_button = errmsgbox.addButton(QApplication.translate("MainWindow", "Quit"), QMessageBox.ButtonRole.RejectRole)
+    errmsgbox.setDefaultButton(quit_button)
+    errmsgbox.exec()
+    if errmsgbox.clickedButton() == continue_button:
+        btn = QMessageBox.question(None, QApplication.translate("MainWindow", "WARNING!"), QApplication.translate("MainWindow", "This will continue execution in this unknown state. This can lead to unexpected behaviour. Do you really want to continue?"))
+        if btn == QMessageBox.StandardButton.Yes:
+            return
+    sys.exit(-1)
+    
 if __name__ == "__main__":
     freeze_support()
-    try:
-        install(show_locals=True)
-        logging.basicConfig(
-            level="NOTSET", format="[%(name)s]: %(message)s", datefmt="[%X]", handlers=[RichHandler(rich_tracebacks=True)]
-        )
-        logger = logging.getLogger('eml')
-        qtlogger = logging.getLogger('eml.qt')
-        qInstallMessageHandler(qt_message_handler)
-        
-        main(logger)
-    except Exception as e:
-        print("Unexpected error:", e)
-        print(traceback.format_exc())
-        # show error message box on exception
-        errmsgbox = QMessageBox()
-        errmsgbox.setText(QApplication.translate("MainWindow", "Unexpected error: {}").format(e))
-        errmsgbox.setDetailedText(traceback.format_exc())
-        errmsgbox.setIcon(QMessageBox.Icon.Critical)
-        errmsgbox.exec()
-        sys.exit(1)
+    install(show_locals=True)
+    sys.excepthook = global_exception_hook
+    logging.basicConfig(
+        level="NOTSET", format="[%(name)s]: %(message)s", datefmt="[%X]", handlers=[RichHandler(rich_tracebacks=True)]
+    )
+    logger = logging.getLogger('eml')
+    qtlogger = logging.getLogger('eml.qt')
+    qInstallMessageHandler(qt_message_handler)
+    
+    main(logger)
 
