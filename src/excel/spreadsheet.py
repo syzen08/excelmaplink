@@ -89,12 +89,14 @@ class Spreadsheet:
             self.logger.info("no config sheet found, creating one...")
             self.wb.sheets.add("excelmaplink_config")
             self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
-            # self.config_sheet.visible = False
+            if not self.main_window.debug:
+                self.config_sheet.visible = False
             settings = self.main_window.show_settings_dialog()
             return settings
         else:
             self.logger.info("config sheet found, loading settings...")
             self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
+            self.config_sheet.visible = self.main_window.debug
             return None
         
     def import_settings(self, settings: dict):
