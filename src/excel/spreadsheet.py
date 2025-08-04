@@ -156,7 +156,7 @@ class Spreadsheet(QObject):
         if self.config["save_map_path"].get_value():
             if not Path(self.config['linked_map'].get_value()).exists():
                 self.logger.error("map does not exist at stored location!")
-                self.main_window.display_error(self.tr("Spreadsheet", "The map at {} could not be found.").format(str(Path(self.config['linked_map'].get_value()))))
+                self.main_window.display_error(self.tr("The map at {} could not be found.").format(str(Path(self.config['linked_map'].get_value()))))
                 QMessageBox.critical(
                     self.main_window, 
                     self.tr("Map not found"), 
