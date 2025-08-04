@@ -2,7 +2,7 @@ import logging
 from pathlib import Path
 
 import xlwings as xw
-from PySide6.QtCore import QCoreApplication
+from PySide6.QtCore import QObject, Signal
 from PySide6.QtWidgets import QMessageBox
 from pywintypes import com_error
 
@@ -11,27 +11,17 @@ from src.excel.cur_regions import CurrentRegions
 from src.excel.util import range_string, region_from_excel_name
 
 
-class Spreadsheet:
+class Spreadsheet(QObject):
+    re_init = Signal()
     def __init__(self, path: Path, main_window):
+        super().__init__()
         self.logger = logging.getLogger("eml.spreadsheet")
         self.file_path = path
         self.main_window = main_window
         if not self.file_path.exists():
             raise FileNotFoundError(f"file {self.file_path} does not exist. how do you want me to load that!?")
 
-        #check if excel is already runnding
-        if xw.apps.active is not None:
-            #if yes, then connect to it
-            self.logger.debug("excel is already running, connecting to it...")
-            self.app = xw.apps.active
-            self.wb = self.app.books.open(str(self.file_path)) # BUG: this errors out if excel is already open with the file
-        else:
-            #if no, then start a new instance
-            self.logger.debug("excel isn't running, starting it...")
-            self.created = True
-            self.wb = xw.Book(str(self.file_path))
-            self.app = self.wb.app
-        self.logger.debug(f"spreadsheet: {self.wb.name}, sheets: {self.wb.sheets}")
+        self.start_excel()
         settings = self.get_config_options()
 
         self.config = {
@@ -48,8 +38,12 @@ class Spreadsheet:
         }
 
         self.load_config(settings)
+        # every 2.5 secs, try to reconnect to excel (implemented in timerEvent()) and re-init if excel closed out of our control
+        self.timer_id = self.startTimer(2500)
+        
         # update highlights once map has loaded
         self.main_window.map.map_bridge.finished_loading_signal.connect(self.cur_calc_regions.update_highligts)
+        
     def __del__(self):
         """close the workbook and quit the app when the object is deleted."""
         # if we created the app, we close it, otherwise we just leave it open
@@ -69,6 +63,25 @@ class Spreadsheet:
         if self.app and self.created:
             self.app.quit()
 
+    def timerEvent(self, event):
+        self.logger.debug("checking excel...")
+        try:
+            # just something that requires access to excel
+            val = self.app.range("A1:B1").value
+            self.logger.debug(f"ok, still here. val {val}")
+        except Exception:
+            self.logger.error("lost connection to excel!")
+            # stop the timer so this doesn't retrigger
+            self.killTimer(self.timer_id)
+            QMessageBox.warning(
+                self.main_window, 
+                self.tr("Lost connection to Excel"), 
+                self.tr("Lost connection to Excel. Please DO NOT close Excel itself. Close the map instead, it will close Excel on its own.")
+            )
+            # tell the mainwindow to re-init the spreadsheet
+            self.re_init.emit()
+            
+
     def toggle_region(self, region_map_name: str):
         try:
             self.cur_calc_regions.toggle_region(region_map_name)
@@ -76,11 +89,8 @@ class Spreadsheet:
             self.logger.error(f"could not toggle region {region_map_name}: {e}")
             QMessageBox.critical(
                 self.main_window, 
-                QCoreApplication.translate("Spreadsheet", "Region Not Found"), 
-                QCoreApplication.translate(
-                    "Spreadsheet", 
-                    "Could not find region {} in region sheet {}.\nPlease make sure that you have the correct column selected in the settings and the names in the column are the correct format."
-                ).format(region_map_name, self.region_sheet.name)
+                self.tr("Region Not Found"), 
+                self.tr("Could not find region {} in region sheet {}.\nPlease make sure that you have the correct column selected in the settings and the names in the column are the correct format.").format(region_map_name, self.region_sheet.name)
             )
         self.logger.debug(f"cur_regions: {self.cur_calc_regions.regions}")
         
@@ -118,11 +128,8 @@ class Spreadsheet:
             self.logger.error(f"could not find sheet {self.config['region_sheet'].get_value()} or {self.config['calc_sheet'].get_value()}: {e}")
             QMessageBox.critical(
                 self.main_window, 
-                QCoreApplication.translate("Spreadsheet", "Sheet Not Found"), 
-                QCoreApplication.translate(
-                    "Spreadsheet", 
-                    "Could not find sheet {} or {}. Please check your settings."
-                ).format(self.config['region_sheet'].get_value(), self.config['calc_sheet'].get_value())
+                self.tr("Sheet Not Found"), 
+                self.tr("Could not find sheet {} or {}. Please check your settings.").format(self.config['region_sheet'].get_value(), self.config['calc_sheet'].get_value())
             )
             settings = self.main_window.show_settings_dialog(self.config)
             if settings:
@@ -148,17 +155,11 @@ class Spreadsheet:
         if self.config["save_map_path"].get_value():
             if not Path(self.config['linked_map'].get_value()).exists():
                 self.logger.error("map does not exist at stored location!")
-                self.main_window.display_error(QCoreApplication.translate(
-                        "Spreadsheet", 
-                        "The map at {} could not be found."
-                    ).format(str(Path(self.config['linked_map'].get_value()))))
+                self.main_window.display_error(self.tr("Spreadsheet", "The map at {} could not be found.").format(str(Path(self.config['linked_map'].get_value()))))
                 QMessageBox.critical(
                     self.main_window, 
-                    QCoreApplication.translate("Spreadsheet", "Map not found"), 
-                    QCoreApplication.translate(
-                        "Spreadsheet", 
-                        "The map at {} could not be found. Make sure that the file path is still accessible and exists."
-                    ).format(str(Path(self.config['linked_map'].get_value())))
+                    self.tr("Map not found"), 
+                    self.tr("The map at {} could not be found. Make sure that the file path is still accessible and exists.").format(str(Path(self.config['linked_map'].get_value())))
                 )
                 #clear webview to signal to user that something is wrong
                 return -1
@@ -181,3 +182,18 @@ class Spreadsheet:
             return
         self.populate_cur_regions()
         self.load_map()
+        
+    def start_excel(self):
+        #check if excel is already runnding
+        if xw.apps.active is not None:
+            #if yes, then connect to it
+            self.logger.debug("excel is already running, connecting to it...")
+            self.app = xw.apps.active
+            self.wb = self.app.books.open(str(self.file_path)) # BUG: this errors out if excel is already open with the file
+        else:
+            #if no, then start a new instance
+            self.logger.debug("excel isn't running, starting it...")
+            self.created = True
+            self.wb = xw.Book(str(self.file_path))
+            self.app = self.wb.app
+        self.logger.debug(f"spreadsheet: {self.wb.name}, sheets: {self.wb.sheets}")

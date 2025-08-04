@@ -131,7 +131,18 @@ class MainWindow(QMainWindow):
         if self.ui.actionHighlighting_Test.isChecked():
             self.map.map_bridge.highlight_region(data)
 
-    def openExcelFile(self):
+    def openExcelFile(self, path):
+        # if a path has been passed, that means it was called from the re-init signal, so do that
+        if path:
+            # just double check the spreadsheet is gone
+            try:
+                self.spreadsheet.__del__()
+            except Exception:
+                pass
+            self.spreadsheet = Spreadsheet(path, self)
+            self.spreadsheet.re_init.connect(lambda: self.openExcelFile(self.spreadsheet.file_path))
+            return
+        
         path = Path(QFileDialog.getOpenFileName(self, self.tr("Open Excel File"), "", self.tr("Excel Files (*.xlsx *.xls)"))[0])
         if path.exists() and path.is_file():
             self.logger.info(f"opening excel file: {path}")
@@ -139,6 +150,7 @@ class MainWindow(QMainWindow):
                 self.spreadsheet.__del__()  # close the old spreadsheet if it exists
             self.spreadsheet = Spreadsheet(path, self)
             self.ui.actionWorkbook_Settings.setEnabled(True)
+            self.spreadsheet.re_init.connect(lambda: self.openExcelFile(self.spreadsheet.file_path))
             
     def reset_map(self):
         self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
