@@ -118,7 +118,8 @@ class Spreadsheet(QObject):
                 self.config[key].set_value(value)
             else:
                 self.logger.warning(f"unknown config option {key}, ignoring.")
-        self.logger.debug("settings imported successfully")
+        self.logger.debug("settings imported successfully. saving...")
+        self.wb.save()
         
     def get_sheets(self):
         try:
