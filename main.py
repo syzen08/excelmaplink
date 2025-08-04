@@ -10,10 +10,12 @@ from PySide6.QtCore import (
     QLoggingCategory,
     QtMsgType,
     QTranslator,
+    qFormatLogMessage,
     qInstallMessageHandler,
+    qSetMessagePattern,
 )
 from PySide6.QtGui import QIcon
-from PySide6.QtWidgets import QApplication, QMessageBox, QPushButton
+from PySide6.QtWidgets import QApplication, QMessageBox
 from rich.logging import RichHandler
 from rich.traceback import install
 
@@ -62,17 +64,18 @@ def main(logger: logging.Logger):
     sys.exit(app.exec())
     
 def qt_message_handler(mode, context, message):
+    formatted_message = qFormatLogMessage(mode, context, message)
     match mode:
         case QtMsgType.QtDebugMsg:
-            qtlogger.debug(message)
+            qtlogger.debug(formatted_message)
         case QtMsgType.QtInfoMsg:
-            qtlogger.info(message)
+            qtlogger.info(formatted_message)
         case QtMsgType.QtWarningMsg:
-            qtlogger.warning(message)
+            qtlogger.warning(formatted_message)
         case QtMsgType.QtCriticalMsg:
-            qtlogger.error(message)
+            qtlogger.error(formatted_message)
         case QtMsgType.QtFatalMsg:
-            qtlogger.critical(message)
+            qtlogger.critical(formatted_message)
             
 
 def global_exception_hook(exctype, value, tb):
@@ -103,6 +106,7 @@ if __name__ == "__main__":
     )
     logger = logging.getLogger('eml')
     qtlogger = logging.getLogger('eml.qt')
+    qSetMessagePattern("<%{category}>: %{message}")
     qInstallMessageHandler(qt_message_handler)
     
     main(logger)
