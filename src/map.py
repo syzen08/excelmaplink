@@ -114,39 +114,54 @@ class Map:
         return self.map.get_root().render()
     
     def load_placemarks(self, kml_path: Path, progress_callback):
+        MULTIPROCESS_THRESHOLD = 300
         progress_callback.emit("")
 
         self.kml_reader.loadKML(kml_path, progress_callback)
 
-        # TODO: create seperate feature groups for each folder in the kml 
         fg = CustomFeatureGroup(name="placemarks", control=False).add_to(self.map)
 
         progress_callback.emit(QCoreApplication.translate("Map", "adding elements..."))
         
-        # TODO: just execute everything in one thread if there aren't that many placemarks (>500 or smth, will have to test), since starting the processes usually takes longer than the loading itself
+        if len(self.kml_reader.placemarks) > MULTIPROCESS_THRESHOLD:
+            self.logger.debug(f"more than {MULTIPROCESS_THRESHOLD} placemarks, getting placemarks using multiprocessing")
+            with multiprocessing.Manager() as manager:
+                m_points = manager.list([])
+                m_polygons = manager.list([])
 
-        with multiprocessing.Manager() as manager:
-            points = manager.list([])
-            polygons = manager.list([])
+                p1 = multiprocessing.Process(name="points", target=self.kml_reader.getPoints, args=(m_points, ))
+                p2 = multiprocessing.Process(name="polygons", target=self.kml_reader.getPolygons, args=(m_polygons, ))
 
-            p1 = multiprocessing.Process(name="points", target=self.kml_reader.getPoints, args=(points, ))
-            p2 = multiprocessing.Process(name="polygons", target=self.kml_reader.getPolygons, args=(polygons, ))
+                self.logger.debug("starting processes...")
+                p1.start()
+                p2.start()
 
-            p1.start()
-            p2.start()
+                p2.join()
+                p1.join()
+                self.logger.debug("processes finished")
+                
+                points = []
+                polygons = []
+                # there's a better way, but idk
+                for p in m_points:
+                    points.append(p)
+                for p in m_polygons:
+                    polygons.append(p)
+        else:
+            self.logger.debug(f"less than {MULTIPROCESS_THRESHOLD} placemarks, getting placemarks synchronously")
+            points = []
+            polygons = []
+            points = self.kml_reader.getPoints(points, True)
+            polygons = self.kml_reader.getPolygons(polygons, True)
 
-            p2.join()
-            p1.join()
-
-            # add points to map as markers
-            self.logger.info(f"adding {len(points)} points...")
-            for i, point in enumerate(points):
-                folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3]).add_to(fg)
-
-            # add polygons to map
-            self.logger.info(f"adding {len(polygons)} polygons...")
-            for i, polygon in enumerate(polygons):
-                folium.Polygon(locations=polygon[0], color=f"#{polygon[3][0]}", fill_color=f"#{polygon[4]}", weight=polygon[3][1], tooltip=polygon[1], popup=polygon[2], fillOpacity=0.5).add_to(fg)
+        # add points to map as markers
+        self.logger.info(f"adding {len(points)} points...")
+        for i, point in enumerate(points):
+            folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3]).add_to(fg)
+        # add polygons to map
+        self.logger.info(f"adding {len(polygons)} polygons...")
+        for i, polygon in enumerate(polygons):
+            folium.Polygon(locations=polygon[0], color=f"#{polygon[3][0]}", fill_color=f"#{polygon[4]}", weight=polygon[3][1], tooltip=polygon[1], popup=polygon[2], fillOpacity=0.5).add_to(fg)
 
         self.logger.info("done")
 

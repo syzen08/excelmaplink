@@ -63,19 +63,21 @@ class KMLReader:
 
         return r + g + b + a
 
-    def getPoints(self, points):
+    def getPoints(self, points: list, ret: bool = False):
         # TODO: add style support
         # iterate through all placemarks
-        self.logger.info('point process started')
+        self.logger.debug('getting points...')
         for i, placemark in enumerate(self.placemarks):
             point = placemark.geometry
             if isinstance(point, Point):
                 points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description))
         self.logger.info(str(len(points)))
+        if ret:
+            return points
 
 
-    def getPolygons(self, polygons):
-        self.logger.info('polygon process started')
+    def getPolygons(self, polygons: list, ret: bool = False):
+        self.logger.debug('getting polygons...')
         for i, placemark in enumerate(self.placemarks):
             # if placemark is invisible, skip
             if placemark.visibility is False:
@@ -124,6 +126,8 @@ class KMLReader:
                 polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
 
         self.logger.info(str(len(polygons)))
+        if ret:
+            return polygons
 
 if __name__ == "__main__":
     kmlr = KMLReader(kml_path="C:\\Users\\David\\Documents\\DD Touren Test.kml")
