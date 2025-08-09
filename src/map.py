@@ -184,8 +184,10 @@ class CustomFeatureGroup(folium.FeatureGroup):
             var {{ this.get_name() }} = L.featureGroup(
                 {{ this.options|tojavascript }}
             )
-            .on('click', function(ev) { 
-                bridge.region_clicked(ev.sourceTarget.getTooltip().getContent());
+            .on('click', function(ev) {
+                if (ev.sourceTarget instanceof L.Polygon) { 
+                    bridge.region_clicked(ev.sourceTarget.getTooltip().getContent());
+                }
             });
         {% endmacro %}
         """
