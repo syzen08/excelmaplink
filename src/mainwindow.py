@@ -76,9 +76,18 @@ class MainWindow(QMainWindow):
         
     def closeEvent(self, event):
         if self.spreadsheet:
-            btn = QMessageBox.question(self, self.tr("Save Excel?"), self.tr("Do you want to save the workbook?"))
+            btn = QMessageBox.question(
+                self, 
+                self.tr("Save Excel?"), 
+                self.tr("Do you want to save the workbook?"), 
+                QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
+                QMessageBox.StandardButton.Cancel
+            )
             if btn == QMessageBox.StandardButton.Yes:
                 self.spreadsheet.wb.save()
+            elif btn == QMessageBox.StandardButton.Cancel:
+                event.ignore()
+                return
         return super().closeEvent(event)
 
     def reset_highlight(self):
