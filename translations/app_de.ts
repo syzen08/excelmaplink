@@ -110,7 +110,7 @@
         <translation>Karte kopieren</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="93"/>
+        <location filename="../src/mainwindow.py" line="100"/>
         <source>Select KML File</source>
         <translation>KML-Datei auswählen</translation>
     </message>
@@ -119,43 +119,53 @@
         <translation type="vanished">KML Datei (*.kml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="93"/>
+        <location filename="../src/mainwindow.py" line="79"/>
+        <source>Save Excel?</source>
+        <translation>Excel speichern?</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.py" line="79"/>
+        <source>Do you want to save the workbook?</source>
+        <translation>Soll die Arbeitsmappe gespeichert werden?</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.py" line="100"/>
         <source>KML Files (*.kml *.kmz)</source>
         <translation>KML Datei (*.kml *kmz)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="148"/>
+        <location filename="../src/mainwindow.py" line="155"/>
         <source>Open Excel File</source>
         <translation>Excel Arbeitsmappe öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="148"/>
+        <location filename="../src/mainwindow.py" line="155"/>
         <source>Excel Files (*.xlsx *.xls)</source>
         <translation>Excel Arbeitsmappen (*.xlsx *.xls)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="173"/>
+        <location filename="../src/mainwindow.py" line="180"/>
         <source>Uh Oh! Something went wrong!</source>
         <translation>Ups! Etwas ist schiefgelaufen!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="173"/>
+        <location filename="../src/mainwindow.py" line="180"/>
         <source>Error: {}</source>
         <translation>Fehler: {}</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="186"/>
-        <location filename="../src/mainwindow.py" line="191"/>
+        <location filename="../src/mainwindow.py" line="193"/>
+        <location filename="../src/mainwindow.py" line="198"/>
         <source>Missing Map Location</source>
         <translation>Kartendatei fehlt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="186"/>
+        <location filename="../src/mainwindow.py" line="193"/>
         <source>Please select a valid map to open.</source>
         <translation>Bitte wählen sie eine valide Karte zum öffnen aus.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="191"/>
+        <location filename="../src/mainwindow.py" line="198"/>
         <source>Please select a valid map using the &apos;Select File...&apos; Button.</source>
         <translation>Bitte wählen sie eine valide Karte aus, indem sie auf &apos;Datei öffnen...&apos; klicken.</translation>
     </message>
