@@ -22,6 +22,11 @@ from rich.traceback import install
 import resources_rc  # noqa: F401
 from src.mainwindow import MainWindow
 
+#configue splash screen in frozen builds
+if getattr(sys, 'frozen', False):
+    import pyi_splash
+
+
 # set taskbar icon
 try:
     from ctypes import windll
@@ -60,6 +65,8 @@ def main(logger: logging.Logger):
     app.setWindowIcon(QIcon(":/icons/icon.ico"))
     logger.debug("init mainwindow")
     window = MainWindow(debug_mode)
+    if getattr(sys, 'frozen', False):   
+        pyi_splash.close()
     window.show()
     sys.exit(app.exec())
     
@@ -99,6 +106,8 @@ def global_exception_hook(exctype, value, tb):
     
 if __name__ == "__main__":
     freeze_support()
+    if getattr(sys, 'frozen', False):   
+        pyi_splash.update_text("Loading UI...")
     install(show_locals=True)
     sys.excepthook = global_exception_hook
     logging.basicConfig(

@@ -15,12 +15,23 @@ a = Analysis(
     optimize=0,
 )
 pyz = PYZ(a.pure)
+splash = Splash(
+    '.\\splash.png',
+    binaries=a.binaries,
+    datas=a.datas,
+    text_pos=(350, 330),
+    text_size=10,
+    minify_script=True,
+    always_on_top=True,
+)
 
 exe = EXE(
     pyz,
     a.scripts,
     a.binaries,
     a.datas,
+    splash,
+    splash.binaries,
     [],
     name='excelmaplink',
     debug=False,
@@ -35,5 +46,6 @@ exe = EXE(
     target_arch=None,
     codesign_identity=None,
     entitlements_file=None,
+    hide_console='minimize-early',
     icon='icons/icon.ico'
 )
