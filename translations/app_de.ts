@@ -41,67 +41,76 @@
         <translation>Datei</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="67"/>
+        <location filename="../ui/mainwindow.ui" line="69"/>
         <source>Help</source>
         <translation>Hilfe</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="74"/>
+        <location filename="../ui/mainwindow.ui" line="76"/>
         <source>Debug</source>
         <translation>Debug</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="98"/>
+        <location filename="../ui/mainwindow.ui" line="100"/>
         <source>Load KML...</source>
         <translation>KML Karte Laden...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="103"/>
         <source>Reload</source>
-        <translation>Neu Laden</translation>
+        <translation type="vanished">Neu Laden</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="108"/>
+        <location filename="../ui/mainwindow.ui" line="105"/>
+        <source>Reload Map</source>
+        <translation>Karte neu laden</translation>
+    </message>
+    <message>
+        <location filename="../ui/mainwindow.ui" line="110"/>
         <source>Exit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="116"/>
+        <location filename="../ui/mainwindow.ui" line="118"/>
         <source>About...</source>
         <translation>Über...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="124"/>
+        <location filename="../ui/mainwindow.ui" line="126"/>
         <source>About Qt...</source>
         <translation>Über Qt...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="132"/>
+        <location filename="../ui/mainwindow.ui" line="134"/>
         <source>Open Excel...</source>
         <translation>Excel Datei öffnen...</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="140"/>
+        <location filename="../ui/mainwindow.ui" line="142"/>
         <source>Reset Highlight</source>
         <translation>Hervorhebungen zurücksetzen</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="148"/>
+        <location filename="../ui/mainwindow.ui" line="150"/>
         <source>Highlighting Test</source>
         <translation>Hervorhebungstest</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="159"/>
+        <location filename="../ui/mainwindow.ui" line="161"/>
         <source>Show Statusbar</source>
         <translation>Statusleiste anzeigen</translation>
     </message>
     <message>
-        <location filename="../ui/mainwindow.ui" line="167"/>
+        <location filename="../ui/mainwindow.ui" line="169"/>
         <source>Workbook Settings...</source>
         <translation>Arbeitsmappen Einstellungen...</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="91"/>
+        <location filename="../ui/mainwindow.ui" line="174"/>
+        <source>Copy Map</source>
+        <translation>Karte kopieren</translation>
+    </message>
+    <message>
+        <location filename="../src/mainwindow.py" line="93"/>
         <source>Select KML File</source>
         <translation>KML-Datei auswählen</translation>
     </message>
@@ -110,43 +119,43 @@
         <translation type="vanished">KML Datei (*.kml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="91"/>
+        <location filename="../src/mainwindow.py" line="93"/>
         <source>KML Files (*.kml *.kmz)</source>
         <translation>KML Datei (*.kml *kmz)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="146"/>
+        <location filename="../src/mainwindow.py" line="148"/>
         <source>Open Excel File</source>
         <translation>Excel Arbeitsmappe öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="146"/>
+        <location filename="../src/mainwindow.py" line="148"/>
         <source>Excel Files (*.xlsx *.xls)</source>
         <translation>Excel Arbeitsmappen (*.xlsx *.xls)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="171"/>
+        <location filename="../src/mainwindow.py" line="173"/>
         <source>Uh Oh! Something went wrong!</source>
         <translation>Ups! Etwas ist schiefgelaufen!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="171"/>
+        <location filename="../src/mainwindow.py" line="173"/>
         <source>Error: {}</source>
         <translation>Fehler: {}</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="184"/>
-        <location filename="../src/mainwindow.py" line="189"/>
+        <location filename="../src/mainwindow.py" line="186"/>
+        <location filename="../src/mainwindow.py" line="191"/>
         <source>Missing Map Location</source>
         <translation>Kartendatei fehlt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="184"/>
+        <location filename="../src/mainwindow.py" line="186"/>
         <source>Please select a valid map to open.</source>
         <translation>Bitte wählen sie eine valide Karte zum öffnen aus.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="189"/>
+        <location filename="../src/mainwindow.py" line="191"/>
         <source>Please select a valid map using the &apos;Select File...&apos; Button.</source>
         <translation>Bitte wählen sie eine valide Karte aus, indem sie auf &apos;Datei öffnen...&apos; klicken.</translation>
     </message>
@@ -184,7 +193,7 @@
 <context>
     <name>Map</name>
     <message>
-        <location filename="../src/map.py" line="124"/>
+        <location filename="../src/map.py" line="126"/>
         <source>adding elements...</source>
         <translation>Elemente werden hinzugefügt...</translation>
     </message>
