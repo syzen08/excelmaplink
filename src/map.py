@@ -4,6 +4,7 @@ from pathlib import Path
 
 import folium
 from branca.element import Element
+from folium.plugins import Geocoder
 from folium.template import Template
 from PySide6.QtCore import QCoreApplication  # noqa: F401
 from PySide6.QtWebChannel import QWebChannel
@@ -102,6 +103,7 @@ class Map:
         </script>
         """)
         self.map.get_root().header.add_child(webchanneljs)
+        Geocoder().add_to(self.map)
 
 
     def save(self, progress_callback):
