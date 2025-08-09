@@ -6,7 +6,7 @@ from zipfile import ZipFile
 # hide pretty print warning, as installing lxml breaks everything
 with warnings.catch_warnings(action="ignore"):
     from fastkml import Placemark, kml
-    from fastkml.styles import LineStyle, PolyStyle, StyleMap
+    from fastkml.styles import IconStyle, LineStyle, PolyStyle, StyleMap
     from fastkml.utils import find_all
 
 from pygeoif.geometry import MultiPolygon, Point, Polygon
@@ -55,7 +55,9 @@ class KMLReader:
 
     def convert_color(self, color: str) -> str:
         """Converts the colors from the format `#AABBGGRR` used in kml to the more standard `#RRGGBBAA`"""
-
+        if color is None:
+            return
+        
         r = color[6:8]
         g = color[4:6]
         b = color[2:4]
@@ -69,8 +71,24 @@ class KMLReader:
         self.logger.debug('getting points...')
         for i, placemark in enumerate(self.placemarks):
             point = placemark.geometry
+            styleurl = placemark.style_url
+            
+            styles = self.styles[styleurl.url[1:]]
+            if isinstance(styles, StyleMap):
+                styles = self.styles[styles.pairs[0].style.url[1:]]
+            
+            for style in styles.styles:
+                if isinstance(style, IconStyle):
+                    iconstyle: IconStyle = style
+                    icon = self.match_icon(iconstyle.icon_href)
+                    self.logger.debug(f"href: {iconstyle.icon_href}, icon_match: {icon}")
+                    break
+                else:
+                    iconstyle = IconStyle()
+                    icon = None
+                    
             if isinstance(point, Point):
-                points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description))
+                points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description, icon, self.convert_color(iconstyle.color)))
         self.logger.info(str(len(points)))
         if ret:
             return points
@@ -128,6 +146,40 @@ class KMLReader:
         self.logger.info(str(len(polygons)))
         if ret:
             return polygons
+        
+    def match_icon(self, icon_href) -> str:
+        """matches some google earth icons with the corresponding font awesome icons"""
+        match icon_href:
+            case "http://maps.google.com/mapfiles/kml/shapes/truck.png":
+                return "truck"
+            case "http://maps.google.com/mapfiles/kml/shapes/ranger_station.png":
+                return "house"
+            case "http://maps.google.com/mapfiles/kml/shapes/info.png":
+                return "info"
+            case "http://maps.google.com/mapfiles/kml/shapes/flag.png":
+                return "flag"
+            case "http://maps.google.com/mapfiles/kml/shapes/cabs.png":
+                return "taxi"
+            case "http://maps.google.com/mapfiles/kml/shapes/caution.png":
+                return "triangle-exclamation"
+            case "http://maps.google.com/mapfiles/kml/shapes/parking_lot.png":
+                return "square-parking"
+            case "http://maps.google.com/mapfiles/kml/shapes/phone.png":
+                return "phone"
+            case "http://maps.google.com/mapfiles/kml/shapes/euro.png":
+                return "euro-sign"
+            case "http://maps.google.com/mapfiles/kml/shapes/post_office.png":
+                return "envelope"
+            case "http://maps.google.com/mapfiles/kml/shapes/forbidden.png":
+                return "ban"
+            case "http://maps.google.com/mapfiles/kml/shapes/info_circle.png":
+                return "circle-question"
+            case "http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png":
+                return "default"
+            case _:
+                return f"custom: {icon_href}"
+                
+            
 
 if __name__ == "__main__":
     kmlr = KMLReader(kml_path="C:\\Users\\David\\Documents\\DD Touren Test.kml")

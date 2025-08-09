@@ -7,7 +7,7 @@
 	<StyleMap id="m_ylw-pushpin">
 		<Pair>
 			<key>normal</key>
-			<styleUrl>#s_ylw-pushpin</styleUrl>
+			<styleUrl>#s_ylw-pushpin0</styleUrl>
 		</Pair>
 		<Pair>
 			<key>highlight</key>
@@ -17,21 +17,131 @@
 	<StyleMap id="m_ylw-pushpin0">
 		<Pair>
 			<key>normal</key>
-			<styleUrl>#s_ylw-pushpin0</styleUrl>
+			<styleUrl>#s_ylw-pushpin</styleUrl>
 		</Pair>
 		<Pair>
 			<key>highlight</key>
 			<styleUrl>#s_ylw-pushpin_hl0</styleUrl>
 		</Pair>
 	</StyleMap>
-	<StyleMap id="msn_ylw-pushpin">
+	<StyleMap id="msn_J">
 		<Pair>
 			<key>normal</key>
-			<styleUrl>#sn_ylw-pushpin0</styleUrl>
+			<styleUrl>#sn_J</styleUrl>
 		</Pair>
 		<Pair>
 			<key>highlight</key>
-			<styleUrl>#sh_ylw-pushpin</styleUrl>
+			<styleUrl>#sh_J</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_cabs">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_cabs</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_cabs</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_caution">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_caution</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_caution</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_euro">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_euro</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_euro</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_flag">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_flag</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_flag</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_forbidden">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_forbidden</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_forbidden</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_info">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_info</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_info</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_info_circle">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_info_circle</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_info_circle</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_parking_lot">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_parking_lot</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_parking_lot</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_phone">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_phone</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_phone</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_post_office">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_post_office</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_post_office</styleUrl>
+		</Pair>
+	</StyleMap>
+	<StyleMap id="msn_ranger_station">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ranger_station</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ranger_station</styleUrl>
 		</Pair>
 	</StyleMap>
 	<StyleMap id="msn_ylw-pushpin0">
@@ -44,7 +154,17 @@
 			<styleUrl>#sh_ylw-pushpin0</styleUrl>
 		</Pair>
 	</StyleMap>
-	<Style id="s_ylw-pushpin">
+	<StyleMap id="msn_ylw-pushpin">
+		<Pair>
+			<key>normal</key>
+			<styleUrl>#sn_ylw-pushpin0</styleUrl>
+		</Pair>
+		<Pair>
+			<key>highlight</key>
+			<styleUrl>#sh_ylw-pushpin</styleUrl>
+		</Pair>
+	</StyleMap>
+	<Style id="s_ylw-pushpin0">
 		<IconStyle>
 			<scale>1.1</scale>
 			<Icon>
@@ -56,10 +176,10 @@
 			<color>8000ffff</color>
 		</PolyStyle>
 	</Style>
-	<Style id="s_ylw-pushpin0">
+	<Style id="s_ylw-pushpin">
 		<IconStyle>
-			<color>ff0055aa</color>
-			<scale>1.6</scale>
+			<color>ff0000ff</color>
+			<scale>1.2</scale>
 			<Icon>
 				<href>http://maps.google.com/mapfiles/kml/shapes/truck.png</href>
 			</Icon>
@@ -82,13 +202,181 @@
 	</Style>
 	<Style id="s_ylw-pushpin_hl0">
 		<IconStyle>
-			<color>ff0055aa</color>
-			<scale>1.89091</scale>
+			<color>ff0000ff</color>
+			<scale>1.4</scale>
 			<Icon>
 				<href>http://maps.google.com/mapfiles/kml/shapes/truck.png</href>
 			</Icon>
 			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
 		</IconStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_J">
+		<IconStyle>
+			<scale>1.3</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/J.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/J-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Style id="sh_cabs">
+		<IconStyle>
+			<color>ffff00ff</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/cabs.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_caution">
+		<IconStyle>
+			<color>ff00aaff</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/caution.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_euro">
+		<IconStyle>
+			<color>ff00ffff</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/euro.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_flag">
+		<IconStyle>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_forbidden">
+		<IconStyle>
+			<color>ff0000ff</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/forbidden.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_info">
+		<IconStyle>
+			<color>ffff0000</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/info.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_info_circle">
+		<IconStyle>
+			<color>ffffaa55</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/info_circle.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_parking_lot">
+		<IconStyle>
+			<color>ffffb5be</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/parking_lot.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_phone">
+		<IconStyle>
+			<color>ffffaaaa</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/phone.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_post_office">
+		<IconStyle>
+			<color>ff7fff55</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/post_office.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sh_ranger_station">
+		<IconStyle>
+			<color>ff00ff00</color>
+			<scale>1.4</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/ranger_station.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
 		<ListStyle>
 		</ListStyle>
 	</Style>
@@ -106,23 +394,197 @@
 	</Style>
 	<Style id="sh_ylw-pushpin0">
 		<IconStyle>
-			<color>ffff0000</color>
 			<scale>1.3</scale>
 			<Icon>
 				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
 			</Icon>
 			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
 		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_J">
+		<IconStyle>
+			<scale>1.1</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/J.png</href>
+			</Icon>
+			<hotSpot x="32" y="1" xunits="pixels" yunits="pixels"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+			<ItemIcon>
+				<href>http://maps.google.com/mapfiles/kml/paddle/J-lv.png</href>
+			</ItemIcon>
+		</ListStyle>
+	</Style>
+	<Style id="sn_cabs">
+		<IconStyle>
+			<color>ffff00ff</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/cabs.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_caution">
+		<IconStyle>
+			<color>ff00aaff</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/caution.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_euro">
+		<IconStyle>
+			<color>ff00ffff</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/euro.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_flag">
+		<IconStyle>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/flag.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_forbidden">
+		<IconStyle>
+			<color>ff0000ff</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/forbidden.png</href>
+			</Icon>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_info">
+		<IconStyle>
+			<color>ffff0000</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/info.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_info_circle">
+		<IconStyle>
+			<color>ffffaa55</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/info_circle.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_parking_lot">
+		<IconStyle>
+			<color>ffffb5be</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/parking_lot.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_phone">
+		<IconStyle>
+			<color>ffffaaaa</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/phone.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_post_office">
+		<IconStyle>
+			<color>ff7fff55</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/post_office.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
+	</Style>
+	<Style id="sn_ranger_station">
+		<IconStyle>
+			<color>ff00ff00</color>
+			<scale>1.2</scale>
+			<Icon>
+				<href>http://maps.google.com/mapfiles/kml/shapes/ranger_station.png</href>
+			</Icon>
+			<hotSpot x="0.5" y="0" xunits="fraction" yunits="fraction"/>
+		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
 	</Style>
 	<Style id="sn_ylw-pushpin">
 		<IconStyle>
-			<color>ffff0000</color>
 			<scale>1.1</scale>
 			<Icon>
 				<href>http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png</href>
 			</Icon>
 			<hotSpot x="20" y="2" xunits="pixels" yunits="pixels"/>
 		</IconStyle>
+		<BalloonStyle>
+		</BalloonStyle>
+		<ListStyle>
+		</ListStyle>
 	</Style>
 	<Style id="sn_ylw-pushpin0">
 		<IconStyle>
@@ -139,6 +601,244 @@
 	<Folder>
 		<name>touren</name>
 		<open>1</open>
+		<Placemark>
+			<name>tour1</name>
+			<Camera>
+				<longitude>10.3840326686338</longitude>
+				<latitude>49.93830568814413</latitude>
+				<altitude>12476.99615108926</altitude>
+				<heading>-31.84744135457017</heading>
+				<tilt>0.08877865870642562</tilt>
+				<roll>-39.31601567897248</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#m_ylw-pushpin0</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.38389027996774,49.93845321543613,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour2</name>
+			<Camera>
+				<longitude>10.38974444257504</longitude>
+				<latitude>49.92888500222733</latitude>
+				<altitude>12473.99782473372</altitude>
+				<heading>-31.84307294792092</heading>
+				<tilt>0.08877865870642562</tilt>
+				<roll>-39.3160156792075</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_ranger_station</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.38960213985633,49.92903247689974,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour3</name>
+			<Camera>
+				<longitude>10.43360930246315</longitude>
+				<latitude>49.92065185846873</latitude>
+				<altitude>12394.22295903951</altitude>
+				<heading>-31.80952384095398</heading>
+				<tilt>0.08877865871874158</tilt>
+				<roll>-39.3160156792973</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_info</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.43346806775046,49.92079845166886,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour4</name>
+			<Camera>
+				<longitude>10.40789358875269</longitude>
+				<latitude>49.92571984138813</latitude>
+				<altitude>12449.10931557942</altitude>
+				<heading>-31.82919744425808</heading>
+				<tilt>0.08877865871874158</tilt>
+				<roll>-39.31601567918368</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_flag</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.40775146156767,49.92586694604812,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour5</name>
+			<Camera>
+				<longitude>10.37218367463421</longitude>
+				<latitude>49.92822463642861</latitude>
+				<altitude>12486.75679883231</altitude>
+				<heading>-31.85651172867807</heading>
+				<tilt>0.08877865872284692</tilt>
+				<roll>-39.31601567924454</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_cabs</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.37204121772314,49.92837224541164,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour6</name>
+			<Camera>
+				<longitude>10.40249065338466</longitude>
+				<latitude>49.91748033615016</latitude>
+				<altitude>12453.92817195567</altitude>
+				<heading>-31.83333208610121</heading>
+				<tilt>0.08877865870642562</tilt>
+				<roll>-39.31601567912948</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_caution</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.40234861333688,49.91762756330287,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour7</name>
+			<Camera>
+				<longitude>10.36592482553695</longitude>
+				<latitude>49.97371145484323</latitude>
+				<altitude>12497.78053120581</altitude>
+				<heading>-31.86129142996759</heading>
+				<tilt>0.08877865870642562</tilt>
+				<roll>-39.31601567919599</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_parking_lot</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.36578204834902,49.97385919255286,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour8</name>
+			<Camera>
+				<longitude>10.35851748343415</longitude>
+				<latitude>49.96436096276636</latitude>
+				<altitude>12480.61652053221</altitude>
+				<heading>-31.86696441529135</heading>
+				<tilt>0.08877865870642562</tilt>
+				<roll>-39.31601567887029</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_phone</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.35837490621363,49.96450849516114,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour9</name>
+			<Camera>
+				<longitude>10.34658164686235</longitude>
+				<latitude>49.94907615439615</latitude>
+				<altitude>12508.73935364907</altitude>
+				<heading>-31.87610103295539</heading>
+				<tilt>0.08877865870642562</tilt>
+				<roll>-39.31601567902831</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_euro</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.34643874583038,49.94922400912089,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour10</name>
+			<Camera>
+				<longitude>10.46428139427417</longitude>
+				<latitude>49.9616188027295</latitude>
+				<altitude>12443.96695963674</altitude>
+				<heading>-31.78601451777419</heading>
+				<tilt>0.08877865870232031</tilt>
+				<roll>-39.31601567929411</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_post_office</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.46413958540796,49.96176603081418,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour11</name>
+			<Camera>
+				<longitude>10.45529471797629</longitude>
+				<latitude>49.9463300225687</latitude>
+				<altitude>12256.59087469878</altitude>
+				<heading>-31.79289581384103</heading>
+				<tilt>0.08877865871053094</tilt>
+				<roll>-39.31601567907341</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_forbidden</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.45515503141214,49.94647503189614,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour12</name>
+			<Camera>
+				<longitude>10.46375004592533</longitude>
+				<latitude>49.92562167082981</latitude>
+				<altitude>12345.22794629182</altitude>
+				<heading>-31.78643179780224</heading>
+				<tilt>0.08877865871874158</tilt>
+				<roll>-39.31601567907481</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_info_circle</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.4636094189273,49.92576772574161,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour13</name>
+			<Camera>
+				<longitude>10.4526368300212</longitude>
+				<latitude>49.91128380037595</latitude>
+				<altitude>12378.35435678463</altitude>
+				<heading>-31.79493479963853</heading>
+				<tilt>0.08877865870642562</tilt>
+				<roll>-39.3160156790445</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_J</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.45249578734451,49.91143024185373,0</coordinates>
+			</Point>
+		</Placemark>
+		<Placemark>
+			<name>tour14</name>
+			<Camera>
+				<longitude>10.40327323087641</longitude>
+				<latitude>49.91333027109484</latitude>
+				<altitude>12460.60322738347</altitude>
+				<heading>-31.83269583356475</heading>
+				<tilt>0.08877865871463626</tilt>
+				<roll>-39.31601567919795</roll>
+				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
+			</Camera>
+			<styleUrl>#msn_ylw-pushpin0</styleUrl>
+			<Point>
+				<gx:drawOrder>1</gx:drawOrder>
+				<coordinates>10.40313115987075,49.91347761691182,0</coordinates>
+			</Point>
+		</Placemark>
 		<Placemark>
 			<name>Tour1</name>
 			<styleUrl>#m_ylw-pushpin</styleUrl>
@@ -166,40 +866,6 @@
 					</LinearRing>
 				</outerBoundaryIs>
 			</Polygon>
-		</Placemark>
-		<Placemark>
-			<name>Tour 3</name>
-			<LookAt>
-				<longitude>10.42456017109088</longitude>
-				<latitude>49.9521102216159</latitude>
-				<altitude>0</altitude>
-				<heading>0.01836932503650697</heading>
-				<tilt>45.02571994838953</tilt>
-				<range>13207.26154978894</range>
-				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
-			</LookAt>
-			<styleUrl>#m_ylw-pushpin0</styleUrl>
-			<Point>
-				<gx:drawOrder>1</gx:drawOrder>
-				<coordinates>10.42775260528779,49.92888042668217,0</coordinates>
-			</Point>
-		</Placemark>
-		<Placemark>
-			<name>Tour 4</name>
-			<LookAt>
-				<longitude>10.42456017109088</longitude>
-				<latitude>49.9521102216159</latitude>
-				<altitude>0</altitude>
-				<heading>0.01836932503650697</heading>
-				<tilt>45.02571994838953</tilt>
-				<range>13207.26154978894</range>
-				<gx:altitudeMode>relativeToSeaFloor</gx:altitudeMode>
-			</LookAt>
-			<styleUrl>#msn_ylw-pushpin0</styleUrl>
-			<Point>
-				<gx:drawOrder>1</gx:drawOrder>
-				<coordinates>10.36420814058526,49.93252863304861,0</coordinates>
-			</Point>
 		</Placemark>
 	</Folder>
 </Document>

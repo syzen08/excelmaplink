@@ -157,7 +157,18 @@ class Map:
         # add points to map as markers
         self.logger.info(f"adding {len(points)} points...")
         for i, point in enumerate(points):
-            folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3]).add_to(fg)
+            if point[5] is not None:
+                if point[4].startswith("custom: "):
+                    self.logger.warning(f"unsupported icon found! ({point[4][7:]}). tinting is not supported, position/size may be off.")
+                    icon = folium.CustomIcon(point[4][7:])
+                elif point[4] == "default":
+                    icon = None
+                else:
+                    self.logger.debug(f"icon {point[4]} with color {point[5]}")
+                    icon = folium.Icon(color="black", icon_color=f"#{point[5]}", icon=point[4], prefix="fa")
+            else:
+                icon = None
+            folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3], icon=icon).add_to(fg)
         # add polygons to map
         self.logger.info(f"adding {len(polygons)} polygons...")
         for i, polygon in enumerate(polygons):
