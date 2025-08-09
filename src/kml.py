@@ -36,7 +36,7 @@ class KMLReader:
                     doc = kml_doc.read()
         else:
             self.logger.debug("kml, reading in doc...")
-            with open(str(self.kml_path)) as f:
+            with open(str(self.kml_path), "r", encoding="utf-8") as f:
                 doc = f.read()
         
         self.logger.info(f"parsing {self.kml_path}...")
