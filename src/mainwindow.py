@@ -1,4 +1,5 @@
 import logging
+import shutil
 from pathlib import Path
 
 from PySide6.QtCore import (
@@ -59,6 +60,7 @@ class MainWindow(QMainWindow):
         self.ui.actionReset_Highlight.triggered.connect(self.reset_highlight)
         self.ui.actionShow_Statusbar.toggle()
         self.ui.actionWorkbook_Settings.triggered.connect(lambda: self.show_settings_dialog(self.spreadsheet.config))
+        self.ui.actionCopy_Map.triggered.connect(lambda: shutil.copy(str(Path(self.tempdir.path() + "/map.html")), str(Path("./"))))
 
         self.ui.webEngineView.loadFinished.connect(lambda: self.ui.statusbar.showMessage("ready", 5000))
         self.ui.webEngineView.loadStarted.connect(lambda: self.ui.statusbar.showMessage("loading..."))

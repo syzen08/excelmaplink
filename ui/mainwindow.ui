@@ -75,6 +75,7 @@
     </property>
     <addaction name="actionLoad_KML"/>
     <addaction name="actionReload"/>
+    <addaction name="actionCopy_Map"/>
     <addaction name="separator"/>
     <addaction name="actionHighlighting_Test"/>
     <addaction name="actionReset_Highlight"/>
@@ -165,6 +166,11 @@
    </property>
    <property name="text">
     <string>Workbook Settings...</string>
+   </property>
+  </action>
+  <action name="actionCopy_Map">
+   <property name="text">
+    <string>Copy Map</string>
    </property>
   </action>
  </widget>
