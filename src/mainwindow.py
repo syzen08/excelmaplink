@@ -73,6 +73,13 @@ class MainWindow(QMainWindow):
         s.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
         self.logger.debug("loading map...")
         self.load_map()
+        
+    def closeEvent(self, event):
+        if self.spreadsheet:
+            btn = QMessageBox.question(self, self.tr("Save Excel?"), self.tr("Do you want to save the workbook?"))
+            if btn == QMessageBox.StandardButton.Yes:
+                self.spreadsheet.wb.save()
+        return super().closeEvent(event)
 
     def reset_highlight(self):
         self.map.map_bridge.reset_highlight()
