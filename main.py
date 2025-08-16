@@ -24,8 +24,7 @@ from src.mainwindow import MainWindow
 
 #configue splash screen in frozen builds
 if getattr(sys, 'frozen', False):
-    import pyi_splash
-
+    import pyi_splash  # pyright: ignore[reportMissingModuleSource]
 
 # set taskbar icon
 try:
@@ -35,10 +34,7 @@ try:
 except ImportError:
     pass
 
-# Guide: Also, wenn ich in der Karte eine mehrere Touren anklicke, soll er den Namen (aus C oder AP ) in den Reiter Berechnung in Spalte B  ab zeile 6 bis 24 auflisten ….
-
 def main(logger: logging.Logger):
-
     parser = argparse.ArgumentParser(prog="excelmaplink")
     parser.add_argument('--debug', action='store_true')
     debug_mode = parser.parse_args().debug
@@ -83,10 +79,9 @@ def qt_message_handler(mode, context, message):
             qtlogger.error(formatted_message)
         case QtMsgType.QtFatalMsg:
             qtlogger.critical(formatted_message)
-            
 
 def global_exception_hook(exctype, value, tb):
-    # ngl completely over the top and unnecessary but interesting.
+    # ngl completely over the top and unnecessary but fun.
     sys.__excepthook__(exctype, value, tb)
     errmsgbox = QMessageBox()
     errmsgbox.setIcon(QMessageBox.Icon.Critical)
@@ -119,4 +114,3 @@ if __name__ == "__main__":
     qInstallMessageHandler(qt_message_handler)
     
     main(logger)
-

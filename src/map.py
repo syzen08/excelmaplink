@@ -14,7 +14,6 @@ from src.kml import KMLReader
 
 
 class Map:
-    
     def __init__(self, lat, lon, zoom, path: Path):
         self.logger = logging.getLogger("eml.map")
         self.lat = lat
@@ -22,12 +21,13 @@ class Map:
         self.zoom = zoom
         self.map = folium.Map(location=[lat, lon], zoom_start=zoom)
         self.kml_reader = KMLReader()
+        # check if the save path exists
         if path.exists():
             self.path = path
         else:
             raise FileNotFoundError("path does not exist")
         
-        #setup webchannel
+        # setup webchannel
         self.webchannel = QWebChannel()
         self.map_bridge = MapBridge()
         self.webchannel.registerObject("bridge", self.map_bridge)
@@ -103,11 +103,13 @@ class Map:
         </script>
         """)
         self.map.get_root().header.add_child(webchanneljs)
+        
+        # add address search bar
         Geocoder().add_to(self.map)
 
 
     def save(self, progress_callback):
-        # ? is there a way to speed this up?
+        """save map in its path as map.html"""
         self.logger.info('saving...')
         self.map.save(str(Path(self.path / "map.html")))
         self.logger.info('saved')
@@ -116,11 +118,13 @@ class Map:
         return self.map.get_root().render()
     
     def load_placemarks(self, kml_path: Path, progress_callback):
-        MULTIPROCESS_THRESHOLD = 300
+        """load all points and polygons from a kml/kmz file into the map."""
+        MULTIPROCESS_THRESHOLD = 300 # if the number of placemarks is above the threshold, spread processing into seperate subprocesses
+        
         progress_callback.emit("")
 
         self.kml_reader.loadKML(kml_path, progress_callback)
-
+        # put everything into a custom feature group with a click handler
         fg = CustomFeatureGroup(name="placemarks", control=False).add_to(self.map)
 
         progress_callback.emit(QCoreApplication.translate("Map", "adding elements..."))
@@ -159,10 +163,12 @@ class Map:
         # add points to map as markers
         self.logger.info(f"adding {len(points)} points...")
         for i, point in enumerate(points):
+            # if an icon color is set, add that icon
             if point[5] is not None:
                 if point[4].startswith("custom: "):
                     self.logger.warning(f"unsupported icon found! ({point[4][7:]}). tinting is not supported, position/size may be off.")
                     icon = folium.CustomIcon(point[4][7:])
+                # if it's the default icon, don't add a custom icon
                 elif point[4] == "default":
                     icon = None
                 else:
@@ -170,6 +176,7 @@ class Map:
                     icon = folium.Icon(color="black", icon_color=f"#{point[5]}", icon=point[4], prefix="fa")
             else:
                 icon = None
+            
             folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3], icon=icon).add_to(fg)
         # add polygons to map
         self.logger.info(f"adding {len(polygons)} polygons...")

@@ -20,12 +20,10 @@ class KMLReader:
         self.logger = logging.getLogger("eml.kml")
 
     def loadKML(self, kml_path: Path, progress_callback):
-        if kml_path is not None:
-            self.kml_path = kml_path
-        
+        # validate path
+        self.kml_path = kml_path
         if self.kml_path is None:
             raise FileNotFoundError("no kml file specified")
-        
         if self.kml_path.suffix.lower() not in [".kml", ".kmz"]:
             raise ValueError(f"invalid extension: {self.kml_path.suffix}. must be .kml or .kmz")
         
@@ -42,10 +40,13 @@ class KMLReader:
         self.logger.info(f"parsing {self.kml_path}...")
         progress_callback.emit(QCoreApplication.translate("KMLReader", "parsing {}...").format(self.kml_path))
         self.kml = kml.KML.from_string(doc)
+        
         self.logger.info("loading placemarks...")
         progress_callback.emit(QCoreApplication.translate("KMLReader", "loading placemarks..."))
         self.placemarks = list(find_all(self.kml, of_type=Placemark)) # TODO: reimplement using dictionary for faster loading
         self.logger.info(f"loaded {len(self.placemarks)} placemarks")
+        
+        # copy all styles into a dict, this is faster than fastkml's get_style_by_url().
         progress_callback.emit(QCoreApplication.translate("KMLReader", "loading styles..."))
         self.logger.info("creating style index...")
         self.styles = {}
@@ -65,15 +66,27 @@ class KMLReader:
 
         return r + g + b + a
 
-    def getPoints(self, points: list, ret: bool = False):
+    def getPoints(self, points: list, ret: bool = False) -> None | list[tuple]:
+        """get all points from the kml and saves them into the provided list. if ret is True, return the list as well.
+        every point is a tuple of the following format:
+        ( 0: lat, 1: long, 2: name, 3: description, 4: icon, 5: icon color )"""
         # TODO: add style support
         # iterate through all placemarks
         self.logger.debug('getting points...')
         for i, placemark in enumerate(self.placemarks):
+            # skip anything that isn't a point
+            if not isinstance(placemark, Point):
+                continue
+            
+            # if not visible, skip
+            if placemark.visibility is False:
+                continue
+            
             point = placemark.geometry
             styleurl = placemark.style_url
-            
+            # get style from the index
             styles = self.styles[styleurl.url[1:]]
+            # if its a StyleMap, get the first style from there, usually the "normal" one
             if isinstance(styles, StyleMap):
                 styles = self.styles[styles.pairs[0].style.url[1:]]
             
@@ -87,19 +100,22 @@ class KMLReader:
                     iconstyle = IconStyle()
                     icon = None
                     
-            if isinstance(point, Point):
-                points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description, icon, self.convert_color(iconstyle.color)))
+            points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description, icon, self.convert_color(iconstyle.color)))
         self.logger.info(str(len(points)))
         if ret:
             return points
 
 
-    def getPolygons(self, polygons: list, ret: bool = False):
+    def getPolygons(self, polygons: list, ret: bool = False) -> None | list[tuple]:
+        """gets all points from the kml and saves them into the provided list. if ret is True, return the list as well.
+        every polygon is a tuple of the following format:
+        ( 0: [ ( lat, long ), ( lat, long ), ... ], 1: name, 2: description, 3: outline color, 4: outline width, 5: fill color )"""
         self.logger.debug('getting polygons...')
         for i, placemark in enumerate(self.placemarks):
             # if placemark is invisible, skip
             if placemark.visibility is False:
                 continue
+            
             polygon = placemark.geometry
             styleurl = placemark.style_url
             # if placemark is not a polygon, skip
@@ -126,22 +142,17 @@ class KMLReader:
                 linestyle = LineStyle(color="40000000", width=3.0)
             if polystyle is None:
                 polystyle = PolyStyle(color="FFFF00FF")
-
+            
+            points = []
             if isinstance(polygon, MultiPolygon):
                 for poly in polygon.geoms:
-                    points = []
                     for point in poly.exterior.coords:
                         points.append((point[1], point[0]))
-
-                    polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
-                    
-
             if isinstance(polygon, Polygon):
-                points = []
                 for point in polygon.exterior.coords:
                     points.append((point[1], point[0]))
 
-                polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
+            polygons.append((points, placemark.name, placemark.description, (self.convert_color(linestyle.color), linestyle.width), self.convert_color(polystyle.color)))
 
         self.logger.info(str(len(polygons)))
         if ret:
@@ -178,10 +189,3 @@ class KMLReader:
                 return "default"
             case _:
                 return f"custom: {icon_href}"
-                
-            
-
-if __name__ == "__main__":
-    kmlr = KMLReader(kml_path="C:\\Users\\David\\Documents\\DD Touren Test.kml")
-    kmlr.loadKML()
-    kmlr.getPolygons()

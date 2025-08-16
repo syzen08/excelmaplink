@@ -6,6 +6,14 @@ from xlwings import Sheet
 
 class ConfigOption:
     def __init__(self, sheet: Sheet, name: str, column: str, type: str):
+        """initialises a single config option.
+        - `sheet` is a reference to the excel sheet to write to
+        - `column` is the column to write into
+        - `type` signals what type the value is. possible values are:
+          - `"s"` = string
+          - `"i"` = integer
+          - `"b"` = boolean
+          - `"t"` = tuple"""
         self.sheet = sheet
         self.name = name
         self.column = column

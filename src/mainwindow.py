@@ -29,52 +29,60 @@ from ui.settingsDialog_ui import Ui_settingsDialog
 class MainWindow(QMainWindow):
     def __init__(self, debug: bool):
         super().__init__()
+        
+        # set up logging
         self.logger = logging.getLogger("eml.mainwindow")
-
         self.logger.debug("loading ui...")
+        
         self.logger.debug(f"debug: {debug}")
         self.debug = debug
+        
+        # setup ui
         self.ui = Ui_MainWindow()
         self.ui.setupUi(self)
 
+        # init things we need
         self.tempdir = QTemporaryDir()
         self.threadpool = QThreadPool()
-
         self.spreadsheet = None
 
         # init map and save url for loading later
         self.logger.debug("initializing map...")
         self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
         self.map_url = QUrl().fromLocalFile(str(Path(self.tempdir.path() + "/map.html")))
+        # set the webchannel and connect it's signals up
         self.ui.webEngineView.page().setWebChannel(self.map.webchannel)
         self.map.map_bridge.region_clicked_signal.connect(self.clicked_in_map)
 
-        # set up actions
+        # connect actions to code
         self.ui.actionLoad_KML.triggered.connect(lambda: self.open_kml_file(self.select_kml_file()))
-        # self.ui.actionLoad_KML.setVisible(False)
         self.ui.actionReload.triggered.connect(self.load_map)
         self.ui.actionAbout_Qt.triggered.connect(lambda: QApplication.aboutQt())
         self.ui.actionAbout.triggered.connect(self.show_about_dialog)
         self.ui.actionExit.triggered.connect(self.close)
         self.ui.actionOpen_Excel.triggered.connect(self.openExcelFile)
         self.ui.actionReset_Highlight.triggered.connect(self.reset_highlight)
-        self.ui.actionShow_Statusbar.toggle()
         self.ui.actionWorkbook_Settings.triggered.connect(lambda: self.show_settings_dialog(self.spreadsheet.config))
         self.ui.actionCopy_Map.triggered.connect(lambda: shutil.copy(str(Path(self.tempdir.path() + "/map.html")), str(Path("./"))))
+        # toggle the statusbar so it's hidden by default
+        self.ui.actionShow_Statusbar.toggle()
 
         self.ui.webEngineView.loadFinished.connect(lambda: self.ui.statusbar.showMessage("ready", 5000))
         self.ui.webEngineView.loadStarted.connect(lambda: self.ui.statusbar.showMessage("loading..."))
 
+        # if not in debug mode, remove the debug menu
         if not self.debug:
             self.ui.menubar.removeAction(self.ui.menuDebug.menuAction())
 
         # allow webengine to load external content, needed for leaflet
         s = QWebEngineProfile.defaultProfile().settings()
         s.setAttribute(QWebEngineSettings.WebAttribute.LocalContentCanAccessRemoteUrls, True)
+        
         self.logger.debug("loading map...")
         self.load_map()
         
     def closeEvent(self, event):
+        # only prompt user if excel is open
         if self.spreadsheet:
             btn = QMessageBox.question(
                 self, 
@@ -83,11 +91,12 @@ class MainWindow(QMainWindow):
                 QMessageBox.StandardButton.Yes | QMessageBox.StandardButton.No | QMessageBox.StandardButton.Cancel,
                 QMessageBox.StandardButton.Cancel
             )
-            if btn == QMessageBox.StandardButton.Yes:
-                self.spreadsheet.wb.save()
-            elif btn == QMessageBox.StandardButton.Cancel:
+            if btn == QMessageBox.StandardButton.Cancel:
                 event.ignore()
                 return
+            elif btn == QMessageBox.StandardButton.Yes:
+                self.spreadsheet.wb.save()
+        
         return super().closeEvent(event)
 
     def reset_highlight(self):
@@ -105,7 +114,8 @@ class MainWindow(QMainWindow):
         self.setCursor(Qt.CursorShape.WaitCursor)
         self.threadpool.start(worker)
 
-    def select_kml_file(self):
+    def select_kml_file(self) -> Path | None:
+        """show file select dialog for kml/kmz files and then check if it's valid. If yes, then return the path, else return None."""
         path, _ = QFileDialog.getOpenFileName(self, self.tr("Select KML File"), "", self.tr("KML Files (*.kml *.kmz)"))
         if path and Path(path).exists() and Path(path).is_file():
             return Path(path)
@@ -113,7 +123,9 @@ class MainWindow(QMainWindow):
             return None
 
     def open_kml_file(self, path: Path):
+        """loads and displays a given kml/kmz file."""
         def progress_callback(message):
+            """show a message above the progressbar"""
             if message != "":
                 pbarui.message.setText(message)
 
@@ -125,12 +137,15 @@ class MainWindow(QMainWindow):
         
         self.logger.debug("open_kml_file triggered")
         self.logger.info(f"starting loading of kml... (path: {path})")
-        # clear webengineview
-        self.ui.webEngineView.setUrl("about:blank")
+        # reset the map to erase any previous data
         self.reset_map()
+        # clear the view to draw attention to the progress dialog
+        self.ui.webEngineView.setUrl("about:blank")
+        # init the dialog
         pbarui = Ui_progressDialog()
         pbar = QDialog(self)
         pbarui.setupUi(pbar)
+        # show busy indicator
         pbarui.progressBar.setRange(0, 0)
         pbar.show()
         # load kml in seperate thread to not block event loop
@@ -149,7 +164,8 @@ class MainWindow(QMainWindow):
         if self.ui.actionHighlighting_Test.isChecked():
             self.map.map_bridge.highlight_region(data)
 
-    def openExcelFile(self, path):
+    def openExcelFile(self, path: None):
+        """opens excel with either the given path, or first prompts user for a path."""
         # if a path has been passed, that means it was called from the re-init signal, so do that
         if path:
             # just double check the spreadsheet is gone
@@ -165,12 +181,15 @@ class MainWindow(QMainWindow):
         if path.exists() and path.is_file():
             self.logger.info(f"opening excel file: {path}")
             if self.spreadsheet:
-                self.spreadsheet.__del__()  # close the old spreadsheet if it exists
+                # close the old spreadsheet if it exists
+                self.spreadsheet.__del__()  
             self.spreadsheet = Spreadsheet(path, self)
+            # enable the workbook settings action since we now have an open workbook to configure
             self.ui.actionWorkbook_Settings.setEnabled(True)
             self.spreadsheet.re_init.connect(lambda: self.openExcelFile(self.spreadsheet.file_path))
             
     def reset_map(self):
+        """resets the map and re-establishes the webchannel"""
         self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
         self.ui.webEngineView.page().setWebChannel(self.map.webchannel)
         self.map.map_bridge.region_clicked_signal.connect(self.clicked_in_map)
@@ -182,6 +201,7 @@ class MainWindow(QMainWindow):
         dialog.show()
         
     def display_error(self, error: str):
+        """displays an error message in the webview"""
         html = """<div style="width:90%;height:200px;position:absolute;top:50%;left:50%;margin-left:-45%;margin-top:-100px;background-color:rgb(243,139,168);border-radius:16px">
             <h1 style="text-align: center;">{}</h1>
             <p style="text-align: center;"><strong>{}</strong></p>
@@ -190,25 +210,33 @@ class MainWindow(QMainWindow):
         self.ui.webEngineView.setHtml(html)
         
     def show_settings_dialog(self, settings: dict = None):
+        """shows the settings dialog. if a dictionary with values is given, it fills those in."""
+        # declare this early because it's needed in validate_kml_path()
         tempmap = None
         def validate_kml_path():
+            # if saving is enabled, a path is provided and that path points to a valid file, accept the dialog
             if ui.saveMapLocationCheckBox.isChecked() and (Path(ui.mapLocationLineEdit.text()).exists() and Path(ui.mapLocationLineEdit.text()).is_file()):
                 dialog.accept()
+            # if the map is not supposed to be saved, prompt the user to select a temporary file
             elif not ui.saveMapLocationCheckBox.isChecked():
+                # pull in variable from outside scope
                 nonlocal tempmap
                 tempmap = self.select_kml_file()
                 self.logger.debug(f"selected temp map: {tempmap}")
                 if not tempmap:
                     QMessageBox.critical(self, self.tr("Missing Map Location"), self.tr("Please select a valid map to open."))
+                    # restart to let user select again
                     validate_kml_path()
                     return
                 dialog.accept()
             else:
                 QMessageBox.critical(self, self.tr("Missing Map Location"), self.tr("Please select a valid map using the 'Select File...' Button."))
+                
         self.logger.debug("showing settings dialog")
         dialog = QDialog(self)
         ui = Ui_settingsDialog()
         ui.setupUi(dialog)
+        # check if dictionary is provided, if yes then fill in the gui
         if settings:
             self.logger.debug("opened with settings dict, filling in gui")
             self.logger.debug(settings["linked_map"].get_value())
@@ -223,7 +251,9 @@ class MainWindow(QMainWindow):
             ui.saveMapLocationCheckBox.setChecked(settings["save_map_path"].get_value())
             ui.mapLocationLineEdit.setText(settings["linked_map"].get_value())
         ui.buttonBox.accepted.connect(validate_kml_path)
+        # show path in ui after selection
         ui.mapLocationButton.clicked.connect(lambda: ui.mapLocationLineEdit.setText(str(self.select_kml_file())))
+        # show the dialog. if it was accepted, return the settings
         if dialog.exec():
             new_settings = {
                 "region_sheet": ui.tourSheetNameLineEdit.text(),
@@ -238,10 +268,12 @@ class MainWindow(QMainWindow):
                 "temp_map": tempmap
             }
             self.logger.debug(f"settings: {new_settings}")
+            # if a dict was provided, load config directly into spreadsheet if it exists
             if settings:
                 if self.spreadsheet:
                     self.spreadsheet.load_config(new_settings)
             return new_settings
+        #FIXME
         else:
             self.logger.critical("settings dialog cancelled, this is not implemented")
             self.logger.critical("program in unsafe state, quitting...")

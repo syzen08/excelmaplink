@@ -5,6 +5,8 @@ from PySide6.QtCore import QObject, Signal, Slot
 
 
 class MapBridge(QObject):
+    """allows communication between the leaflet map and this python code.
+    to use, publish an instance of this over the qwebchannel"""
     highlight_region_signal = Signal(str)
     region_clicked_signal = Signal(str)
     reset_highlight_signal = Signal()

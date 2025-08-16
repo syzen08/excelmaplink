@@ -5,6 +5,7 @@ from src.excel.util import region_from_map_name
 
 
 class CurrentRegions:
+    """handles the toggling, writing, and highlighting of the currently calculated regions."""
     def __init__(self, regions: list[Region], length: int, main_window):
         self.regions = regions
         self.length = length
@@ -23,6 +24,7 @@ class CurrentRegions:
             self.regions = self.regions[:self.length]
             
     def sort(self):
+        """sort the list so that None is last"""
         self.regions.sort(key=lambda x: x is None)
     
     def update_highligts(self):

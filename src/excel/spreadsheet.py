@@ -13,6 +13,7 @@ from src.excel.util import range_string, region_from_excel_name
 
 class Spreadsheet(QObject):
     re_init = Signal()
+    
     def __init__(self, path: Path, main_window):
         super().__init__()
         self.logger = logging.getLogger("eml.spreadsheet")
@@ -96,7 +97,8 @@ class Spreadsheet(QObject):
         
         self.calc_sheet.range(range_string(self.config["calc_column"].get_value(), *self.config["calc_range"].get_value())).options(transpose=True).value = [r.excel_name if r is not None else None for r in self.cur_calc_regions.regions]
 
-    def get_config_options(self):
+    def get_config_options(self) -> dict | None:
+        """gets the settings either from the already existing config sheet, or by creating that sheet and prompting the user."""
         if "excelmaplink_config" not in [sheet.name for sheet in self.wb.sheets]:
             self.logger.info("no config sheet found, creating one...")
             self.wb.sheets.add("excelmaplink_config")
@@ -121,7 +123,7 @@ class Spreadsheet(QObject):
         self.logger.debug("settings imported successfully. saving...")
         self.wb.save()
         
-    def get_sheets(self):
+    def get_sheets(self) -> None:
         try:
             self.region_sheet = self.wb.sheets[self.config["region_sheet"].get_value()]
             self.calc_sheet = self.wb.sheets[self.config["calc_sheet"].get_value()]
@@ -138,6 +140,7 @@ class Spreadsheet(QObject):
                 return -1
         
     def populate_cur_regions(self):
+        """populate cur_calc_regions by reading in the data from the calc sheet in the set range"""
         cur_regions = []
         for cell in self.calc_sheet.range(range_string(self.config["calc_column"].get_value(), *self.config["calc_range"].get_value())).value:
             if cell is None:
@@ -153,6 +156,7 @@ class Spreadsheet(QObject):
         self.logger.debug(f"current calc regions: {self.cur_calc_regions.regions}")
         
     def load_map(self):
+        """load the saved map/temp map"""
         if self.config["save_map_path"].get_value():
             if not Path(self.config['linked_map'].get_value()).exists():
                 self.logger.error("map does not exist at stored location!")
@@ -185,6 +189,7 @@ class Spreadsheet(QObject):
         self.load_map()
         
     def start_excel(self):
+        """either start a new excel instance or connect to an existing one, then open the workbook from file_path"""
         #check if excel is already runnding
         if xw.apps.active is not None:
             #if yes, then connect to it
