@@ -239,7 +239,7 @@ class MainWindow(QMainWindow):
         # check if dictionary is provided, if yes then fill in the gui
         if settings:
             self.logger.debug("opened with settings dict, filling in gui")
-            self.logger.debug(settings["linked_map"].get_value())
+            self.logger.debug(f"settings: {settings}")
             ui.tourSheetNameLineEdit.setText(settings["region_sheet"].get_value())
             ui.tourSheetMapNameColumnLineEdit.setText(settings["region_map_name_column"].get_value())
             ui.tourSheetStartRowSpinBox.setValue(settings["region_sheet_start_row"].get_value())

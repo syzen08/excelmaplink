@@ -31,6 +31,9 @@ class ConfigOption:
             self.sheet[self.column + "2"].value = ""
             self.logger.debug(f"reset config option {self.name}")
             
+    def __repr__(self):
+        return f"ConfigOption(name: {self.name}, type: {self.type}, column: {self.column}, value: {self.get_value()})"
+    
     def __str__(self) -> str:
         return str(self.get_value())
             
