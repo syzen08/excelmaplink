@@ -275,8 +275,20 @@ class MainWindow(QMainWindow):
             return new_settings
         #FIXME
         else:
-            self.logger.critical("settings dialog cancelled, this is not implemented")
-            self.logger.critical("program in unsafe state, quitting...")
-            self.close()
-            raise NotImplementedError()
-
+            # just return the unchanged settings back
+            if settings:
+                old_settings = {
+                    "region_sheet": settings["region_sheet"].get_value(),
+                    "region_map_name_column": settings["region_map_name_column"].get_value(),
+                    "region_sheet_start_row": settings["region_sheet_start_row"].get_value(),
+                    "region_name_column": settings["region_name_column"].get_value(),
+                    "calc_sheet": settings["calc_sheet"].get_value(),
+                    "calc_column": settings["calc_column"].get_value(),
+                    "calc_range": settings["calc_range"].get_value(),
+                    "save_map_path": settings["save_map_path"].get_value(),
+                    "linked_map": settings["linked_map"].get_value(),
+                    "temp_map": settings["temp_map"].get_value(),
+                }
+                return old_settings   
+            # if no settings were provided, this dialog was shown for initialisation, so reopen it and return it's result
+            return self.show_settings_dialog()
