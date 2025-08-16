@@ -16,8 +16,9 @@ from PySide6.QtCore import (
 )
 from PySide6.QtGui import QIcon
 from PySide6.QtWidgets import QApplication, QMessageBox
+from rich.console import Console
 from rich.logging import RichHandler
-from rich.traceback import install
+from rich.traceback import Traceback
 
 import resources_rc  # noqa: F401
 from src.mainwindow import MainWindow
@@ -82,7 +83,12 @@ def qt_message_handler(mode, context, message):
 
 def global_exception_hook(exctype, value, tb):
     # ngl completely over the top and unnecessary but fun.
-    sys.__excepthook__(exctype, value, tb)
+    
+    # print rich traceback
+    console = Console(stderr=True)
+    rich_tb = Traceback.from_exception(exctype, value, tb, show_locals=True)
+    console.print(rich_tb)
+    
     errmsgbox = QMessageBox()
     errmsgbox.setIcon(QMessageBox.Icon.Critical)
     errmsgbox.setWindowTitle(QApplication.translate("MainWindow", "Unexpected error"))
@@ -103,7 +109,6 @@ if __name__ == "__main__":
     freeze_support()
     if getattr(sys, 'frozen', False):   
         pyi_splash.update_text("Loading UI...")
-    install(show_locals=True)
     sys.excepthook = global_exception_hook
     logging.basicConfig(
         level="NOTSET", format="[%(name)s]: %(message)s", datefmt="[%X]", handlers=[RichHandler(rich_tracebacks=True)]
