@@ -269,9 +269,8 @@ class MainWindow(QMainWindow):
             }
             self.logger.debug(f"settings: {new_settings}")
             # if a dict was provided, load config directly into spreadsheet if it exists
-            if settings:
-                if self.spreadsheet:
-                    self.spreadsheet.load_config(new_settings)
+            if settings and self.spreadsheet: 
+                self.spreadsheet.load_config(new_settings)
             return new_settings
         #FIXME
         else:
