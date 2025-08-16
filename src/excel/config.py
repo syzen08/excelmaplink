@@ -48,7 +48,7 @@ class ConfigOption:
             case _:
                 raise ValueError(f"unknown type {self.type}, how did you even get here?")
         
-    def get_value(self) -> str:
+    def get_value(self) -> str | int | bool | tuple:
         """returns the value of the config option."""
         val = self.sheet[self.column + "2"].value
         if val == "NONE":
