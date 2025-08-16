@@ -28,3 +28,8 @@ def region_from_excel_name(excel_name: str, config: dict[ConfigOption], region_s
     
     map_name = region_sheet[config["region_map_name_column"].get_value() + str(row)].value
     return Region(excel_name=excel_name, map_name=map_name, row=row)
+
+class NoFreeSpaceError(Exception):
+    """No Space left in current regions."""
+    def __init__(self, *args):
+        super().__init__(*args)

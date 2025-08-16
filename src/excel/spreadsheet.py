@@ -8,7 +8,7 @@ from pywintypes import com_error
 
 from src.excel.config import ConfigOption
 from src.excel.cur_regions import CurrentRegions
-from src.excel.util import range_string, region_from_excel_name
+from src.excel.util import NoFreeSpaceError, range_string, region_from_excel_name
 
 
 class Spreadsheet(QObject):
@@ -92,6 +92,13 @@ class Spreadsheet(QObject):
                 self.main_window, 
                 self.tr("Region Not Found"), 
                 self.tr("Could not find region {} in region sheet {}.\nPlease make sure that you have the correct column selected in the settings and the names in the column are the correct format.").format(region_map_name, self.region_sheet.name)
+            )
+        except NoFreeSpaceError:
+            self.logger.error("no free space left in spreadsheet")
+            QMessageBox.warning(
+                self.main_window,
+                self.tr("No space left"),
+                self.tr("The range between row {} and {} in column {} is full!. Please first deselect some regions.").format(self.config["calc_range"].get_value()[0], self.config["calc_range"].get_value()[1], self.config["calc_column"].get_value())
             )
         self.logger.debug(f"cur_regions: {self.cur_calc_regions.regions}")
         

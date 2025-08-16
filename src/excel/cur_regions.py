@@ -1,7 +1,7 @@
 import logging
 
 from src.excel.region import Region
-from src.excel.util import region_from_map_name
+from src.excel.util import NoFreeSpaceError, region_from_map_name
 
 
 class CurrentRegions:
@@ -42,6 +42,8 @@ class CurrentRegions:
             self.update_highligts()
             return
         if region is None:
+            if None not in self.regions:
+                raise NoFreeSpaceError("no space left in regions")
             self.logger.debug(f"adding region {region_map_name}")
             self.regions[self.regions.index(None)] = region_from_map_name(region_map_name, self.main_window.spreadsheet.config, self.main_window.spreadsheet.region_sheet)
             self.update_highligts()
