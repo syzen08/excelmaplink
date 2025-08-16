@@ -6,8 +6,8 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>600</width>
-    <height>280</height>
+    <width>606</width>
+    <height>284</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -39,27 +39,10 @@
           </property>
          </widget>
         </item>
-        <item row="3" column="1">
-         <widget class="QLineEdit" name="tourSheetMapNameColumnLineEdit">
-          <property name="maxLength">
-           <number>4</number>
-          </property>
-          <property name="placeholderText">
-           <string>AP</string>
-          </property>
-         </widget>
-        </item>
         <item row="1" column="0">
          <widget class="QLabel" name="tourSheetStartRowLabel">
           <property name="text">
            <string>Overview Start Row</string>
-          </property>
-         </widget>
-        </item>
-        <item row="3" column="0">
-         <widget class="QLabel" name="tourSheetMapNameColumnLabel">
-          <property name="text">
-           <string>Tour Map Name Column</string>
           </property>
          </widget>
         </item>
@@ -80,6 +63,23 @@
           </property>
           <property name="placeholderText">
            <string>C</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="0">
+         <widget class="QLabel" name="tourSheetMapNameColumnLabel">
+          <property name="text">
+           <string>Tour Map Name Column</string>
+          </property>
+         </widget>
+        </item>
+        <item row="3" column="1">
+         <widget class="QLineEdit" name="tourSheetMapNameColumnLineEdit">
+          <property name="maxLength">
+           <number>4</number>
+          </property>
+          <property name="placeholderText">
+           <string>AP</string>
           </property>
          </widget>
         </item>
@@ -157,40 +157,52 @@
      <property name="title">
       <string>Map Settings</string>
      </property>
-     <layout class="QGridLayout" name="gridLayout">
-      <item row="0" column="0">
-       <widget class="QLabel" name="saveMapLocationLabel">
-        <property name="text">
-         <string>Save map location in Workbook</string>
-        </property>
-       </widget>
+     <layout class="QHBoxLayout" name="horizontalLayout_3">
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_2">
+        <item>
+         <widget class="QLabel" name="saveMapLocationLabel">
+          <property name="text">
+           <string>Save map location in Workbook</string>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <layout class="QHBoxLayout" name="horizontalLayout_2">
+          <item>
+           <widget class="QLabel" name="mapLocationLabel">
+            <property name="text">
+             <string>Map Location:</string>
+            </property>
+           </widget>
+          </item>
+          <item>
+           <widget class="QPushButton" name="mapLocationButton">
+            <property name="text">
+             <string>Select File...</string>
+            </property>
+           </widget>
+          </item>
+         </layout>
+        </item>
+       </layout>
       </item>
-      <item row="1" column="0">
-       <widget class="QLabel" name="mapLocationLabel">
-        <property name="text">
-         <string>Map Location:</string>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="2">
-       <widget class="QLineEdit" name="mapLocationLineEdit"/>
-      </item>
-      <item row="0" column="1">
-       <widget class="QCheckBox" name="saveMapLocationCheckBox">
-        <property name="text">
-         <string/>
-        </property>
-        <property name="checked">
-         <bool>true</bool>
-        </property>
-       </widget>
-      </item>
-      <item row="1" column="1">
-       <widget class="QPushButton" name="mapLocationButton">
-        <property name="text">
-         <string>Select File...</string>
-        </property>
-       </widget>
+      <item>
+       <layout class="QVBoxLayout" name="verticalLayout_3">
+        <item>
+         <widget class="QCheckBox" name="saveMapLocationCheckBox">
+          <property name="text">
+           <string/>
+          </property>
+          <property name="checked">
+           <bool>true</bool>
+          </property>
+         </widget>
+        </item>
+        <item>
+         <widget class="QLineEdit" name="mapLocationLineEdit"/>
+        </item>
+       </layout>
       </item>
      </layout>
     </widget>
@@ -216,9 +228,6 @@
   <tabstop>calcSheetColumnLineEdit</tabstop>
   <tabstop>fromSpinbox</tabstop>
   <tabstop>toSpinbox</tabstop>
-  <tabstop>saveMapLocationCheckBox</tabstop>
-  <tabstop>mapLocationButton</tabstop>
-  <tabstop>mapLocationLineEdit</tabstop>
  </tabstops>
  <resources/>
  <connections/>

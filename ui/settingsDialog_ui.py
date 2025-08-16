@@ -16,15 +16,15 @@ from PySide6.QtGui import (QBrush, QColor, QConicalGradient, QCursor,
     QImage, QKeySequence, QLinearGradient, QPainter,
     QPalette, QPixmap, QRadialGradient, QTransform)
 from PySide6.QtWidgets import (QAbstractButton, QApplication, QCheckBox, QDialog,
-    QDialogButtonBox, QFormLayout, QGridLayout, QGroupBox,
-    QHBoxLayout, QLabel, QLineEdit, QPushButton,
-    QSizePolicy, QSpinBox, QVBoxLayout, QWidget)
+    QDialogButtonBox, QFormLayout, QGroupBox, QHBoxLayout,
+    QLabel, QLineEdit, QPushButton, QSizePolicy,
+    QSpinBox, QVBoxLayout, QWidget)
 
 class Ui_settingsDialog(object):
     def setupUi(self, settingsDialog):
         if not settingsDialog.objectName():
             settingsDialog.setObjectName(u"settingsDialog")
-        settingsDialog.resize(600, 280)
+        settingsDialog.resize(606, 284)
         settingsDialog.setModal(True)
         self.verticalLayout = QVBoxLayout(settingsDialog)
         self.verticalLayout.setObjectName(u"verticalLayout")
@@ -44,21 +44,10 @@ class Ui_settingsDialog(object):
 
         self.formLayout.setWidget(0, QFormLayout.ItemRole.FieldRole, self.tourSheetNameLineEdit)
 
-        self.tourSheetMapNameColumnLineEdit = QLineEdit(self.tourSheetSettings)
-        self.tourSheetMapNameColumnLineEdit.setObjectName(u"tourSheetMapNameColumnLineEdit")
-        self.tourSheetMapNameColumnLineEdit.setMaxLength(4)
-
-        self.formLayout.setWidget(3, QFormLayout.ItemRole.FieldRole, self.tourSheetMapNameColumnLineEdit)
-
         self.tourSheetStartRowLabel = QLabel(self.tourSheetSettings)
         self.tourSheetStartRowLabel.setObjectName(u"tourSheetStartRowLabel")
 
         self.formLayout.setWidget(1, QFormLayout.ItemRole.LabelRole, self.tourSheetStartRowLabel)
-
-        self.tourSheetMapNameColumnLabel = QLabel(self.tourSheetSettings)
-        self.tourSheetMapNameColumnLabel.setObjectName(u"tourSheetMapNameColumnLabel")
-
-        self.formLayout.setWidget(3, QFormLayout.ItemRole.LabelRole, self.tourSheetMapNameColumnLabel)
 
         self.tourSheetStartRowSpinBox = QSpinBox(self.tourSheetSettings)
         self.tourSheetStartRowSpinBox.setObjectName(u"tourSheetStartRowSpinBox")
@@ -75,6 +64,17 @@ class Ui_settingsDialog(object):
         self.tourSheetTourNameLineEdit.setMaxLength(4)
 
         self.formLayout.setWidget(2, QFormLayout.ItemRole.FieldRole, self.tourSheetTourNameLineEdit)
+
+        self.tourSheetMapNameColumnLabel = QLabel(self.tourSheetSettings)
+        self.tourSheetMapNameColumnLabel.setObjectName(u"tourSheetMapNameColumnLabel")
+
+        self.formLayout.setWidget(3, QFormLayout.ItemRole.LabelRole, self.tourSheetMapNameColumnLabel)
+
+        self.tourSheetMapNameColumnLineEdit = QLineEdit(self.tourSheetSettings)
+        self.tourSheetMapNameColumnLineEdit.setObjectName(u"tourSheetMapNameColumnLineEdit")
+        self.tourSheetMapNameColumnLineEdit.setMaxLength(4)
+
+        self.formLayout.setWidget(3, QFormLayout.ItemRole.FieldRole, self.tourSheetMapNameColumnLineEdit)
 
 
         self.sheetSettingsHBoxLayout.addWidget(self.tourSheetSettings)
@@ -139,33 +139,48 @@ class Ui_settingsDialog(object):
 
         self.otherSettings = QGroupBox(settingsDialog)
         self.otherSettings.setObjectName(u"otherSettings")
-        self.gridLayout = QGridLayout(self.otherSettings)
-        self.gridLayout.setObjectName(u"gridLayout")
+        self.horizontalLayout_3 = QHBoxLayout(self.otherSettings)
+        self.horizontalLayout_3.setObjectName(u"horizontalLayout_3")
+        self.verticalLayout_2 = QVBoxLayout()
+        self.verticalLayout_2.setObjectName(u"verticalLayout_2")
         self.saveMapLocationLabel = QLabel(self.otherSettings)
         self.saveMapLocationLabel.setObjectName(u"saveMapLocationLabel")
 
-        self.gridLayout.addWidget(self.saveMapLocationLabel, 0, 0, 1, 1)
+        self.verticalLayout_2.addWidget(self.saveMapLocationLabel)
 
+        self.horizontalLayout_2 = QHBoxLayout()
+        self.horizontalLayout_2.setObjectName(u"horizontalLayout_2")
         self.mapLocationLabel = QLabel(self.otherSettings)
         self.mapLocationLabel.setObjectName(u"mapLocationLabel")
 
-        self.gridLayout.addWidget(self.mapLocationLabel, 1, 0, 1, 1)
-
-        self.mapLocationLineEdit = QLineEdit(self.otherSettings)
-        self.mapLocationLineEdit.setObjectName(u"mapLocationLineEdit")
-
-        self.gridLayout.addWidget(self.mapLocationLineEdit, 1, 2, 1, 1)
-
-        self.saveMapLocationCheckBox = QCheckBox(self.otherSettings)
-        self.saveMapLocationCheckBox.setObjectName(u"saveMapLocationCheckBox")
-        self.saveMapLocationCheckBox.setChecked(True)
-
-        self.gridLayout.addWidget(self.saveMapLocationCheckBox, 0, 1, 1, 1)
+        self.horizontalLayout_2.addWidget(self.mapLocationLabel)
 
         self.mapLocationButton = QPushButton(self.otherSettings)
         self.mapLocationButton.setObjectName(u"mapLocationButton")
 
-        self.gridLayout.addWidget(self.mapLocationButton, 1, 1, 1, 1)
+        self.horizontalLayout_2.addWidget(self.mapLocationButton)
+
+
+        self.verticalLayout_2.addLayout(self.horizontalLayout_2)
+
+
+        self.horizontalLayout_3.addLayout(self.verticalLayout_2)
+
+        self.verticalLayout_3 = QVBoxLayout()
+        self.verticalLayout_3.setObjectName(u"verticalLayout_3")
+        self.saveMapLocationCheckBox = QCheckBox(self.otherSettings)
+        self.saveMapLocationCheckBox.setObjectName(u"saveMapLocationCheckBox")
+        self.saveMapLocationCheckBox.setChecked(True)
+
+        self.verticalLayout_3.addWidget(self.saveMapLocationCheckBox)
+
+        self.mapLocationLineEdit = QLineEdit(self.otherSettings)
+        self.mapLocationLineEdit.setObjectName(u"mapLocationLineEdit")
+
+        self.verticalLayout_3.addWidget(self.mapLocationLineEdit)
+
+
+        self.horizontalLayout_3.addLayout(self.verticalLayout_3)
 
 
         self.verticalLayout.addWidget(self.otherSettings)
@@ -185,9 +200,6 @@ class Ui_settingsDialog(object):
         QWidget.setTabOrder(self.calcSheetNameLineEdit, self.calcSheetColumnLineEdit)
         QWidget.setTabOrder(self.calcSheetColumnLineEdit, self.fromSpinbox)
         QWidget.setTabOrder(self.fromSpinbox, self.toSpinbox)
-        QWidget.setTabOrder(self.toSpinbox, self.saveMapLocationCheckBox)
-        QWidget.setTabOrder(self.saveMapLocationCheckBox, self.mapLocationButton)
-        QWidget.setTabOrder(self.mapLocationButton, self.mapLocationLineEdit)
 
         self.retranslateUi(settingsDialog)
 
@@ -199,11 +211,11 @@ class Ui_settingsDialog(object):
         self.tourSheetSettings.setTitle(QCoreApplication.translate("settingsDialog", u"Overview Sheet Settings", None))
         self.tourSheetNameLabel.setText(QCoreApplication.translate("settingsDialog", u"Overview Sheet Name", None))
         self.tourSheetNameLineEdit.setPlaceholderText(QCoreApplication.translate("settingsDialog", u"\u00dcbersicht", None))
-        self.tourSheetMapNameColumnLineEdit.setPlaceholderText(QCoreApplication.translate("settingsDialog", u"AP", None))
         self.tourSheetStartRowLabel.setText(QCoreApplication.translate("settingsDialog", u"Overview Start Row", None))
-        self.tourSheetMapNameColumnLabel.setText(QCoreApplication.translate("settingsDialog", u"Tour Map Name Column", None))
         self.tourSheetTourNameLabel.setText(QCoreApplication.translate("settingsDialog", u"Tour Name Column", None))
         self.tourSheetTourNameLineEdit.setPlaceholderText(QCoreApplication.translate("settingsDialog", u"C", None))
+        self.tourSheetMapNameColumnLabel.setText(QCoreApplication.translate("settingsDialog", u"Tour Map Name Column", None))
+        self.tourSheetMapNameColumnLineEdit.setPlaceholderText(QCoreApplication.translate("settingsDialog", u"AP", None))
         self.calcSheetSettings.setTitle(QCoreApplication.translate("settingsDialog", u"Calculation Sheet Settings", None))
         self.calcSheetNameLabel.setText(QCoreApplication.translate("settingsDialog", u"Calculation Sheet Name", None))
         self.calcSheetNameLineEdit.setPlaceholderText(QCoreApplication.translate("settingsDialog", u"Berechnung", None))
@@ -214,7 +226,7 @@ class Ui_settingsDialog(object):
         self.otherSettings.setTitle(QCoreApplication.translate("settingsDialog", u"Map Settings", None))
         self.saveMapLocationLabel.setText(QCoreApplication.translate("settingsDialog", u"Save map location in Workbook", None))
         self.mapLocationLabel.setText(QCoreApplication.translate("settingsDialog", u"Map Location:", None))
-        self.saveMapLocationCheckBox.setText("")
         self.mapLocationButton.setText(QCoreApplication.translate("settingsDialog", u"Select File...", None))
+        self.saveMapLocationCheckBox.setText("")
     # retranslateUi
 
