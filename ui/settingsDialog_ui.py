@@ -51,6 +51,7 @@ class Ui_settingsDialog(object):
 
         self.tourSheetStartRowSpinBox = QSpinBox(self.tourSheetSettings)
         self.tourSheetStartRowSpinBox.setObjectName(u"tourSheetStartRowSpinBox")
+        self.tourSheetStartRowSpinBox.setMinimum(1)
 
         self.formLayout.setWidget(1, QFormLayout.ItemRole.FieldRole, self.tourSheetStartRowSpinBox)
 
@@ -113,6 +114,7 @@ class Ui_settingsDialog(object):
         self.rangeSelectorLayout.setObjectName(u"rangeSelectorLayout")
         self.fromSpinbox = QSpinBox(self.calcSheetSettings)
         self.fromSpinbox.setObjectName(u"fromSpinbox")
+        self.fromSpinbox.setMinimum(1)
 
         self.rangeSelectorLayout.addWidget(self.fromSpinbox)
 
@@ -123,6 +125,7 @@ class Ui_settingsDialog(object):
 
         self.toSpinbox = QSpinBox(self.calcSheetSettings)
         self.toSpinbox.setObjectName(u"toSpinbox")
+        self.toSpinbox.setMinimum(1)
 
         self.rangeSelectorLayout.addWidget(self.toSpinbox)
 
