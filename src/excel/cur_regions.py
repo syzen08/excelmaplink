@@ -1,16 +1,21 @@
 import logging
 
 from src.excel.region import Region
-from src.excel.util import NoFreeSpaceError, region_from_map_name
+from src.excel.util import (
+    NoFreeSpaceError,
+    region_from_excel_name,
+    region_from_map_name,
+)
 
 
 class CurrentRegions:
     """handles the toggling, writing, and highlighting of the currently calculated regions."""
-    def __init__(self, regions: list[Region], length: int, main_window):
+    def __init__(self, regions: list[Region], length: int, main_window, map_names: bool):
         self.regions = regions
         self.length = length
         self.main_window = main_window
         self.logger = logging.getLogger("eml.spreadsheet.cur_regions")
+        self.map_names = map_names
         
         self.ensure_length()
         self.sort()
@@ -32,10 +37,17 @@ class CurrentRegions:
         for region in self.regions:
             if region is None:
                 continue
-            self.main_window.map.map_bridge.highlight_region(region.map_name)
+            if self.map_names:
+                self.main_window.map.map_bridge.highlight_region(region.map_name)
+            else:
+                self.main_window.map.map_bridge.highlight_region(region.excel_name)
             
     def toggle_region(self, region_map_name: str):
-        region = next((r for r in self.regions if r is not None and r.map_name == region_map_name), None)
+        if self.map_names:
+            region = next((r for r in self.regions if r is not None and r.map_name == region_map_name), None)
+        else:
+            region = next((r for r in self.regions if r is not None and r.excel_name == region_map_name), None)
+            
         if region is not None:
             self.regions[self.regions.index(region)] = None
             self.logger.debug(f"removed region {region_map_name}")
@@ -45,5 +57,8 @@ class CurrentRegions:
             if None not in self.regions:
                 raise NoFreeSpaceError("no space left in regions")
             self.logger.debug(f"adding region {region_map_name}")
-            self.regions[self.regions.index(None)] = region_from_map_name(region_map_name, self.main_window.spreadsheet.config, self.main_window.spreadsheet.region_sheet)
+            if self.map_names:
+                self.regions[self.regions.index(None)] = region_from_map_name(region_map_name, self.main_window.spreadsheet.config, self.main_window.spreadsheet.region_sheet)
+            else:
+                self.regions[self.regions.index(None)] = region_from_excel_name(region_map_name, self.main_window.spreadsheet.config, self.main_window.spreadsheet.region_sheet)
             self.update_highligts()

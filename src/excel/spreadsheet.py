@@ -159,7 +159,7 @@ class Spreadsheet(QObject):
             except ValueError as e:
                 self.logger.error(f"could not find region {cell} in region sheet {self.region_sheet.name}: {e}")
                 cur_regions.append(None)
-        self.cur_calc_regions = CurrentRegions(cur_regions, self.config["calc_range"].get_value()[1] - self.config["calc_range"].get_value()[0] + 1, self.main_window)
+        self.cur_calc_regions = CurrentRegions(cur_regions, self.config["calc_range"].get_value()[1] - self.config["calc_range"].get_value()[0] + 1, self.main_window, self.config["region_map_name_column"].get_value() is not None)
         self.logger.debug(f"current calc regions: {self.cur_calc_regions.regions}")
         
     def load_map(self):

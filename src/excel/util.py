@@ -11,6 +11,8 @@ def range_string(column: str, start_row: int, end_row: int) -> str:
 
 def region_from_map_name(map_name: str, config: dict[ConfigOption], region_sheet: Sheet) -> Region:
     """returns a `Region` object from the name of the region in the map."""
+    if config["region_map_name_column"].get_value() is None:
+        raise AttributeError("config option region_map_name_column not set")
     try:
         row = region_sheet[range_string(config["region_map_name_column"].get_value(), config["region_sheet_start_row"].get_value(), region_sheet.used_range.last_cell.row)].value.index(map_name) + config["region_sheet_start_row"].get_value()
     except ValueError:
@@ -25,8 +27,10 @@ def region_from_excel_name(excel_name: str, config: dict[ConfigOption], region_s
         row = region_sheet[range_string(config["region_name_column"].get_value(), config["region_sheet_start_row"].get_value(), region_sheet.used_range.last_cell.row)].value.index(excel_name) + config["region_sheet_start_row"].get_value()
     except ValueError:
         raise ValueError(f"region with map name {excel_name} not found in region sheet {region_sheet.name}")
-    
-    map_name = region_sheet[config["region_map_name_column"].get_value() + str(row)].value
+    if config["region_map_name_column"].get_value() is not None:
+        map_name = region_sheet[config["region_map_name_column"].get_value() + str(row)].value
+    else:
+        map_name = None
     return Region(excel_name=excel_name, map_name=map_name, row=row)
 
 class NoFreeSpaceError(Exception):
