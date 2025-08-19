@@ -61,7 +61,7 @@ class ConfigOption:
     def set_value(self, value: Any):
         """sets the value of the config option."""
         self.logger.info(f"set config option {self.name} to {value}")
-        if value is None or value in ["None", "none", "NONE"]:
+        if value is None or value in ["None", "none", "NONE", ""]:
             value = "NONE"
         if isinstance(value, tuple):
             value = "@@".join(map(str, value))
