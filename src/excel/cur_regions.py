@@ -52,8 +52,7 @@ class CurrentRegions:
             self.regions[self.regions.index(region)] = None
             self.logger.debug(f"removed region {region_map_name}")
             self.update_highligts()
-            return
-        if region is None:
+        else:
             if None not in self.regions:
                 raise NoFreeSpaceError("no space left in regions")
             self.logger.debug(f"adding region {region_map_name}")
@@ -62,3 +61,4 @@ class CurrentRegions:
             else:
                 self.regions[self.regions.index(None)] = region_from_excel_name(region_map_name, self.main_window.spreadsheet.config, self.main_window.spreadsheet.region_sheet)
             self.update_highligts()
+        self.sort()
