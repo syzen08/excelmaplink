@@ -201,6 +201,7 @@ class Spreadsheet(QObject):
         if xw.apps.active is not None:
             #if yes, then connect to it
             self.logger.debug("excel is already running, connecting to it...")
+            self.created = False
             self.app = xw.apps.active
             self.wb = self.app.books.open(str(self.file_path)) # BUG: this errors out if excel is already open with the file
         else:
