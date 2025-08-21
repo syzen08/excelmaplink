@@ -12,9 +12,11 @@
 a interactive map allowing the user to toggle regions on the map which also toggles values in an excel spreadsheet. 
 
 > [!IMPORTANT]
-> this is only tested on windows. if you're feeling lucky, try it on other operating systems (it will likely be broken)
+> this is only tested on windows. if you're feeling lucky, you can try it on macOS as well.
 
 ## Running
+**Excel has to be installed!**
+
 get the latest .exe from the [releases](https://github.com/syzen08/excelmaplink/releases)
 
 ## Building
