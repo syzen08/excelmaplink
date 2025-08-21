@@ -4,17 +4,17 @@
 <context>
     <name>KMLReader</name>
     <message>
-        <location filename="../src/kml.py" line="43"/>
+        <location filename="../src/kml.py" line="41"/>
         <source>parsing {}...</source>
         <translation>Parse {}...</translation>
     </message>
     <message>
-        <location filename="../src/kml.py" line="46"/>
+        <location filename="../src/kml.py" line="45"/>
         <source>loading placemarks...</source>
         <translation>Lade Markierungen...</translation>
     </message>
     <message>
-        <location filename="../src/kml.py" line="49"/>
+        <location filename="../src/kml.py" line="50"/>
         <source>loading styles...</source>
         <translation>Lade Styles...</translation>
     </message>
@@ -110,7 +110,7 @@
         <translation>Karte kopieren</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="100"/>
+        <location filename="../src/mainwindow.py" line="119"/>
         <source>Select KML File</source>
         <translation>KML-Datei auswählen</translation>
     </message>
@@ -119,83 +119,83 @@
         <translation type="vanished">KML Datei (*.kml)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="79"/>
+        <location filename="../src/mainwindow.py" line="89"/>
         <source>Save Excel?</source>
         <translation>Excel speichern?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="79"/>
+        <location filename="../src/mainwindow.py" line="90"/>
         <source>Do you want to save the workbook?</source>
         <translation>Soll die Arbeitsmappe gespeichert werden?</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="100"/>
+        <location filename="../src/mainwindow.py" line="119"/>
         <source>KML Files (*.kml *.kmz)</source>
         <translation>KML Datei (*.kml *kmz)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="155"/>
+        <location filename="../src/mainwindow.py" line="180"/>
         <source>Open Excel File</source>
         <translation>Excel Arbeitsmappe öffnen</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="155"/>
+        <location filename="../src/mainwindow.py" line="180"/>
         <source>Excel Files (*.xlsx *.xls)</source>
         <translation>Excel Arbeitsmappen (*.xlsx *.xls)</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="180"/>
+        <location filename="../src/mainwindow.py" line="209"/>
         <source>Uh Oh! Something went wrong!</source>
         <translation>Ups! Etwas ist schiefgelaufen!</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="180"/>
+        <location filename="../src/mainwindow.py" line="209"/>
         <source>Error: {}</source>
         <translation>Fehler: {}</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="193"/>
-        <location filename="../src/mainwindow.py" line="198"/>
+        <location filename="../src/mainwindow.py" line="227"/>
+        <location filename="../src/mainwindow.py" line="233"/>
         <source>Missing Map Location</source>
         <translation>Kartendatei fehlt</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="193"/>
+        <location filename="../src/mainwindow.py" line="227"/>
         <source>Please select a valid map to open.</source>
         <translation>Bitte wählen sie eine valide Karte zum öffnen aus.</translation>
     </message>
     <message>
-        <location filename="../src/mainwindow.py" line="198"/>
+        <location filename="../src/mainwindow.py" line="233"/>
         <source>Please select a valid map using the &apos;Select File...&apos; Button.</source>
         <translation>Bitte wählen sie eine valide Karte aus, indem sie auf &apos;Datei öffnen...&apos; klicken.</translation>
     </message>
     <message>
-        <location filename="../main.py" line="86"/>
+        <location filename="../main.py" line="94"/>
         <source>Unexpected error</source>
         <translation>Unerwarteter Fehler</translation>
     </message>
     <message>
-        <location filename="../main.py" line="87"/>
+        <location filename="../main.py" line="95"/>
         <source>An unexpected error occurred.</source>
         <translation>Ein unerwarteter Fehler ist aufgetreten.</translation>
     </message>
     <message>
-        <location filename="../main.py" line="90"/>
+        <location filename="../main.py" line="98"/>
         <source>Continue</source>
         <translation>Fortsetzen</translation>
     </message>
     <message>
-        <location filename="../main.py" line="91"/>
+        <location filename="../main.py" line="99"/>
         <source>Quit</source>
         <translation>Beenden</translation>
     </message>
     <message>
-        <location filename="../main.py" line="95"/>
+        <location filename="../main.py" line="103"/>
         <source>WARNING!</source>
         <translation>ACHTUNG!</translation>
     </message>
     <message>
-        <location filename="../main.py" line="95"/>
+        <location filename="../main.py" line="103"/>
         <source>This will continue execution in this unknown state. This can lead to unexpected behaviour. Do you really want to continue?</source>
         <translation>Damit setzen sie das Programm in einem unsicheren Zustand fort, was zu unerwartetem Verhalten führen kann. Wollen sie wirklich fortfahren?</translation>
     </message>
@@ -203,7 +203,7 @@
 <context>
     <name>Map</name>
     <message>
-        <location filename="../src/map.py" line="126"/>
+        <location filename="../src/map.py" line="130"/>
         <source>adding elements...</source>
         <translation>Elemente werden hinzugefügt...</translation>
     </message>
@@ -211,49 +211,59 @@
 <context>
     <name>Spreadsheet</name>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="78"/>
+        <location filename="../src/excel/spreadsheet.py" line="79"/>
         <source>Lost connection to Excel</source>
         <translation>Verbindung zu Excel verloren</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="80"/>
+        <location filename="../src/excel/spreadsheet.py" line="81"/>
         <source>Lost connection to Excel. Please DO NOT close Excel itself. Close the map instead, it will close Excel on its own.</source>
         <translation>Die Verbindung zu Excel wurde verloren. Bitte Excel NICHT SCHLIEßEN! Beim schließen der Karte wird Excel automatisch vollständig mitgeschlossen.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="92"/>
+        <location filename="../src/excel/spreadsheet.py" line="93"/>
         <source>Region Not Found</source>
         <translation>Tour nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="93"/>
+        <location filename="../src/excel/spreadsheet.py" line="94"/>
         <source>Could not find region {} in region sheet {}.
 Please make sure that you have the correct column selected in the settings and the names in the column are the correct format.</source>
         <translation>Die Tour {} konnte im Übersichtsblatt {} nicht gefunden werden.
 Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewählt ist und dass die Namen in der Spalte das Richtige Format haben.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="132"/>
+        <location filename="../src/excel/spreadsheet.py" line="100"/>
+        <source>No space left</source>
+        <translation>Kein Platz frei</translation>
+    </message>
+    <message>
+        <location filename="../src/excel/spreadsheet.py" line="101"/>
+        <source>The range between row {} and {} in column {} is full!. Please first deselect some regions.</source>
+        <translation>Der Bereich zwischen {} und {} in Spalte {} ist voll! Um neue Regionen hinzuzufügen müssen erst andere abgewählt werden.</translation>
+    </message>
+    <message>
+        <location filename="../src/excel/spreadsheet.py" line="141"/>
         <source>Sheet Not Found</source>
         <translation>Blatt nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="133"/>
+        <location filename="../src/excel/spreadsheet.py" line="142"/>
         <source>Could not find sheet {} or {}. Please check your settings.</source>
         <translation>Das Blatt {} oder {} konnte nicht gefunden werden. Stellen sie sicher, dass die Namen in den Einstellungen stimmen.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="159"/>
+        <location filename="../src/excel/spreadsheet.py" line="170"/>
         <source>The map at {} could not be found.</source>
         <translation>Die Karte bei {} konnte nicht gefunden werden.</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="162"/>
+        <location filename="../src/excel/spreadsheet.py" line="173"/>
         <source>Map not found</source>
         <translation>Karte nicht gefunden</translation>
     </message>
     <message>
-        <location filename="../src/excel/spreadsheet.py" line="163"/>
+        <location filename="../src/excel/spreadsheet.py" line="174"/>
         <source>The map at {} could not be found. Make sure that the file path is still accessible and exists.</source>
         <translation>Die Karte bei {} konnte nicht gefunden werden. Stellen sie sicher, dass der Ort noch verfügbar ist und existiert.</translation>
     </message>
@@ -317,82 +327,82 @@ Bitte stellen sie sicher, dass die korrekte Spalte in den Einstellungen ausgewä
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="48"/>
+        <location filename="../ui/settingsDialog.ui" line="86"/>
         <source>AP</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="55"/>
+        <location filename="../ui/settingsDialog.ui" line="45"/>
         <source>Overview Start Row</source>
         <translation>Übersichtsblatt Startzeile</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="62"/>
+        <location filename="../ui/settingsDialog.ui" line="76"/>
         <source>Tour Map Name Column</source>
         <translation>Kartennamenspalte</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="72"/>
+        <location filename="../ui/settingsDialog.ui" line="59"/>
         <source>Tour Name Column</source>
         <translation>Tournamenspalte</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="82"/>
+        <location filename="../ui/settingsDialog.ui" line="69"/>
         <source>C</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="92"/>
+        <location filename="../ui/settingsDialog.ui" line="96"/>
         <source>Calculation Sheet Settings</source>
         <translation>Berechnungsblatt Einstellungen</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="98"/>
+        <location filename="../ui/settingsDialog.ui" line="102"/>
         <source>Calculation Sheet Name</source>
         <translation>Berechnungsblatt Name</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="105"/>
+        <location filename="../ui/settingsDialog.ui" line="109"/>
         <source>Berechnung</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="112"/>
+        <location filename="../ui/settingsDialog.ui" line="116"/>
         <source>Calculation Sheet Insertion Column</source>
         <translation>Tourenspalte</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="122"/>
+        <location filename="../ui/settingsDialog.ui" line="126"/>
         <source>B</source>
         <translation></translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="129"/>
+        <location filename="../ui/settingsDialog.ui" line="133"/>
         <source>Calculation Row Range</source>
         <translation>Berechnungsbereich</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="141"/>
+        <location filename="../ui/settingsDialog.ui" line="149"/>
         <source>:</source>
         <translation>:</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="158"/>
+        <location filename="../ui/settingsDialog.ui" line="170"/>
         <source>Map Settings</source>
         <translation>Karten Einstellungen</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="164"/>
+        <location filename="../ui/settingsDialog.ui" line="178"/>
         <source>Save map location in Workbook</source>
         <translation>Kartenspeicherort in Arbeitsmappe speichern</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="171"/>
+        <location filename="../ui/settingsDialog.ui" line="187"/>
         <source>Map Location:</source>
         <translation>Kartenspeicherort:</translation>
     </message>
     <message>
-        <location filename="../ui/settingsDialog.ui" line="191"/>
+        <location filename="../ui/settingsDialog.ui" line="194"/>
         <source>Select File...</source>
         <translation>Datei auswählen...</translation>
     </message>
