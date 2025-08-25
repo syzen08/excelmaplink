@@ -189,7 +189,7 @@ class MainWindow(QMainWindow):
             
     def reset_map(self):
         """resets the map and re-establishes the webchannel"""
-        self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
+        self.map = Map(51.165691, 10.451526, 6, Path(self.tempdir.path()))
         self.ui.webEngineView.page().setWebChannel(self.map.webchannel)
         self.map.map_bridge.region_clicked_signal.connect(self.clicked_in_map)
             
