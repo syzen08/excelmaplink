@@ -16,7 +16,7 @@ def region_from_map_name(map_name: str, config: dict[ConfigOption], region_sheet
     try:
         row = region_sheet[range_string(config["region_map_name_column"].get_value(), config["region_sheet_start_row"].get_value(), region_sheet.used_range.last_cell.row)].value.index(map_name) + config["region_sheet_start_row"].get_value()
     except ValueError:
-        raise ValueError(f"region with map name {map_name} not found in region sheet {region_sheet.name}")
+        raise ValueError(f"region with map name {map_name} not found in region sheet {region_sheet.name}") from None
     
     excel_name = region_sheet[config["region_name_column"].get_value() + str(row)].value
     return Region(excel_name=excel_name, map_name=map_name, row=row)
@@ -26,7 +26,7 @@ def region_from_excel_name(excel_name: str, config: dict[ConfigOption], region_s
     try:
         row = region_sheet[range_string(config["region_name_column"].get_value(), config["region_sheet_start_row"].get_value(), region_sheet.used_range.last_cell.row)].value.index(excel_name) + config["region_sheet_start_row"].get_value()
     except ValueError:
-        raise ValueError(f"region with map name {excel_name} not found in region sheet {region_sheet.name}")
+        raise ValueError(f"region with map name {excel_name} not found in region sheet {region_sheet.name}") from None
     if config["region_map_name_column"].get_value() is not None:
         map_name = region_sheet[config["region_map_name_column"].get_value() + str(row)].value
     else:

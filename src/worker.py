@@ -20,7 +20,7 @@ class Worker(QRunnable):
         self.kwargs = kwargs
         self.signals = WorkerSignals()
 
-        self.kwargs['progress_callback'] = self.signals.progress
+        self.kwargs["progress_callback"] = self.signals.progress
 
     @Slot()
     def run(self):

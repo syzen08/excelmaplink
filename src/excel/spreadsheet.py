@@ -1,3 +1,4 @@
+import contextlib
 import logging
 from pathlib import Path
 
@@ -50,15 +51,11 @@ class Spreadsheet(QObject):
         # if we created the app, we close it, otherwise we just leave it open
         if self.created:
             # if this doesnt properly work, just ignore it, it's not that deep
-            try:
+            with contextlib.suppress(Exception):
                 self.logger.debug("closing workbook and quitting app...")
-            except Exception:
-                pass
         else:
-            try:
+            with contextlib.suppress(Exception):
                 self.logger.debug("excel was not created by me, not closing.")
-            except Exception:
-                pass
         if self.wb and self.created:
             self.wb.close()
         if self.app and self.created:
@@ -112,14 +109,12 @@ class Spreadsheet(QObject):
             self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
             if not self.main_window.debug:
                 self.config_sheet.visible = False
-            settings = self.main_window.show_settings_dialog()
-            return settings
-        else:
-            self.logger.info("config sheet found, loading settings...")
-            self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
-            self.config_sheet.visible = self.main_window.debug
-            return None
-        
+            return self.main_window.show_settings_dialog()
+        self.logger.info("config sheet found, loading settings...")
+        self.config_sheet: xw.Sheet = self.wb.sheets["excelmaplink_config"]
+        self.config_sheet.visible = self.main_window.debug
+        return None
+    
     def import_settings(self, settings: dict):
         """import settings from a dictionary."""
         for key, value in settings.items():
@@ -139,7 +134,7 @@ class Spreadsheet(QObject):
             QMessageBox.critical(
                 self.main_window, 
                 self.tr("Sheet Not Found"), 
-                self.tr("Could not find sheet {} or {}. Please check your settings.").format(self.config['region_sheet'].get_value(), self.config['calc_sheet'].get_value())
+                self.tr("Could not find sheet {} or {}. Please check your settings.").format(self.config["region_sheet"].get_value(), self.config["calc_sheet"].get_value())
             )
             settings = self.main_window.show_settings_dialog(self.config)
             if settings:
@@ -165,29 +160,31 @@ class Spreadsheet(QObject):
     def load_map(self):
         """load the saved map/temp map"""
         if self.config["save_map_path"].get_value():
-            if not Path(self.config['linked_map'].get_value()).exists():
+            if not Path(self.config["linked_map"].get_value()).exists():
                 self.logger.error("map does not exist at stored location!")
-                self.main_window.display_error(self.tr("The map at {} could not be found.").format(str(Path(self.config['linked_map'].get_value()))))
+                self.main_window.display_error(self.tr("The map at {} could not be found.").format(str(Path(self.config["linked_map"].get_value()))))
                 QMessageBox.critical(
                     self.main_window, 
                     self.tr("Map not found"), 
-                    self.tr("The map at {} could not be found. Make sure that the file path is still accessible and exists.").format(str(Path(self.config['linked_map'].get_value())))
+                    self.tr("The map at {} could not be found. Make sure that the file path is still accessible and exists.").format(str(Path(self.config["linked_map"].get_value())))
                 )
                 #clear webview to signal to user that something is wrong
                 return -1
-            self.logger.info(f"loading map from {self.config['linked_map'].get_value()}")
+            self.logger.info(f"loading map from {self.config["linked_map"].get_value()}")
             self.main_window.open_kml_file(Path(self.config["linked_map"].get_value()))
-        elif self.config["temp_map"].get_value():
-            self.logger.info(f"loading temp map from {self.config['temp_map'].get_value()}")
-            self.main_window.open_kml_file(Path(self.config['temp_map'].get_value()))
+            return None
+        if self.config["temp_map"].get_value():
+            self.logger.info(f"loading temp map from {self.config["temp_map"].get_value()}")
+            self.main_window.open_kml_file(Path(self.config["temp_map"].get_value()))
             self.logger.info("wiping temp map config")
-            self.config['temp_map'].set_value(None)
-        else:
-            self.logger.warning("no map location found!")
-            new_settings = self.main_window.show_settings_dialog(self.config)
-            self.load_config(new_settings)
+            self.config["temp_map"].set_value(None)
+            return None
+        self.logger.warning("no map location found!")
+        new_settings = self.main_window.show_settings_dialog(self.config)
+        self.load_config(new_settings)
+        return None
         
-    def load_config(self, settings: dict = None):
+    def load_config(self, settings: dict | None = None):
         if settings:
             self.import_settings(settings)
         if self.get_sheets() == -1:

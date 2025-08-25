@@ -29,12 +29,11 @@ class KMLReader:
         
         if self.kml_path.suffix == ".kmz":
             self.logger.debug("kmz, opening zip and reading in doc...")
-            with ZipFile(str(self.kml_path)) as zip:
-                with zip.open("doc.kml") as kml_doc:
-                    doc = kml_doc.read()
+            with ZipFile(str(self.kml_path)) as zip_file, zip_file.open("doc.kml") as kml_doc:
+                doc = kml_doc.read()
         else:
             self.logger.debug("kml, reading in doc...")
-            with open(str(self.kml_path), "r", encoding="utf-8") as f:
+            with self.kml_path.open("r", encoding="utf-8") as f:
                 doc = f.read()
         
         self.logger.info(f"parsing {self.kml_path}...")
@@ -43,7 +42,7 @@ class KMLReader:
         
         self.logger.info("loading placemarks...")
         progress_callback.emit(QCoreApplication.translate("KMLReader", "loading placemarks..."))
-        self.placemarks = list(find_all(self.kml, of_type=Placemark)) # TODO: reimplement using dictionary for faster loading
+        self.placemarks = list(find_all(self.kml, of_type=Placemark))
         self.logger.info(f"loaded {len(self.placemarks)} placemarks")
         
         # copy all styles into a dict, this is faster than fastkml's get_style_by_url().
@@ -57,7 +56,7 @@ class KMLReader:
     def convert_color(self, color: str) -> str:
         """Converts the colors from the format `#AABBGGRR` used in kml to the more standard `#RRGGBBAA`"""
         if color is None:
-            return
+            return None
         
         r = color[6:8]
         g = color[4:6]
@@ -70,10 +69,9 @@ class KMLReader:
         """get all points from the kml and saves them into the provided list. if ret is True, return the list as well.
         every point is a tuple of the following format:
         ( 0: lat, 1: long, 2: name, 3: description, 4: icon, 5: icon color )"""
-        # TODO: add style support
         # iterate through all placemarks
-        self.logger.debug('getting points...')
-        for i, placemark in enumerate(self.placemarks):
+        self.logger.debug("getting points...")
+        for placemark in self.placemarks:
             # skip anything that isn't a point
             if not isinstance(placemark, Point):
                 continue
@@ -96,14 +94,14 @@ class KMLReader:
                     icon = self.match_icon(iconstyle.icon_href)
                     self.logger.debug(f"href: {iconstyle.icon_href}, icon_match: {icon}")
                     break
-                else:
-                    iconstyle = IconStyle()
-                    icon = None
+                iconstyle = IconStyle()
+                icon = None
                     
             points.append((point.coords[0][1], point.coords[0][0], placemark.name, placemark.description, icon, self.convert_color(iconstyle.color)))
         self.logger.info(str(len(points)))
         if ret:
             return points
+        return None
 
 
     def getPolygons(self, polygons: list, ret: bool = False) -> None | list[tuple]:
@@ -157,35 +155,23 @@ class KMLReader:
         self.logger.info(str(len(polygons)))
         if ret:
             return polygons
+        return None
         
     def match_icon(self, icon_href) -> str:
         """matches some google earth icons with the corresponding font awesome icons"""
-        match icon_href:
-            case "http://maps.google.com/mapfiles/kml/shapes/truck.png":
-                return "truck"
-            case "http://maps.google.com/mapfiles/kml/shapes/ranger_station.png":
-                return "house"
-            case "http://maps.google.com/mapfiles/kml/shapes/info.png":
-                return "info"
-            case "http://maps.google.com/mapfiles/kml/shapes/flag.png":
-                return "flag"
-            case "http://maps.google.com/mapfiles/kml/shapes/cabs.png":
-                return "taxi"
-            case "http://maps.google.com/mapfiles/kml/shapes/caution.png":
-                return "triangle-exclamation"
-            case "http://maps.google.com/mapfiles/kml/shapes/parking_lot.png":
-                return "square-parking"
-            case "http://maps.google.com/mapfiles/kml/shapes/phone.png":
-                return "phone"
-            case "http://maps.google.com/mapfiles/kml/shapes/euro.png":
-                return "euro-sign"
-            case "http://maps.google.com/mapfiles/kml/shapes/post_office.png":
-                return "envelope"
-            case "http://maps.google.com/mapfiles/kml/shapes/forbidden.png":
-                return "ban"
-            case "http://maps.google.com/mapfiles/kml/shapes/info_circle.png":
-                return "circle-question"
-            case "http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png":
-                return "default"
-            case _:
-                return f"custom: {icon_href}"
+        icon_map = {
+            "http://maps.google.com/mapfiles/kml/shapes/truck.png": "truck",
+            "http://maps.google.com/mapfiles/kml/shapes/ranger_station.png": "house", 
+            "http://maps.google.com/mapfiles/kml/shapes/info.png": "info", 
+            "http://maps.google.com/mapfiles/kml/shapes/flag.png": "flag", 
+            "http://maps.google.com/mapfiles/kml/shapes/cabs.png": "taxi", 
+            "http://maps.google.com/mapfiles/kml/shapes/caution.png": "triangle-exclamation", 
+            "http://maps.google.com/mapfiles/kml/shapes/parking_lot.png": "square-parking", 
+            "http://maps.google.com/mapfiles/kml/shapes/phone.png": "phone", 
+            "http://maps.google.com/mapfiles/kml/shapes/euro.png": "euro-sign", 
+            "http://maps.google.com/mapfiles/kml/shapes/post_office.png": "envelope", 
+            "http://maps.google.com/mapfiles/kml/shapes/forbidden.png": "ban", 
+            "http://maps.google.com/mapfiles/kml/shapes/info_circle.png": "circle-question", 
+            "http://maps.google.com/mapfiles/kml/pushpin/ylw-pushpin.png": "default", 
+        }
+        return icon_map.get(icon_href, f"custom {icon_href}")
