@@ -97,7 +97,8 @@ class MainWindow(QMainWindow):
             if btn == QMessageBox.StandardButton.Cancel:
                 event.ignore()
                 return None
-            self.spreadsheet.wb.save()
+            if btn == QMessageBox.StandardButton.Yes:
+                self.spreadsheet.wb.save()
         
         return super().closeEvent(event)
 
