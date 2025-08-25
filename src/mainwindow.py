@@ -85,8 +85,9 @@ class MainWindow(QMainWindow):
         self.load_map()
         
     def closeEvent(self, event):
-        # only prompt user if excel is open
-        if self.spreadsheet:
+        # only prompt user if excel is open and was created by us
+        self.logger.debug(self.spreadsheet.created)
+        if self.spreadsheet and self.spreadsheet.created:
             btn = QMessageBox.question(
                 self, 
                 self.tr("Save Excel?"), 
