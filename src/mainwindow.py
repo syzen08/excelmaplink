@@ -86,7 +86,6 @@ class MainWindow(QMainWindow):
         
     def closeEvent(self, event):
         # only prompt user if excel is open and was created by us
-        self.logger.debug(self.spreadsheet.created)
         if self.spreadsheet and self.spreadsheet.created:
             btn = QMessageBox.question(
                 self, 
