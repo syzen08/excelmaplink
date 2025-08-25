@@ -50,7 +50,7 @@ class MainWindow(QMainWindow):
 
         # init map and save url for loading later
         self.logger.debug("initializing map...")
-        self.map = Map(51.056919, 5.1776879, 6, Path(self.tempdir.path()))
+        self.map = Map(51.165691, 10.451526, 6, Path(self.tempdir.path()))
         self.map_url = QUrl().fromLocalFile(str(Path(self.tempdir.path() + "/map.html")))
         # set the webchannel and connect it's signals up
         self.ui.webEngineView.page().setWebChannel(self.map.webchannel)
