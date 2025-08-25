@@ -1,3 +1,4 @@
+import contextlib
 import logging
 import shutil
 from pathlib import Path
@@ -95,9 +96,8 @@ class MainWindow(QMainWindow):
             )
             if btn == QMessageBox.StandardButton.Cancel:
                 event.ignore()
-                return
-            elif btn == QMessageBox.StandardButton.Yes:
-                self.spreadsheet.wb.save()
+                return None
+            self.spreadsheet.wb.save()
         
         return super().closeEvent(event)
 
@@ -121,8 +121,7 @@ class MainWindow(QMainWindow):
         path, _ = QFileDialog.getOpenFileName(self, self.tr("Select KML File"), "", self.tr("KML Files (*.kml *.kmz)"))
         if path and Path(path).exists() and Path(path).is_file():
             return Path(path)
-        else:
-            return None
+        return None
 
     def open_kml_file(self, path: Path):
         """loads and displays a given kml/kmz file."""
@@ -171,10 +170,8 @@ class MainWindow(QMainWindow):
         # if a path has been passed, that means it was called from the re-init signal, so do that
         if path:
             # just double check the spreadsheet is gone
-            try:
+            with contextlib.suppress(Exception):
                 self.spreadsheet.__del__()
-            except Exception:
-                pass
             self.spreadsheet = Spreadsheet(path, self)
             self.spreadsheet.re_init.connect(lambda: self.openExcelFile(self.spreadsheet.file_path))
             return
@@ -213,7 +210,7 @@ class MainWindow(QMainWindow):
         html = html.format(self.tr("Uh Oh! Something went wrong!"), self.tr("Error: {}").format(error))
         self.ui.webEngineView.setHtml(html)
         
-    def show_settings_dialog(self, settings: dict = None):
+    def show_settings_dialog(self, settings: dict | None = None):
         """shows the settings dialog. if a dictionary with values is given, it fills those in."""
         # declare this early because it's needed in validate_kml_path()
         tempmap = None
@@ -276,22 +273,19 @@ class MainWindow(QMainWindow):
             if settings and self.spreadsheet: 
                 self.spreadsheet.load_config(new_settings)
             return new_settings
-        #FIXME
-        else:
-            # just return the unchanged settings back
-            if settings:
-                old_settings = {
-                    "region_sheet": settings["region_sheet"].get_value(),
-                    "region_map_name_column": settings["region_map_name_column"].get_value(),
-                    "region_sheet_start_row": settings["region_sheet_start_row"].get_value(),
-                    "region_name_column": settings["region_name_column"].get_value(),
-                    "calc_sheet": settings["calc_sheet"].get_value(),
-                    "calc_column": settings["calc_column"].get_value(),
-                    "calc_range": settings["calc_range"].get_value(),
-                    "save_map_path": settings["save_map_path"].get_value(),
-                    "linked_map": settings["linked_map"].get_value(),
-                    "temp_map": settings["temp_map"].get_value(),
-                }
-                return old_settings   
-            # if no settings were provided, this dialog was shown for initialisation, so reopen it and return it's result
-            return self.show_settings_dialog()
+        # just return the unchanged settings back
+        if settings:
+            return {
+                "region_sheet": settings["region_sheet"].get_value(),
+                "region_map_name_column": settings["region_map_name_column"].get_value(),
+                "region_sheet_start_row": settings["region_sheet_start_row"].get_value(),
+                "region_name_column": settings["region_name_column"].get_value(),
+                "calc_sheet": settings["calc_sheet"].get_value(),
+                "calc_column": settings["calc_column"].get_value(),
+                "calc_range": settings["calc_range"].get_value(),
+                "save_map_path": settings["save_map_path"].get_value(),
+                "linked_map": settings["linked_map"].get_value(),
+                "temp_map": settings["temp_map"].get_value(),
+            }
+        # if no settings were provided, this dialog was shown for initialisation, so reopen it and return it's result
+        return self.show_settings_dialog()

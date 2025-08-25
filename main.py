@@ -25,7 +25,7 @@ from src.mainwindow import MainWindow
 from src.version.version import VERSION
 
 #configue splash screen in frozen builds
-if getattr(sys, 'frozen', False):
+if getattr(sys, "frozen", False):
     import pyi_splash  # pyright: ignore[reportMissingModuleSource]
 
 # set taskbar icon
@@ -38,7 +38,7 @@ except ImportError:
 
 def main(logger: logging.Logger):
     parser = argparse.ArgumentParser(prog=f"excelmaplink v{VERSION}")
-    parser.add_argument('--debug', action='store_true')
+    parser.add_argument("--debug", action="store_true")
     debug_mode = parser.parse_args().debug
     if debug_mode:
         logger.setLevel(logging.DEBUG)
@@ -52,11 +52,11 @@ def main(logger: logging.Logger):
     
     path = QLibraryInfo.path(QLibraryInfo.TranslationsPath)
     translator = QTranslator(app)
-    if translator.load(QLocale.system(), 'qtbase', '_', path):
+    if translator.load(QLocale.system(), "qtbase", "_", path):
         app.installTranslator(translator)
     translator = QTranslator(app)
-    path = ':/translations'
-    if translator.load(QLocale.system(), 'app', '_', path):
+    path = ":/translations"
+    if translator.load(QLocale.system(), "app", "_", path):
         app.installTranslator(translator)
         
     QApplication.setStyle("Fusion")
@@ -64,7 +64,7 @@ def main(logger: logging.Logger):
     logger.info(f"--- excelmaplink version {VERSION} ---")
     logger.debug("init mainwindow")
     window = MainWindow(debug_mode)
-    if getattr(sys, 'frozen', False):   
+    if getattr(sys, "frozen", False):   
         pyi_splash.close()
     window.show()
     sys.exit(app.exec())
@@ -102,21 +102,25 @@ def global_exception_hook(exctype, value, tb):
     errmsgbox.setDefaultButton(quit_button)
     errmsgbox.exec()
     if errmsgbox.clickedButton() == continue_button:
-        btn = QMessageBox.question(None, QApplication.translate("MainWindow", "WARNING!"), QApplication.translate("MainWindow", "This will continue execution in this unknown state. This can lead to unexpected behaviour. Do you really want to continue?"))
+        btn = QMessageBox.question(
+            None, 
+            QApplication.translate("MainWindow", "WARNING!"), 
+            QApplication.translate("MainWindow", "This will continue execution in this unknown state. This can lead to unexpected behaviour. Do you really want to continue?")
+        )
         if btn == QMessageBox.StandardButton.Yes:
             return
     sys.exit(-1)
     
 if __name__ == "__main__":
     freeze_support()
-    if getattr(sys, 'frozen', False):   
+    if getattr(sys, "frozen", False):   
         pyi_splash.update_text("Loading UI...")
     sys.excepthook = global_exception_hook
     logging.basicConfig(
         level="NOTSET", format="[%(name)s]: %(message)s", datefmt="[%X]", handlers=[RichHandler(rich_tracebacks=True)]
     )
-    logger = logging.getLogger('eml')
-    qtlogger = logging.getLogger('eml.qt')
+    logger = logging.getLogger("eml")
+    qtlogger = logging.getLogger("eml.qt")
     qSetMessagePattern("<%{category}>: %{message}")
     qInstallMessageHandler(qt_message_handler)
     

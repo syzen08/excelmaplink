@@ -6,7 +6,7 @@ import folium
 from branca.element import Element
 from folium.plugins import Geocoder
 from folium.template import Template
-from PySide6.QtCore import QCoreApplication  # noqa: F401
+from PySide6.QtCore import QCoreApplication
 from PySide6.QtWebChannel import QWebChannel
 
 from src.bridge import MapBridge
@@ -110,9 +110,9 @@ class Map:
 
     def save(self, progress_callback):
         """save map in its path as map.html"""
-        self.logger.info('saving...')
+        self.logger.info("saving...")
         self.map.save(str(Path(self.path / "map.html")))
-        self.logger.info('saved')
+        self.logger.info("saved")
 
     def get_html(self):
         return self.map.get_root().render()
@@ -162,7 +162,7 @@ class Map:
 
         # add points to map as markers
         self.logger.info(f"adding {len(points)} points...")
-        for i, point in enumerate(points):
+        for point in points:
             # if an icon color is set, add that icon
             if point[5] is not None:
                 if point[4].startswith("custom: "):
@@ -180,7 +180,7 @@ class Map:
             folium.Marker(location=[point[0], point[1]], tooltip=point[2], popup=point[3], icon=icon).add_to(fg)
         # add polygons to map
         self.logger.info(f"adding {len(polygons)} polygons...")
-        for i, polygon in enumerate(polygons):
+        for polygon in polygons:
             folium.Polygon(locations=polygon[0], color=f"#{polygon[3][0]}", fill_color=f"#{polygon[4]}", weight=polygon[3][1], tooltip=polygon[1], popup=polygon[2], fillOpacity=0.5).add_to(fg)
 
         self.logger.info("done")
