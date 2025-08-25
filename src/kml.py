@@ -72,15 +72,15 @@ class KMLReader:
         # iterate through all placemarks
         self.logger.debug("getting points...")
         for placemark in self.placemarks:
-            # skip anything that isn't a point
-            if not isinstance(placemark, Point):
-                continue
-            
             # if not visible, skip
             if placemark.visibility is False:
                 continue
             
             point = placemark.geometry
+            # skip anything that isn't a point
+            if not isinstance(point, Point):
+                continue
+            
             styleurl = placemark.style_url
             # get style from the index
             styles = self.styles[styleurl.url[1:]]
