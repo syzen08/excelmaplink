@@ -22,6 +22,7 @@ from rich.traceback import Traceback
 
 import resources_rc  # noqa: F401
 from src.mainwindow import MainWindow
+from src.version.version import VERSION
 
 #configue splash screen in frozen builds
 if getattr(sys, 'frozen', False):
@@ -30,13 +31,13 @@ if getattr(sys, 'frozen', False):
 # set taskbar icon
 try:
     from ctypes import windll
-    appid = "com.syzen.excelmaplink.1.0"
+    appid = f"com.syzen.excelmaplink.{VERSION}"
     windll.shell32.SetCurrentProcessExplicitAppUserModelID(appid)
 except ImportError:
     pass
 
 def main(logger: logging.Logger):
-    parser = argparse.ArgumentParser(prog="excelmaplink")
+    parser = argparse.ArgumentParser(prog=f"excelmaplink v{VERSION}")
     parser.add_argument('--debug', action='store_true')
     debug_mode = parser.parse_args().debug
     if debug_mode:
@@ -60,6 +61,7 @@ def main(logger: logging.Logger):
         
     QApplication.setStyle("Fusion")
     app.setWindowIcon(QIcon(":/icons/icon.ico"))
+    logger.info(f"--- excelmaplink version {VERSION} ---")
     logger.debug("init mainwindow")
     window = MainWindow(debug_mode)
     if getattr(sys, 'frozen', False):   

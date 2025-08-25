@@ -50,12 +50,29 @@ class Ui_aboutDialog(object):
 
         self.verticalLayout.addWidget(self.titleLabel)
 
+        self.versionLabel = QLabel(aboutDialog)
+        self.versionLabel.setObjectName(u"versionLabel")
+        self.versionLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.verticalLayout.addWidget(self.versionLabel)
+
+        self.commitLabel = QLabel(aboutDialog)
+        self.commitLabel.setObjectName(u"commitLabel")
+        self.commitLabel.setAlignment(Qt.AlignmentFlag.AlignCenter)
+
+        self.verticalLayout.addWidget(self.commitLabel)
+
         self.label = QLabel(aboutDialog)
         self.label.setObjectName(u"label")
         self.label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.label.setWordWrap(True)
+        self.label.setOpenExternalLinks(True)
+        self.label.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
 
         self.verticalLayout.addWidget(self.label)
+
+        self.verticalSpacer_2 = QSpacerItem(20, 40, QSizePolicy.Policy.Minimum, QSizePolicy.Policy.Expanding)
+
+        self.verticalLayout.addItem(self.verticalSpacer_2)
 
 
         self.gridLayout.addLayout(self.verticalLayout, 4, 2, 1, 1)
@@ -71,6 +88,8 @@ class Ui_aboutDialog(object):
         self.copyrightLabel.setText(QCoreApplication.translate("aboutDialog", u"\u00a9 2025 David Barthel", None))
         self.iconLabel.setText("")
         self.titleLabel.setText(QCoreApplication.translate("aboutDialog", u"<html><head/><body><p align=\"center\"><span style=\" font-size:20pt; font-weight:700;\">excelmaplink</span></p></body></html>", None))
-        self.label.setText(QCoreApplication.translate("aboutDialog", u"<html><head/><body><p>An interactive map that allow the user to toggle areas on a map which in turn adds or removes the name of that region in an excel spreadsheet.</p><p>Made with &lt;3</p></body></html>", None))
+        self.versionLabel.setText(QCoreApplication.translate("aboutDialog", u"Version: dev", None))
+        self.commitLabel.setText(QCoreApplication.translate("aboutDialog", u"Commit: dev", None))
+        self.label.setText(QCoreApplication.translate("aboutDialog", u"<html><head/><body><p><a href=\"https://github.com/syzen08/excelmaplink\"><span style=\" text-decoration: underline; color:#0e6dc6;\">Website</span></a></p></body></html>", None))
     # retranslateUi
 

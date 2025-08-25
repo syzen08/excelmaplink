@@ -19,6 +19,8 @@ from PySide6.QtWidgets import (
 
 from src.excel.spreadsheet import Spreadsheet
 from src.map import Map
+from src.version.commit import get_commit
+from src.version.version import VERSION
 from src.worker import Worker
 from ui.aboutDialog_ui import Ui_aboutDialog
 from ui.mainwindow_ui import Ui_MainWindow
@@ -198,6 +200,8 @@ class MainWindow(QMainWindow):
         dialog = QDialog(self)
         ui = Ui_aboutDialog()
         ui.setupUi(dialog)
+        ui.versionLabel.setText(f"Version: {VERSION}")
+        ui.commitLabel.setText(f"Commit: {get_commit()}")
         dialog.show()
         
     def display_error(self, error: str):

@@ -45,7 +45,7 @@ if you want to (nice for development).
 
 to build the executable, run
 ```
-pyinstaller .\main.spec
+python build.py
 ```
 the finished executable will be in the `dist` folder.
 
