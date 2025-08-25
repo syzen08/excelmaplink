@@ -5,11 +5,11 @@ from xlwings import Sheet
 
 
 class ConfigOption:
-    def __init__(self, sheet: Sheet, name: str, column: str, type: str):
+    def __init__(self, sheet: Sheet, name: str, column: str, val_type: str):
         """initialises a single config option.
         - `sheet` is a reference to the excel sheet to write to
         - `column` is the column to write into
-        - `type` signals what type the value is. possible values are:
+        - `val_type` signals what type the value is. possible values are:
           - `"s"` = string
           - `"i"` = integer
           - `"b"` = boolean
@@ -18,15 +18,15 @@ class ConfigOption:
         self.name = name
         self.column = column
         self.logger = logging.getLogger("eml.spreadsheet.config")
-        if len(type) > 1:
-            raise ValueError("type must be a single character. got: " + type)
-        if type not in ["s", "i", "b", "t"]:
-            raise ValueError("type must be one of 's' (string), 'i' (int), 'b' (bool), 't' (tuple)). got: " + type)
-        self.type = type
+        if len(val_type) > 1:
+            raise ValueError("type must be a single character. got: " + val_type)
+        if val_type not in ["s", "i", "b", "t"]:
+            raise ValueError("type must be one of 's' (string), 'i' (int), 'b' (bool), 't' (tuple)). got: " + val_type)
+        self.type = val_type
         
         # if the name is not set, then the sheet is either not initialized or out of date, so reset it
         # ?: find a way to migrate old options
-        if not self.sheet[self.column + "1"].value == self.name:
+        if self.sheet[self.column + "1"].value != self.name:
             self.sheet[self.column + "1"].value = self.name
             self.sheet[self.column + "2"].value = ""
             self.logger.debug(f"reset config option {self.name}")
