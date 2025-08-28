@@ -17,7 +17,7 @@ a interactive map allowing the user to toggle regions on the map which also togg
 ## Running
 **Excel has to be installed!**
 
-get the latest .exe from the [releases](https://github.com/syzen08/excelmaplink/releases)
+get the latest .exe from the [releases](https://github.com/syzen08/excelmaplink/releases/latest)
 
 ## Building
 > [!NOTE]
