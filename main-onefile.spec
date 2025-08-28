@@ -47,5 +47,5 @@ exe = EXE(
     codesign_identity=None,
     entitlements_file=None,
     hide_console='minimize-early',
-    icon='icons/icon.ico'
+    icon=['icons\\icon.ico']
 )
