@@ -43,11 +43,13 @@ python main.py
 ```
 if you want to (nice for development).
 
-to build the executable, run
+to build the program, run
 ```
 python build.py
 ```
-the finished executable will be in the `dist` folder.
+there you can choose between builing to a single executable, building to a folder or building an installer using [NSIS](https://sourceforge.net/projects/nsis/files/).
+
+the finished executable/folder will be in the `dist` folder.
 
 ## Translation
 from inside the venv run 

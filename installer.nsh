@@ -1,7 +1,3 @@
-;NSIS Modern User Interface
-;Basic Example Script
-;Written by Joost Verburg
-
 ;--------------------------------
 ;Include Modern UI
 
@@ -11,7 +7,9 @@
 ;Defines
   !define NAME "excelmaplink"
   !define APPFILE "excelmaplink.exe"
-  !define VERSION "dev"
+  !ifndef VERSION
+    !define VERSION "UNKNOWN"
+  !endif
   !define SLUG "${NAME} v${VERSION}"
 
 ;--------------------------------

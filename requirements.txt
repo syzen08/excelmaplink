@@ -4,3 +4,4 @@ folium
 bs4
 xlwings
 rich # for better tracebacks
+pyinstaller
